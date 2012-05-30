@@ -10,8 +10,9 @@ $(document).ready(function() {
 		// Ativa o novo item de menu
 		$(this).removeClass("MenuButton");
 		$(this).addClass("ActiveMenuButton");
-		
-		var requestedPage = $(this).attr("href");
-		$("div#MainArea").load('PageLoader', {page:requestedPage});
+		//startLoading();
+		$("div#mainArea").html("<img src=\"images/loading-circle.gif\" />");
+		var requestedPage = $(this).attr("href").substring(1);
+		$("div#MainArea").load('PageLoader?page=' + requestedPage);
 	});
 });

@@ -64,6 +64,8 @@ label{font-size:11px;}
 .MainColumn{overflow:hidden;}
 img{border:0;}
 h2{margin:0;}
+h1{color: #404040; border-bottom: dashed 1px #404040;}
+h3{border-bottom: solid 1px;}
 blockquote{width:80%;color:#000;border:solid 1px #503416;background:#FFF;margin:0 auto;padding:15px;-webkit-border-radius:5px;-moz-border-radius:5px;}
 blockquote a,blockquote a:link{color:#491700!important;text-decoration:underline;}
 blockquote a:visited{color:#491700!important;text-decoration:underline;}
@@ -124,3 +126,20 @@ blockquote a:hover{color:#000!important;text-decoration:none;}
 .Footer a:hover{color:#000;text-decoration:none;}
 .BackLink{text-align:center;display:block;display:block;font-size:11px;padding:0 0 12px;color:#000;}
 .BackLink a{color:#000;}
+.LineHeader{color:#000;font-size:13px;text-align:right; background-color: #F0E6D3; overflow:hidden;padding:5px 28px;}
+
+.error{color: #EB1010; font-size: 10px; display:none;}
+fieldset{margin:1px;border:none;border-top:1px solid #ccc; border-right: solid 1px #ccc;}
+fieldset div{padding: 2px;display:block;}
+fieldset label{font-size:12px;float:left;width:200px;text-align:right;padding:0 1em;}
+legend{margin:1em 0;padding:0 .5em;color:#404040;background:transparent;font-size:1.3em;font-weight:bold;}
+.form{float:left;}
+.tooltip{float:right; padding:10px; max-width:200px; text-align: left;}
+
+/****************************** Menu (Cardapio) ************************************/
+div.panel,p.flip {margin:0px;padding:5px;}
+p.flip{font-weight: bold; border-bottom:solid 1px #000000; cursor: default;}
+div.panel{display:none; border-bottom:dashed 1px #c3c3c3;}
+
+/****************************** Dialogs ********************************************/
+.dialog{display:none; background-color: #FFF; border:solid 1px #000; padding:6px 6px 6px 6px;}

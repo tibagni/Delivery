@@ -9,5 +9,5 @@
   <Resource name="jdbc/deliveryDB" auth="Container" type="javax.sql.DataSource"
      maxActive="20" maxIdle="10" maxWait="-1" removeAbandoned="true"
      username="postgres" password="root" driverClassName="org.postgresql.Driver"
-     url="jdbc:postgresql://localhost:5432/TestDb" />
+     url="jdbc:postgresql://localhost:5432/Delivery" />
 </Context>

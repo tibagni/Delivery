@@ -10,12 +10,12 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-      <servlet-name>Teste</servlet-name>
-      <servlet-class>com.delivery.servlet.Test</servlet-class>
+      <servlet-name>Menu</servlet-name>
+      <servlet-class>com.delivery.servlet.Menu</servlet-class>
   </servlet>
   <servlet-mapping>
-      <servlet-name>Teste</servlet-name>
-      <url-pattern>/Teste</url-pattern>
+      <servlet-name>Menu</servlet-name>
+      <url-pattern>/Menu</url-pattern>
   </servlet-mapping>
   
   <servlet>
