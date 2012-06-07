@@ -28,34 +28,36 @@ CREATE TABLE Produto (
   descricao VARCHAR NOT NULL,
   qtde_sabores_perm INTEGER NULL DEFAULT 0,
   qtde_opcionais_perm INTEGER NULL,
+  foto VARCHAR NOT NULL,
   
   PRIMARY KEY(cod_produto)
 );
 
 CREATE TABLE Tamanhos (
-  cod_tamanho SERIAL NOT NULL,
+  cod_tamanho SERIAL NOT NULL
+  Nome VARCHAR NOT NULL,
   Produto_cod_produto INTEGER NOT NULL references Produto (cod_produto),
-  nome VARCHAR NOT NULL,
   
   PRIMARY KEY(cod_tamanho)
 );
+
 
 CREATE TABLE Sabor (
   cod_sabor SERIAL NOT NULL,
   Produto_cod_produto INTEGER NOT NULL references Produto (cod_produto),
   nome VARCHAR NOT NULL,
   descricao VARCHAR NOT NULL,
+  foto VARCHAR NOT NULL,
   
   PRIMARY KEY(cod_sabor)
 );
 
 CREATE TABLE Preco (
-  Sabor_cod_sabor INTEGER NOT NULL references Sabor (cod_sabor),
-  tamanho INTEGER NOT NULL references Tamanhos (cod_tamanho),
-  nome VARCHAR NOT NULL,
-  descricao VARCHAR NOT NULL,
+  Sabor_cod_sabor INTEGER NOT NULL,
+  Tamanhos_cod_tamanho INTEGER NOT NULL,
+  Preco FLOAT NOT NULL,
   
-  PRIMARY KEY(cod_sabor)
+  PRIMARY KEY(Sabor_cod_sabor, Tamanhos_cod_tamanho)
 );
 
 CREATE TABLE Pedido (

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.delivery.Logger;
 import com.delivery.engine.command.Command;
 import com.delivery.engine.command.Command.CommandNotFoundException;
 import com.delivery.engine.command.PageLoaderCommand;
@@ -20,13 +21,24 @@ public class PageLoader extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+
+        boolean debugMode = req.getParameter("debug") != null;
+        String cmdName = req.getParameter("page");
+
+        //TODO remover depois de terminados os testes
+        if (debugMode) {
+            RequestDispatcher dispatcher = req.getRequestDispatcher(cmdName);
+            dispatcher.forward(req, resp);
+            return;
+        }
+
         try {
-            PageLoaderCommand pageLoader = Command.getFromName(req.getParameter("page"), PageLoaderCommand.class);
+            PageLoaderCommand pageLoader = Command.getFromName(cmdName, PageLoaderCommand.class);
             pageLoader.prepareToLoad(req, resp);
             RequestDispatcher dispatcher = req.getRequestDispatcher(pageLoader.getRedirect());
             dispatcher.forward(req, resp);
         } catch (CommandNotFoundException e) {
-            // TODO log erro
+            Logger.warning("[PageLoader]Comando não definido! - " + cmdName);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }

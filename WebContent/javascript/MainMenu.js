@@ -13,6 +13,15 @@ $(document).ready(function() {
 		//startLoading();
 		$("div#mainArea").html("<img src=\"images/loading-circle.gif\" />");
 		var requestedPage = $(this).attr("href").substring(1);
-		$("div#MainArea").load('PageLoader?page=' + requestedPage);
+		
+		if (requestedPage != null && requestedPage.length > 0) {
+			$("div#MainArea").load('PageLoader?page=' + requestedPage);
+		}
+	});
+	
+	$("a.debugPageLoader").click(function() {
+		$("div#mainArea").html("<img src=\"images/loading-circle.gif\" />");
+		var requestedPage = $(this).attr("title");
+		$("div#MainArea").load('PageLoader?debug=true&page=' + requestedPage);
 	});
 });

@@ -4,7 +4,7 @@ $(document).ready(function(){
 		$(".tooltip").html(tip);
 	});
 	
-	$("form").submit(function() {
+	$(".ajaxForm").submit(function() {
 		var serializedForm = $(this).serialize();
 		var url = $(this).attr( 'action' );
 		startLoading();

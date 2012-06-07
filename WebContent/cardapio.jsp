@@ -9,12 +9,15 @@
 	<a href="#show" id="showHide">Exibir/Econder tudo</a>
 </div>
 
+<br />
+<a href="#" class="dialog_cat">[+] Categoria</a>
+<br /><br />
+
 <c:forEach var="cat" items="${MenuCategories}">
 	<c:set var="categoria" value="${cat}" scope="request"/>
 	<jsp:include page="cardapio/categoria.jsp"/>
 </c:forEach>
 <br />
-<a href="#" class="dialog_cat">[+] Categoria</a>
 <div class="dialog" id="dialogCat">
 	<span class="BlockHeader"><span>:: Nova categoria</span></span>
 	<div class="BlockContentBorder">

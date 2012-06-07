@@ -29,7 +29,7 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
     }
 
     @Override
-    public int[] save(List<MenuCategory> objectsToInsert) {
+    public int[] save(List<MenuCategory> objectsToInsert) throws SQLException {
         if (objectsToInsert == null || objectsToInsert.size() == 0) {
             return null;
         }
@@ -55,11 +55,13 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
             inserted = stm.executeBatch();
         } catch (SQLException e) {
             // TODO log
+            throw e;
         }
         return inserted;
     }
 
-    public int getLastId() {
+    @Override
+    public int getLastSavedId() throws SQLException {
         int id = 0;
         try {
             Statement stm = mConnection.createStatement();

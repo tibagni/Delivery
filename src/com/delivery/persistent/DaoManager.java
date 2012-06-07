@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import com.delivery.Logger;
+
 /**
  * NAO E SEGURO PARA MULTITHREAD
  * @author Tiago
@@ -12,6 +14,11 @@ import javax.sql.DataSource;
  */
 public class DaoManager {
     private MenuCategoryDao mMenuCategoryDao;
+    private ProductDao mProductDao;
+    private ProductSizeDao mProductSizeDao;
+    private FlavourDao mFlavourDao;
+    private PriceDao mPriceDao;
+
     private DataSource mDataSource;
     private Connection mConnection;
 
@@ -24,6 +31,34 @@ public class DaoManager {
             mMenuCategoryDao = new MenuCategoryDao(getConnection());
         }
         return mMenuCategoryDao;
+    }
+
+    public ProductDao getProductDao() throws SQLException {
+        if (mProductDao == null) {
+            mProductDao = new ProductDao(getConnection());
+        }
+        return mProductDao;
+    }
+
+    public ProductSizeDao getProductSizeDao() throws SQLException {
+        if (mProductSizeDao == null) {
+            mProductSizeDao = new ProductSizeDao(getConnection());
+        }
+        return mProductSizeDao;
+    }
+
+    public FlavourDao getFlavourDao() throws SQLException {
+        if (mFlavourDao == null) {
+            mFlavourDao = new FlavourDao(getConnection());
+        }
+        return mFlavourDao;
+    }
+
+    public PriceDao getPriceDao() throws SQLException {
+        if (mPriceDao == null) {
+            mPriceDao = new PriceDao(getConnection());
+        }
+        return mPriceDao;
     }
 
     private Connection getConnection() throws SQLException {
@@ -39,6 +74,10 @@ public class DaoManager {
 
         // libera os DAOs
         mMenuCategoryDao = null;
+        mProductDao = null;
+        mProductSizeDao = null;
+        mFlavourDao = null;
+        mPriceDao = null;
     }
 
     public Object execute(DaoCommand command) {
@@ -62,6 +101,7 @@ public class DaoManager {
             return command.execute(this);
         } catch (SQLException e) {
             try {
+                Logger.error(e.getMessage(), e);
                 getConnection().rollback();
             } catch (SQLException ignore) { /*TODO logs*/ }
         } finally {
@@ -70,6 +110,10 @@ public class DaoManager {
             } catch (SQLException ignore) { /*TODO logs*/ }
         }
         return returnObj;
+    }
+
+    public final void cancelTransaction() throws SQLException {
+        throw new SQLException("Rollback!");
     }
 
     public interface DaoCommand {

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.delivery.Logger;
 import com.delivery.engine.command.PageLoaderCommand;
 import com.delivery.menu.MenuCategory;
 import com.delivery.persistent.DaoManager;
@@ -36,8 +37,7 @@ public class MenuLoader extends PageLoaderCommand {
 
             req.setAttribute("MenuCategories", categories);
         } catch (NamingException e) {
-            // TODO log
-            e.printStackTrace();
+            Logger.error("NamingException", e);
         }
     }
 

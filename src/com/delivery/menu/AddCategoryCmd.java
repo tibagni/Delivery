@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
+import com.delivery.Logger;
 import com.delivery.engine.command.MenuCommand;
 import com.delivery.persistent.DaoManager;
 import com.delivery.persistent.MenuCategoryDao;
@@ -19,7 +20,7 @@ public class AddCategoryCmd extends MenuCommand {
 
     @Override
     public void execute(HttpServletRequest request) {
-        MenuCategory saved = null;
+        MenuCategory savedCat = null;
         try {
             // Get DataSource
             Context initContext  = new InitialContext();
@@ -30,7 +31,7 @@ public class AddCategoryCmd extends MenuCommand {
             final String parentId = request.getParameter("parentId");
 
             DaoManager daoManager = new DaoManager(dataSource);
-            saved = (MenuCategory) daoManager.execute(new DaoManager.DaoCommand() {
+            savedCat = (MenuCategory) daoManager.execute(new DaoManager.DaoCommand() {
                 @Override public Object execute(DaoManager manager) throws SQLException {
                     MenuCategory cat = new MenuCategory();
                     cat.setName(catName);
@@ -45,19 +46,20 @@ public class AddCategoryCmd extends MenuCommand {
 
                     int[] saved = dao.save(toInsert);
                     if (saved != null && saved.length > 0) {
-                        cat.setCategoryId(dao.getLastId());
+                        cat.setCategoryId(dao.getLastSavedId());
                         return cat;
                     }
                     return null;
                 }
             });
         } catch (NamingException e) {
-            // TODO log
-            e.printStackTrace();
+            Logger.error("NamingException", e);
         }
-        if (saved != null) {
-            request.setAttribute("categoria", saved);
+        if (savedCat != null) {
+            request.setAttribute("categoria", savedCat);
             mRedirect = "cardapio/categoria.jsp";
+        } else {
+            // TODO retornar pagina de erro ao usuario. Categoria nao foi inserida!!!
         }
     }
 
