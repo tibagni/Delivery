@@ -1,20 +1,20 @@
 package com.delivery.menu;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.delivery.util.SQLUtils;
+
 public class MenuCategory {
-    public static final int INVALID_ID = 0;
+    public static final int INVALID_ID = (int) SQLUtils.INVALID_ID;
 
     private int mCategoryId;
     private String mName;
     private int mParentId = INVALID_ID;
-    private ArrayList<MenuCategory> mSubCategories;
-    // TODO lista de produtos
+    private List<MenuCategory> mSubCategories;
+    private List<Product> mProducts;
 
     public MenuCategory() {
         mCategoryId = INVALID_ID;
-        mSubCategories = new ArrayList<MenuCategory>();
     }
 
     public int getCategoryId() {
@@ -25,16 +25,20 @@ public class MenuCategory {
         mCategoryId = categoryId;
     }
 
-    public void addSubCategory(MenuCategory subCategory) {
-        mSubCategories.add(subCategory);
-    }
-
-    public void addAllSubCategories(List<MenuCategory> subCategories) {
-        mSubCategories.addAll(subCategories);
+    public void setSubCategories(List<MenuCategory> subCategories) {
+        mSubCategories = subCategories;
     }
 
     public List<MenuCategory> getSubCategories() {
         return mSubCategories;
+    }
+
+    public void setProducts(List<Product> products) {
+        mProducts = products;
+    }
+
+    public List<Product> getProducts() {
+        return mProducts;
     }
 
     public String getName() {

@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.delivery.Logger;
 import com.delivery.menu.Flavour;
-import com.delivery.menu.Product;
+import com.delivery.util.SQLUtils;
 import com.delivery.util.StringUtils;
 
 public class FlavourDao extends Dao<Flavour> {
@@ -22,7 +22,7 @@ public class FlavourDao extends Dao<Flavour> {
     private static final String COLUMN_PICTURE   = "foto";
 
 
-    private static final int NO_PRODUCT = 0;
+    private static final int NO_PRODUCT = (int) SQLUtils.INVALID_ID;
 
     public FlavourDao(Connection connection) {
         super(connection);
@@ -70,7 +70,7 @@ public class FlavourDao extends Dao<Flavour> {
 
     @Override
     public int delete(List<Flavour> objectsToDelete) throws SQLException {
-        // TODO Auto-generated method stub
+        // Nao e possivel remover sabor
         return 0;
     }
 

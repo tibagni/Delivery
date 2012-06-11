@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.delivery.Logger;
 import com.delivery.menu.Price;
+import com.delivery.util.SQLUtils;
 
 public class PriceDao extends Dao<Price> {
     private static final String TABLE_NAME = "preco";
@@ -18,7 +19,7 @@ public class PriceDao extends Dao<Price> {
     private static final String COLUMN_SIZE_ID    = "tamanhos_cod_tamanho";
     private static final String COLUMN_PRICE      = "preco";
 
-    private static final int INVALID_ID = 0;
+    private static final int INVALID_ID = (int) SQLUtils.INVALID_ID;
     private static final int NO_FLAVOUR = INVALID_ID;
     private static final int NO_SIZE    = INVALID_ID;
 
@@ -59,7 +60,7 @@ public class PriceDao extends Dao<Price> {
             }
             inserted = stm.executeBatch();
         } catch (SQLException e) {
-            Logger.error("Erro ao adicionar tamanho(s) de produto!", e);
+            Logger.error("Erro ao adicionar preco!", e);
             throw e;
         }
         return inserted;
@@ -97,7 +98,8 @@ public class PriceDao extends Dao<Price> {
                 prices.add(p);
             }
         } catch (SQLException e) {
-            // Ignore TODO log
+            Logger.error("Erro ao consultar precos!", e);
+            throw e;
         } finally {
             if (stm != null) {
                 try {
@@ -122,20 +124,22 @@ public class PriceDao extends Dao<Price> {
         StringBuilder queryBuilder = new StringBuilder();
 
         queryBuilder.append("SELECT * FROM " + TABLE_NAME);
-        if (param.getFlavourId() != NO_FLAVOUR) {
-            queryBuilder.append(nextToken);
-            queryBuilder.append(" " + COLUMN_FLAVOUR_ID + " = " + param.getFlavourId());
-            nextToken = and;
-        }
-        if (param.getSizeId() != NO_SIZE) {
-            queryBuilder.append(nextToken);
-            queryBuilder.append(" " + COLUMN_SIZE_ID + " = " + param.getSizeId());
-            nextToken = and;
-        }
-        if (param.getPrice() > 0) {
-            queryBuilder.append(nextToken);
-            queryBuilder.append(" " + COLUMN_PRICE + " = " + param.getPrice());
-            nextToken = and;
+        if (param != null) {
+            if (param.getFlavourId() != NO_FLAVOUR) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_FLAVOUR_ID + " = " + param.getFlavourId());
+                nextToken = and;
+            }
+            if (param.getSizeId() != NO_SIZE) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_SIZE_ID + " = " + param.getSizeId());
+                nextToken = and;
+            }
+            if (param.getPrice() > 0) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_PRICE + " = " + param.getPrice());
+                nextToken = and;
+            }
         }
 
         return queryBuilder.toString();

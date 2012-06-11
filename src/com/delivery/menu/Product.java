@@ -1,11 +1,10 @@
 package com.delivery.menu;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
     private int mId;
-    private int mCategory;
+    private int mCategoryId;
     private String mName;
     private String mDecription;
     private String mPicturePath;
@@ -23,12 +22,12 @@ public class Product {
         mId = id;
     }
 
-    public int getCategory() {
-        return mCategory;
+    public int getCategoryId() {
+        return mCategoryId;
     }
 
-    public void setCategory(int category) {
-        mCategory = category;
+    public void setCategoryId(int categoryId) {
+        mCategoryId = categoryId;
     }
 
     public String getName() {
@@ -77,12 +76,5 @@ public class Product {
 
     public void setSizesAvailable(List<ProductSize> sizes) {
         mSizes = sizes;
-    }
-
-    public void addSize(ProductSize newSize) {
-        if (mSizes == null) {
-            mSizes = new ArrayList<ProductSize>();
-        }
-        mSizes.add(newSize);
     }
 }

@@ -20,7 +20,7 @@ public class Logger {
     }
 
     public static void info(String msg) {
-        stdOut( msg);
+        stdOut("[info] " + msg);
     }
 
     private static void stdOut(String s, Object... args) {

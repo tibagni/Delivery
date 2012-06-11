@@ -35,8 +35,8 @@ public class AddFlavourCmd extends MenuCommand {
     public void execute(HttpServletRequest request) {
         try {
             // Get DataSource
-            Context initContext  = new InitialContext();
-            Context envContext  = (Context)initContext.lookup("java:/comp/env");
+            Context initContext   = new InitialContext();
+            Context envContext    = (Context)initContext.lookup("java:/comp/env");
             DataSource dataSource = (DataSource)envContext.lookup("jdbc/deliveryDB");
 
             int productId;
@@ -117,8 +117,12 @@ public class AddFlavourCmd extends MenuCommand {
 
             if (savedFlavour != null) {
                 Logger.debug("O sabor foi salvo com sucesso!");
-                // Nao e necessario passar o sabor pela requisicao aqui!
-                mRedirect = "seila"; // TODO
+                // Vamos mandar o usuario para a pagina final com uma mensagem de sucesso!
+                request.setAttribute("finalMsg", "Sabor adicionado ao produto com sucesso! - '" + savedFlavour.getName() + "'");
+                if (!StringUtils.isEmpty(savedFlavour.getPicturePath())) {
+                    request.setAttribute("finalPicture", savedFlavour.getPicturePath());
+                }
+                mRedirect = "cardapio/novoProd-cont.jsp";
             } else {
                 // TODO retornar pagina de erro ao usuario. sabor nao foi inserido!!!
             }

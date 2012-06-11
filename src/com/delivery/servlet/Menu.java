@@ -34,6 +34,9 @@ public class Menu extends HttpServlet {
         String cmdName = req.getParameter("cmd");
         MenuCommand command;
 
+        // TODO - Talvez seja melhor criar um servlet separado para esta acao
+        // Nao me parece muito adequado atrelar o comando de upload com as acoes do cardapio!
+
         // Antes de inferir o comando, vamos analisar a requisicao.
         // Se o conteudo da requisicao for multipart/form-data, tratamos como
         // requisicao de upload de imagem

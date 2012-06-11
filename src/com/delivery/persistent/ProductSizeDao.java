@@ -73,7 +73,7 @@ public class ProductSizeDao extends Dao<ProductSize> {
     }
 
     @Override
-    public List<ProductSize> get(ProductSize param) {
+    public List<ProductSize> get(ProductSize param) throws SQLException {
         String query = buildQuery(param);
 
         ArrayList<ProductSize> sizes = null;
@@ -92,7 +92,8 @@ public class ProductSizeDao extends Dao<ProductSize> {
                 sizes.add(pS);
             }
         } catch (SQLException e) {
-            // Ignore TODO log
+            Logger.error("Erro ao listar tamanho(s) de produto!", e);
+            throw e;
         } finally {
             if (stm != null) {
                 try {
@@ -118,20 +119,22 @@ public class ProductSizeDao extends Dao<ProductSize> {
         StringBuilder queryBuilder = new StringBuilder();
 
         queryBuilder.append("SELECT * FROM " + TABLE_NAME);
-        if (param.getId() != INVALID_ID) {
-            queryBuilder.append(nextToken);
-            queryBuilder.append(" " + COLUMN_COD + " = " + param.getId());
-            nextToken = and;
-        }
-        if (param.getProductId() != NO_PRODUCT) {
-            queryBuilder.append(nextToken);
-            queryBuilder.append(" " + COLUMN_PRODUCT + " = " + param.getProductId());
-            nextToken = and;
-        }
-        if (!StringUtils.isEmpty(param.getName())) {
-            queryBuilder.append(nextToken);
-            queryBuilder.append(" " + COLUMN_NAME + " = " + param.getName());
-            nextToken = and;
+        if (param != null) {
+            if (param.getId() != INVALID_ID) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_COD + " = " + param.getId());
+                nextToken = and;
+            }
+            if (param.getProductId() != NO_PRODUCT) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_PRODUCT + " = " + param.getProductId());
+                nextToken = and;
+            }
+            if (!StringUtils.isEmpty(param.getName())) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_NAME + " = " + param.getName());
+                nextToken = and;
+            }
         }
 
         return queryBuilder.toString();

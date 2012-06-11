@@ -9,7 +9,7 @@ public class NewProdLoader extends PageLoaderCommand{
 
     @Override
     public void prepareToLoad(HttpServletRequest req, HttpServletResponse resp) {
-
+        // Nada pra preparar. todos os parametros do request ja foram passados!
     }
 
     @Override

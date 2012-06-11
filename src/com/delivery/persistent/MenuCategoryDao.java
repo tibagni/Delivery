@@ -8,7 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.delivery.Logger;
 import com.delivery.menu.MenuCategory;
+import com.delivery.menu.Product;
+import com.delivery.util.SQLUtils;
 import com.delivery.util.StringUtils;
 
 public class MenuCategoryDao extends Dao<MenuCategory> {
@@ -22,7 +25,7 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
     private static final int IND_COLUMN_PARENT = 2;
     private static final int IND_COLUMN_NAME = 3;
 
-    private static final int NO_PARENT = MenuCategory.INVALID_ID;
+    private static final int NO_PARENT = (int) SQLUtils.INVALID_ID;
 
     public MenuCategoryDao(Connection connection) {
         super(connection);
@@ -54,7 +57,7 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
             }
             inserted = stm.executeBatch();
         } catch (SQLException e) {
-            // TODO log
+            Logger.error("Erro ao inserir categoria", e);
             throw e;
         }
         return inserted;
@@ -70,7 +73,8 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
                 id = rs.getInt(1);
             }
         } catch (SQLException e) {
-            // TODO log
+            Logger.error("Erro ao tentar recuperar ultimo Id de categoria", e);
+            throw e;
         }
         return id;
     }
@@ -83,11 +87,11 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
 
     @Override
     public int delete(List<MenuCategory> objectsToDelete) {
-        // TODO Auto-generated method stub
+        Logger.info("Nao e possivel remover uma categoria");
         return 0;
     }
 
-    private List<MenuCategory> get(MenuCategory param, int parentId) {
+    private List<MenuCategory> get(MenuCategory param, int parentId) throws SQLException {
         final String query;
         if (parentId == NO_PARENT) {
             query = buildQuery(param, COLUMN_PARENT + " is null");
@@ -110,12 +114,23 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
                 mc.setParentId(rs.getInt(IND_COLUMN_PARENT));
                 // Chama get recursivamente para popular as
                 // sub categorias
-                mc.addAllSubCategories(get(null, id));
-                // TODO popular os produtos
+                mc.setSubCategories(get(null, id));
+
+                // Query para os produtos desta categoria
+
+                // TODO Talvez uma query mais leve aqui fosse melhor
+                // Somente com o nome e o id do produto, e carrega-lo sob demanda mais tarde
+                ProductDao pDao = new ProductDao(mConnection);
+                Product productQuery = new Product();
+                productQuery.setCategoryId(id);
+                mc.setProducts(pDao.get(productQuery));
+
+
                 result.add(mc);
             }
         } catch (SQLException e) {
-            // Ignore TODO log
+            Logger.error("Erro ao listar categorias!", e);
+            throw e;
         } finally {
             if (stm != null) {
                 try {
@@ -128,7 +143,7 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
     }
 
     @Override
-    public List<MenuCategory> get(MenuCategory param) {
+    public List<MenuCategory> get(MenuCategory param) throws SQLException {
         return get(param, NO_PARENT);
     }
 

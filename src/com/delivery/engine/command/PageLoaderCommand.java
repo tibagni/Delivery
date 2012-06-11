@@ -5,6 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.delivery.engine.command.Command.CommandBase;
 
+/**
+ * Comando responsavel apenas por carregar as paginas (views) e seus conteudos
+ * (query no banco de dados). Comandos que estenderem esta classe nao deverao
+ * realizar operacoes com o banco de dados que nao sejam consultas para a exibicao correta das views!
+ */
 public abstract class PageLoaderCommand implements CommandBase {
     public abstract void prepareToLoad(HttpServletRequest req, HttpServletResponse resp);
     public abstract String getRedirect();
@@ -14,7 +19,7 @@ public abstract class PageLoaderCommand implements CommandBase {
      * Adicionando o prefixo (nome do pacote) e o sufixo (Loader)<br>
      * <br>
      * <b>IMPORTANTE:</b> Todos os comandos que extenderem esta classe
-     * devem estar em "com.delivery.pageloader"
+     * devem estar em "com.delivery.pageloader" e devetm terminar em "Loader"
      *
      * @param simpleName
      * @return

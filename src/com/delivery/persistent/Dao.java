@@ -51,10 +51,10 @@ public abstract class Dao<T> {
     public abstract List<T> get(T param) throws SQLException;
 
     /**
-     * Retorna o último Id salvo. Util para recuperar o id de um elemento recem
+     * Retorna o ultimo Id salvo. Util para recuperar o id de um elemento recem
      * salvo. Pode ser chamado logo depois de {@link Dao#save(List)}
      *
-     * @return Id do último registro inserido
+     * @return Id do ultimo registro inserido
      */
     public abstract int getLastSavedId() throws SQLException;
 }

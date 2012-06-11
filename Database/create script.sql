@@ -53,8 +53,8 @@ CREATE TABLE Sabor (
 );
 
 CREATE TABLE Preco (
-  Sabor_cod_sabor INTEGER NOT NULL,
-  Tamanhos_cod_tamanho INTEGER NOT NULL,
+  Sabor_cod_sabor INTEGER references Sabor (cod_sabor),
+  Tamanhos_cod_tamanho INTEGER references Tamanhos (cod_tamanho),
   Preco FLOAT NOT NULL,
   
   PRIMARY KEY(Sabor_cod_sabor, Tamanhos_cod_tamanho)

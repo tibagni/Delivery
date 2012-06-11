@@ -2,6 +2,8 @@ package com.delivery.engine.command;
 
 import java.lang.reflect.Method;
 
+import com.delivery.Logger;
+
 public class Command {
 
     /**
@@ -28,11 +30,13 @@ public class Command {
         } catch (NoSuchMethodException e) {
             // Este tipo de erro nao pode passar em branco. Alguem esqueceu de implementar
             // o metodo estatico "getFullClassName" na superclasse de comando
+            Logger.error("getFullClassName nao esta definifo - " + cmdClass.getName());
             throw new RuntimeException("getFullClassName nao esta definido em "
                     + cmdClass.getName());
         } catch (Exception e) {
             // Qualquer outro problema durante a instanciacao do comando
             // e tratado como command not found
+            Logger.error("Exception durante a criacao do comando!", e);
             throw new CommandNotFoundException(e);
         }
         return cmd;

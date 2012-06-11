@@ -84,12 +84,12 @@ public class DaoManager {
         try {
             return command.execute(this);
         } catch (SQLException e) {
-            // TODO logs
+            Logger.error("Erro ao executar DaoCommand", e);
             return null;
         } finally {
             try {
                 getConnection().close();
-            } catch (SQLException ignore) { /*TODO logs*/ }
+            } catch (SQLException ignore) {}
             cleanUp();
         }
     }
@@ -100,14 +100,16 @@ public class DaoManager {
             getConnection().setAutoCommit(false);
             return command.execute(this);
         } catch (SQLException e) {
+            Logger.error("Erro ao executar transacao - DaoCommand");
+            Logger.debug("Rollback!!!");
             try {
                 Logger.error(e.getMessage(), e);
                 getConnection().rollback();
-            } catch (SQLException ignore) { /*TODO logs*/ }
+            } catch (SQLException ignore) {}
         } finally {
             try {
                 getConnection().setAutoCommit(true);
-            } catch (SQLException ignore) { /*TODO logs*/ }
+            } catch (SQLException ignore) {}
         }
         return returnObj;
     }

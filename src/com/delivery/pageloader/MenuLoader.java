@@ -38,6 +38,7 @@ public class MenuLoader extends PageLoaderCommand {
             req.setAttribute("MenuCategories", categories);
         } catch (NamingException e) {
             Logger.error("NamingException", e);
+            // TODO mostra a pagina de cardapio sem nada mesmo?!?!
         }
     }
 

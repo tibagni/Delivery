@@ -44,7 +44,12 @@ $(document).ready(function() {
 </script>
 
 <h1>/Novo produto/Sabor</h1>
-
+	<c:if test="${not empty finalMsg }">
+		<blockquote>
+			${finalMsg }
+		</blockquote>
+	</c:if>
+<br />
 <div class="tooltip"></div>
 <div class="form">
 	<form action="Menu" class="ajaxForm">

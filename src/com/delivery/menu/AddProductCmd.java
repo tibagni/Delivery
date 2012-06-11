@@ -57,7 +57,7 @@ public class AddProductCmd extends MenuCommand {
             }
 
             final Product finalProduct = new Product();
-            finalProduct.setCategory(categoryId);
+            finalProduct.setCategoryId(categoryId);
             finalProduct.setName(prodName);
             finalProduct.setDecription(prodDesc);
             finalProduct.setPicturePath(picturePath);
@@ -109,6 +109,8 @@ public class AddProductCmd extends MenuCommand {
         if (savedProd != null) {
             Logger.debug("O produto foi salvo com sucesso!");
             request.setAttribute("produto", savedProd);
+            // Mensagem para o usuario
+            request.setAttribute("finalMsg", "Produto salvo com sucesso! Adicione um sabor a ele!");
             mRedirect = "cardapio/novoProd-sabor.jsp";
         } else {
             // TODO retornar pagina de erro ao usuario. Produto nao foi inserido!!!
