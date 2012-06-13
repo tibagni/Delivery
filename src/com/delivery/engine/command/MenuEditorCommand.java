@@ -8,7 +8,7 @@ import com.delivery.engine.command.Command.CommandBase;
  * Comandos relacionados a manipuacao do cardapio. Adicionar categoria, produto
  * entre outras coisas.
  */
-public abstract class MenuCommand implements CommandBase {
+public abstract class MenuEditorCommand implements CommandBase {
 
     public abstract void execute(HttpServletRequest request);
     public abstract String getRedirect();
@@ -18,12 +18,12 @@ public abstract class MenuCommand implements CommandBase {
      * Adicionando o prefixo (nome do pacote) e o sufixo (Cmd)<br>
      * <br>
      * <b>IMPORTANTE:</b> Todos os comandos que extenderem esta classe
-     * devem estar em "com.delivery.menu" e devem terminar em "Cmd"
+     * devem estar em "com.delivery.menu.editor" e devem terminar em "Cmd"
      *
      * @param simpleName
      * @return
      */
     public static String getFullClassName(String simpleName) {
-        return "com.delivery.menu." + simpleName + "Cmd";
+        return "com.delivery.menu.editor." + simpleName + "Cmd";
     }
 }

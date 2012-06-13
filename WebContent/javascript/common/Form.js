@@ -1,10 +1,16 @@
-$(document).ready(function(){
-	$("input").focus(function() {
+/*
+ * Este arquivo define funcionalidades de formularios ajax
+ */
+
+$(document).ready(function() {
+	// Hint dos campos do formulário
+	$("input").live("focus", function() {
 		var tip = $(this).attr("title");
 		$(".tooltip").html(tip);
 	});
 	
-	$(".ajaxForm").submit(function() {
+	// Envio do formulário usando ajax
+	$(".ajaxForm").live("submit", function() {
 		var serializedForm = $(this).serialize();
 		var url = $(this).attr( 'action' );
 		startLoading();

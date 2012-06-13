@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <p class="flip" id="catTitle-${categoria.categoryId}">
-	${categoria.name}
+	${categoria.name} <a href="#">[Editar]</a>
 </p>
 <div class="panel">
 	<!-- Dialogo para adicionar sub-categoria -->
@@ -14,10 +14,18 @@
 	<a href="#" class="page_Prod" id="linkProdCat-${categoria.categoryId}">
 				[+] Produto</a>
 				
-	<!-- Dialogo para adicionar sub-categoria -->
 	<c:forEach var="subcat" items="${categoria.subCategories}">
 		<c:set var="categoria" value="${subcat}" scope="request"/>
 		<%// Inclui esta pagina recursivamente para cada categoria %>
-		<jsp:include page="categoria.jsp"/>
+		<jsp:include page="category-editor.jsp"/>
 	</c:forEach>
+				
+	<ul class="products">
+	<c:forEach var="prod" items="${categoria.products}">
+		<li>
+			<a href="#-${prod.id}"> ${prod.name }</a>
+			<div>${prod.description }</div>		
+		</li>
+	</c:forEach>
+	</ul>
 </div>

@@ -1,3 +1,8 @@
+/*
+ * Este arquivo define o funcionamento do menu de navegacao. Tanto para back-end quanto front-end
+ * ja que o menu de navegacao e no mesmo igual
+ */
+
 $(document).ready(function() {
 	$("a.MenuButton, a.ActiveMenuButton").click(function() {
 		// Workaround para poder setar quem é o item ativo no próprio html
@@ -11,7 +16,7 @@ $(document).ready(function() {
 		$(this).removeClass("MenuButton");
 		$(this).addClass("ActiveMenuButton");
 		//startLoading();
-		$("div#mainArea").html("<img src=\"images/loading-circle.gif\" />");
+		$("div#mainArea").html("<img src=\"" + getLoadingSpinnerImg() + "\" />");
 		var requestedPage = $(this).attr("href").substring(1);
 		
 		if (requestedPage != null && requestedPage.length > 0) {

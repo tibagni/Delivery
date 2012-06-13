@@ -1,4 +1,4 @@
-package com.delivery.menu;
+package com.delivery.menu.editor;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,13 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import com.delivery.Logger;
-import com.delivery.engine.command.MenuCommand;
+import com.delivery.engine.command.MenuEditorCommand;
+import com.delivery.menu.Product;
+import com.delivery.menu.ProductSize;
 import com.delivery.persistent.DaoManager;
 import com.delivery.persistent.ProductDao;
 import com.delivery.persistent.ProductSizeDao;
 import com.delivery.util.StringUtils;
 
-public class AddProductCmd extends MenuCommand {
+public class AddProductCmd extends MenuEditorCommand {
 
     private static final String SIZE_PATTERN = "produto\\[tamanhos\\]\\[[0-9]*\\]\\[tamanho\\]";
     private String mRedirect;
@@ -111,7 +113,10 @@ public class AddProductCmd extends MenuCommand {
             request.setAttribute("produto", savedProd);
             // Mensagem para o usuario
             request.setAttribute("finalMsg", "Produto salvo com sucesso! Adicione um sabor a ele!");
-            mRedirect = "cardapio/novoProd-sabor.jsp";
+
+            // E necessario pelo menos um sabor associado ao produto, entao vamos aproveitar e mandar o usuario
+            // para a pagina de cadastro de sabor!
+            mRedirect = "editor/prod-flavour-editor.jsp";
         } else {
             // TODO retornar pagina de erro ao usuario. Produto nao foi inserido!!!
         }

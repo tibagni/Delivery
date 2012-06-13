@@ -18,6 +18,7 @@ public class DaoManager {
     private ProductSizeDao mProductSizeDao;
     private FlavourDao mFlavourDao;
     private PriceDao mPriceDao;
+    private OptionalDao mOptionalDao;
 
     private DataSource mDataSource;
     private Connection mConnection;
@@ -61,6 +62,13 @@ public class DaoManager {
         return mPriceDao;
     }
 
+    public OptionalDao getOptionalDao() throws SQLException {
+        if (mOptionalDao == null) {
+            mOptionalDao = new OptionalDao(getConnection());
+        }
+        return mOptionalDao;
+    }
+
     private Connection getConnection() throws SQLException {
         if (mConnection == null) {
             mConnection = mDataSource.getConnection();
@@ -78,6 +86,7 @@ public class DaoManager {
         mProductSizeDao = null;
         mFlavourDao = null;
         mPriceDao = null;
+        mOptionalDao = null;
     }
 
     public Object execute(DaoCommand command) {

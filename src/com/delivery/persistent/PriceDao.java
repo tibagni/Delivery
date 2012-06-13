@@ -64,7 +64,6 @@ public class PriceDao extends Dao<Price> {
             throw e;
         }
         return inserted;
-
     }
 
     @Override

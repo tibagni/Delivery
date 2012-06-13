@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<script type="text/javascript" src="javascript/jquery.sheepItPlugin-1.0.0.js"></script>
-<script type="text/javascript" src="javascript/form.js"></script>
+<script type="text/javascript" src="../javascript/jquery.sheepItPlugin-1.0.0.js"></script>
+<script type="text/javascript" src="../javascript/common/Form.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	var sheepItForm = $('#sheepItForm').sheepIt({
@@ -34,7 +34,7 @@ $(document).ready(function() {
 	//
 	$("form#upload-form").live("submit", function() {
 		$("div#previewFoto").show();
-		$("div#previewFoto").html("<img src=\"images/arrow-loading.gif\" />");
+		$("div#previewFoto").html("<img src=\"../images/arrow-loading.gif\" />");
 		$.modal.close();
 	});
 });
@@ -44,7 +44,7 @@ $(document).ready(function() {
 
 <div class="tooltip"></div>
 <div class="form">
-	<form action="Menu" class="ajaxForm">
+	<form action="MenuEditor" class="ajaxForm">
 		<fieldset>
 			<legend>Informações gerais do produto</legend>
 			<div>
@@ -85,7 +85,7 @@ $(document).ready(function() {
 				    <label for="sheepItForm_#index#_tamanho">Tamanho <span id="sheepItForm_label"></span></label>
 				    <input id="sheepItForm_#index#_tamanho" name="produto[tamanhos][#index#][tamanho]" type="text" title="Os tamanhos que um produto pode assumir (pequeno, médio, grande...)" />
 				    <a id="sheepItForm_remove_current">
-				      <img class="delete" src="images/cross.gif" border="0">
+				      <img class="delete" src="../images/cross.gif" border="0">
 				    </a>
 				    <hr>
 				  </div>
@@ -112,7 +112,7 @@ $(document).ready(function() {
 	</form>
 
 	<div class="dialog" id="upload-dialog">
-		<form action="Menu" enctype="multipart/form-data" target="upload_target" method="post" id="upload-form">
+		<form action="MenuEditor" enctype="multipart/form-data" target="upload_target" method="post" id="upload-form">
 			<span class="BlockHeader"><span>:: Selecione uma foto</span></span>
 			<div>
 				<label for="prod-foto-up">Foto do produto:</label> 

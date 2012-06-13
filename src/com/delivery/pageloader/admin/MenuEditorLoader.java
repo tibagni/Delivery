@@ -1,4 +1,4 @@
-package com.delivery.pageloader;
+package com.delivery.pageloader.admin;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.delivery.Logger;
-import com.delivery.engine.command.PageLoaderCommand;
+import com.delivery.engine.command.AdminPageLoaderCommand;
 import com.delivery.menu.MenuCategory;
 import com.delivery.persistent.DaoManager;
 import com.delivery.persistent.MenuCategoryDao;
 
-public class MenuLoader extends PageLoaderCommand {
+public class MenuEditorLoader extends AdminPageLoaderCommand {
     @Override
     public void prepareToLoad(HttpServletRequest req, HttpServletResponse resp) {
         try {
@@ -44,7 +44,7 @@ public class MenuLoader extends PageLoaderCommand {
 
     @Override
     public String getRedirect() {
-        return "cardapio.jsp";
+        return "menu-editor.jsp";
     }
 
 }

@@ -1,13 +1,16 @@
 <html>
 <head>
     <title>Web Site Name</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="../css/style.css" />
     
-    <script type="text/javascript" src="javascript/jquery.js"></script>
-    <script type="text/javascript" src="javascript/jquery.simplemodal.js"></script>
-	<script type="text/javascript" src="javascript/common/Util.js"></script>
-	<script type="text/javascript" src="javascript/common/Navigation.js"></script>
-	<script type="text/javascript" src="javascript/common/Menu.js"></script>
+    <!-- Arquivo que define os paths para o back-end -->
+    <script type="text/javascript" src="../javascript/back-end/back-end-paths.js"></script>
+    
+    <script type="text/javascript" src="../javascript/jquery.js"></script>
+    <script type="text/javascript" src="../javascript/jquery.simplemodal.js"></script>
+	<script type="text/javascript" src="../javascript/common/Util.js"></script>
+	<script type="text/javascript" src="../javascript/common/Navigation.js"></script>
+	<script type="text/javascript" src="../javascript/common/Menu.js"></script>
 </head>
 <body>
     <div class="BackgroundGradient"></div>
@@ -31,7 +34,7 @@
 		<div class="Menu">
             <ul>
 				<li><a href="#Home" class="ActiveMenuButton"><span>Home</span></a></li> 
-				<li><a href="#Menu" class="MenuButton"><span>Cardápio</span></a></li> 
+				<li><a href="#MenuEditor" class="MenuButton"><span>Editor de Cardápio</span></a></li> 
 				<li><a href="#" class="MenuButton"><span>Archive</span></a></li> 
 				<li><a href="#" class="MenuButton"><span>About</span></a></li>
 			</ul>

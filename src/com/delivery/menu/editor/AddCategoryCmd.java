@@ -1,4 +1,4 @@
-package com.delivery.menu;
+package com.delivery.menu.editor;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,12 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import com.delivery.Logger;
-import com.delivery.engine.command.MenuCommand;
+import com.delivery.engine.command.MenuEditorCommand;
+import com.delivery.menu.MenuCategory;
 import com.delivery.persistent.DaoManager;
 import com.delivery.persistent.MenuCategoryDao;
 import com.delivery.util.StringUtils;
 
-public class AddCategoryCmd extends MenuCommand {
+public class AddCategoryCmd extends MenuEditorCommand {
     private String mRedirect;
 
     @Override
@@ -57,7 +58,7 @@ public class AddCategoryCmd extends MenuCommand {
         }
         if (savedCat != null) {
             request.setAttribute("categoria", savedCat);
-            mRedirect = "cardapio/categoria.jsp";
+            mRedirect = "editor/category-editor.jsp";
         } else {
             // TODO retornar pagina de erro ao usuario. Categoria nao foi inserida!!!
         }

@@ -1,21 +1,8 @@
+/*
+ * Este arquivo define funcionalidades do editor de cardapio (back-end)
+ */
+
 $(document).ready(function(){
-	//Exibicao do cardapio
-	$(".flip").live("click", function(){
-	    $(this).next().slideToggle("slow");
-	  });
-	
-	$("#showHide").live("click", function() {
-		var action = $(this).attr("href");
-
-		if (action == "#show") {
-			$(".panel").slideDown();
-			$(this).attr("href", "#hide");
-		} else {
-			$(".panel").slideUp();
-			$(this).attr("href", "#show");			
-		}
-	});
-
 	//Envio de formulario de nova categoria/sub-categoria
 	  $(".newCat").live("submit", function(event) {
 	    /* stop form from submitting normally */
@@ -87,10 +74,6 @@ $(document).ready(function(){
 	  $(".page_Prod").live("click", function() {
 		  // Pega a categoria em que o produto será inserido
 		  var category = $(this).attr("id").split("-")[1];
-		  $("div#MainArea").load('PageLoader?page=NewProd&cat=' + category);
+		  $("div#MainArea").load('PageLoader?page=ProductEditor&cat=' + category);
 	  });
 });
-
-$.fn.exists = function () {
-    return this.length !== 0;
-};

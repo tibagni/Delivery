@@ -9,14 +9,28 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <!-- Back end -->
+  
   <servlet>
-      <servlet-name>Menu</servlet-name>
-      <servlet-class>com.delivery.servlet.Menu</servlet-class>
+      <servlet-name>MenuEditor</servlet-name>
+      <servlet-class>com.delivery.servlet.admin.MenuEditor</servlet-class>
   </servlet>
   <servlet-mapping>
-      <servlet-name>Menu</servlet-name>
-      <url-pattern>/Menu</url-pattern>
+      <servlet-name>MenuEditor</servlet-name>
+      <url-pattern>/admin/MenuEditor</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>AdminPageLoader</servlet-name>
+      <servlet-class>com.delivery.servlet.admin.PageLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>AdminPageLoader</servlet-name>
+      <url-pattern>/admin/PageLoader</url-pattern>
+  </servlet-mapping>
+      
+  <!-- Front end -->
   
   <servlet>
       <servlet-name>PageLoader</servlet-name>

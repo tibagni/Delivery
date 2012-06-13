@@ -1,4 +1,4 @@
-package com.delivery.menu;
+package com.delivery.menu.editor;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,14 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import com.delivery.Logger;
-import com.delivery.engine.command.MenuCommand;
+import com.delivery.engine.command.MenuEditorCommand;
+import com.delivery.menu.Flavour;
+import com.delivery.menu.Price;
+import com.delivery.menu.ProductSize;
 import com.delivery.persistent.DaoManager;
 import com.delivery.persistent.FlavourDao;
 import com.delivery.persistent.PriceDao;
 import com.delivery.persistent.ProductSizeDao;
 import com.delivery.util.StringUtils;
 
-public class AddFlavourCmd extends MenuCommand {
+public class AddFlavourCmd extends MenuEditorCommand {
 
     private static final String SIZE_PATTERN  = "produto\\[tamanhos\\]\\[([0-9]*)\\]\\[tamanho\\]";
 
@@ -122,7 +125,10 @@ public class AddFlavourCmd extends MenuCommand {
                 if (!StringUtils.isEmpty(savedFlavour.getPicturePath())) {
                     request.setAttribute("finalPicture", savedFlavour.getPicturePath());
                 }
-                mRedirect = "cardapio/novoProd-cont.jsp";
+                // Reforcar a passagem do id de produto pela requisicao para que ele possa ser usado
+                // ao adicionar novos sabores ou opcionais
+                request.setAttribute("prodId", savedFlavour.getProductId());
+                mRedirect = "editor/whats-next.jsp";
             } else {
                 // TODO retornar pagina de erro ao usuario. sabor nao foi inserido!!!
             }

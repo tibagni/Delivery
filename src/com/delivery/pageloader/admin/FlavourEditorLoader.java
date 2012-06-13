@@ -1,4 +1,4 @@
-package com.delivery.pageloader;
+package com.delivery.pageloader.admin;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,7 +17,7 @@ import com.delivery.persistent.DaoManager;
 import com.delivery.persistent.ProductDao;
 import com.delivery.util.SQLUtils;
 
-public class NewFlavourLoader extends PageLoaderCommand {
+public class FlavourEditorLoader extends PageLoaderCommand {
 
     private String mRedirect;
 
@@ -59,7 +59,7 @@ public class NewFlavourLoader extends PageLoaderCommand {
 
             if (product != null) {
                 req.setAttribute("produto", product);
-                mRedirect = "cardapio/novoProd-sabor.jsp";
+                mRedirect = "editor/prod-flavour-editor.jsp";
             } else {
                 // TODO
             }

@@ -1,4 +1,4 @@
-package com.delivery.menu;
+package com.delivery.menu.editor;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -21,10 +21,10 @@ import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.delivery.Logger;
-import com.delivery.engine.command.MenuCommand;
+import com.delivery.engine.command.MenuEditorCommand;
 import com.delivery.util.StringUtils;
 
-public class UploadImageCmd extends MenuCommand {
+public class UploadImageCmd extends MenuEditorCommand {
     private String mImagePath;
 
     @Override
@@ -138,7 +138,6 @@ public class UploadImageCmd extends MenuCommand {
 
     @Override
     public String getRedirect() {
-        return "cardapio/fotoCarregada.jsp";
+        return "editor/loadedPicture.jsp";
     }
-
 }

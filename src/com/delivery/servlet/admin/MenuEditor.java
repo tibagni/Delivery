@@ -1,4 +1,4 @@
-package com.delivery.servlet;
+package com.delivery.servlet.admin;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import com.delivery.Logger;
 import com.delivery.engine.command.Command;
 import com.delivery.engine.command.Command.CommandNotFoundException;
-import com.delivery.engine.command.MenuCommand;
+import com.delivery.engine.command.MenuEditorCommand;
 import com.delivery.util.StringUtils;
 
 /**
@@ -24,7 +24,7 @@ import com.delivery.util.StringUtils;
  * @author Tiago
  *
  */
-public class Menu extends HttpServlet {
+public class MenuEditor extends HttpServlet {
     private static final long serialVersionUID = 3520609095918073998L;
 
     @Override
@@ -32,7 +32,7 @@ public class Menu extends HttpServlet {
             throws ServletException, IOException {
         Logger.debug("Menu servlet!");
         String cmdName = req.getParameter("cmd");
-        MenuCommand command;
+        MenuEditorCommand command;
 
         // TODO - Talvez seja melhor criar um servlet separado para esta acao
         // Nao me parece muito adequado atrelar o comando de upload com as acoes do cardapio!
@@ -45,7 +45,7 @@ public class Menu extends HttpServlet {
             cmdName = "UploadImage";
         }
         try {
-            command = Command.getFromName(cmdName, MenuCommand.class);
+            command = Command.getFromName(cmdName, MenuEditorCommand.class);
             command.execute(req);
             if (!StringUtils.isEmpty(command.getRedirect())) {
                 RequestDispatcher dispatcher = req.getRequestDispatcher(command.getRedirect());

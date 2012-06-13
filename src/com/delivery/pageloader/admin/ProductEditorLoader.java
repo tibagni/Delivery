@@ -1,11 +1,11 @@
-package com.delivery.pageloader;
+package com.delivery.pageloader.admin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.delivery.engine.command.PageLoaderCommand;
+import com.delivery.engine.command.AdminPageLoaderCommand;
 
-public class NewProdLoader extends PageLoaderCommand{
+public class ProductEditorLoader extends AdminPageLoaderCommand{
 
     @Override
     public void prepareToLoad(HttpServletRequest req, HttpServletResponse resp) {
@@ -14,7 +14,7 @@ public class NewProdLoader extends PageLoaderCommand{
 
     @Override
     public String getRedirect() {
-        return "cardapio/novoProd.jsp";
+        return "editor/product-editor.jsp";
     }
 
 }

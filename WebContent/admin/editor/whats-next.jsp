@@ -5,11 +5,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$("a.whatsNext").click(function() {
-		$("div#mainArea").html("<img src=\"images/loading-circle.gif\" />");
+		$("div#mainArea").html("<img src=\"../images/loading-circle.gif\" />");
 		var requestedPage = $(this).attr("href").substring(1);
 		
 		if (requestedPage != null && requestedPage.length > 0) {
-			$("div#MainArea").load('PageLoader?page=' + requestedPage + '&prodId=${produto.id}');
+			$("div#MainArea").load('PageLoader?page=' + requestedPage + '&prodId=${prodId}');
 		}
 	});
 });
@@ -24,7 +24,7 @@ $(document).ready(function() {
 </blockquote>
 <h3>O que deseja fazer agora?</h3>
 <ul>
-	<li><a class="whatsNext" href="#NewFlavour">Adicionar novo sabor ao produto (${produto.name})</a></li>
-	<li><a class="whatsNext" href="#">Adicionar opcionais ao produto (${produto.name})</a></li>
+	<li><a class="whatsNext" href="#FlavourEditor">Adicionar novo sabor ao produto</a></li>
+	<li><a class="whatsNext" href="#OptionalEditor">Adicionar opcionais ao produto</a></li>
 	<li><a class="whatsNext" href="#Menu">Voltar ao editor de cardapio</a></li>	
 </ul>
