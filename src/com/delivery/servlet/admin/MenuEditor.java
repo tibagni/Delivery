@@ -44,12 +44,16 @@ public class MenuEditor extends HttpServlet {
             Logger.debug("Conteudo multipart, iniciando comando de upload...");
             cmdName = "UploadImage";
         }
+        Logger.debug("[MenuEditor] Cmd: " + cmdName);
         try {
             command = Command.getFromName(cmdName, MenuEditorCommand.class);
             command.execute(req);
             if (!StringUtils.isEmpty(command.getRedirect())) {
                 RequestDispatcher dispatcher = req.getRequestDispatcher(command.getRedirect());
                 dispatcher.forward(req, resp);
+            } else {
+                // Se nao tem view pra mostrar, manda status OK pelo menos!
+                resp.setStatus(HttpServletResponse.SC_OK);
             }
         } catch (CommandNotFoundException e) {
             Logger.warning("[Menu]Comando não definido! - " + cmdName);

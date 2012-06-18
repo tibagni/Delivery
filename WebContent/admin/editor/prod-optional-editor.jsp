@@ -2,8 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<script type="text/javascript" src="javascript/jquery.sheepItPlugin-1.0.0.js"></script>
-<script type="text/javascript" src="javascript/common/Form.js"></script>
+<script type="text/javascript" src="../javascript/jquery.sheepItPlugin-1.0.0.js"></script>
+<script type="text/javascript" src="../javascript/common/Form.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {     
     var sheepItForm = $('#sheepItForm').sheepIt({
@@ -53,7 +53,7 @@ $(document).ready(function() {
 				    <label for="sheepItForm_#index#_preco_op">Preço do opcional <span id="sheepItForm_label"></span></label>
 				    <input id="sheepItForm_#index#_preco_op" name="produto[opcionais][#index#][preco]" type="text" title="Preço do opcional" />
 				    <a id="sheepItForm_remove_current">
-				      <img class="delete" src="images/cross.gif" border="0">
+				      <img class="delete" src="../images/cross.gif" border="0">
 				    </a>
 				    <hr>
 				  </div>

@@ -33,16 +33,30 @@
 	</div>
 </div>
 <div class="dialog" id="dialogSubCat">
-		<span class="BlockHeader"><span>:: Nova sub-categoria de<i class="subCat_title"></i></span></span>
-		<div class="BlockContentBorder">
-			<div class="error"></div>
-			<form action="MenuEditor" class="newCat">
-				<label for="name">Nome da sub-categoria</label> 
-				<input type="text" name="catName" id="name" />
-				<input type="hidden" name="parentId" id="subCat_parentIdHidden" value="" />
-				<br />
-				<span class="ButtonInput"><span><input type="button" value="Ok" /></span></span>
-				<span class="ButtonInput simplemodal-close"><span><input type="button" value="Cancelar" /></span></span>
-			</form>
-		</div>
+	<span class="BlockHeader"><span>:: Nova sub-categoria de<i class="subCat_title"></i></span></span>
+	<div class="BlockContentBorder">
+		<div class="error"></div>
+		<form action="MenuEditor" class="newCat">
+			<label for="name">Nome da sub-categoria</label> 
+			<input type="text" name="catName" id="name" />
+			<input type="hidden" name="parentId" id="subCat_parentIdHidden" value="" />
+			<br />
+			<span class="ButtonInput"><span><input type="button" value="Ok" /></span></span>
+			<span class="ButtonInput simplemodal-close"><span><input type="button" value="Cancelar" /></span></span>
+		</form>
 	</div>
+</div>
+<div class="dialog" id="dialogEditCat">
+	<span class="BlockHeader"><span>:: Editar categoria</span></span>
+	<div class="BlockContentBorder">
+		<div class="error"></div>
+		<form action="MenuEditor" class="editCat">
+			<label for="editCatName">Nome da categoria</label> 
+			<input type="text" name="catName" id="editCatName" />
+			<br />
+			<input type="hidden" name="catId" id="editHiddenId" />
+			<span class="ButtonInput"><span><input type="submit" value="Ok" /></span></span>
+			<span class="ButtonInput simplemodal-close"><span><input type="button" value="Cancelar" /></span></span>
+		</form>
+	</div>
+</div>

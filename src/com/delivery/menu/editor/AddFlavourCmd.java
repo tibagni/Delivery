@@ -2,7 +2,6 @@ package com.delivery.menu.editor;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -93,16 +92,14 @@ public class AddFlavourCmd extends MenuEditorCommand {
                                 sizeQuery.setProductId(flavour.getProductId());
                                 List<ProductSize> savedSizes = pSDao.get(sizeQuery);
 
-                                HashMap<String, Double> cost = new HashMap<String, Double>();
                                 for (Price p : savedPrices) {
                                     for (ProductSize pS : savedSizes) {
                                         if (p.getSizeId() == pS.getId()) {
-                                            cost.put(pS.getName(), p.getPrice());
+                                            p.setCachedSizeName(pS.getName());
                                             break;
                                         }
                                     }
                                 }
-                                flavour.setCacheCost(cost);
                             } else {
                                 // Nenhum preco foi inserido, cancela transacao!
                                 manager.cancelTransaction();
@@ -138,7 +135,8 @@ public class AddFlavourCmd extends MenuEditorCommand {
         }
     }
 
-    private List<Price> getPricesFromParameters(Map<String, String[]> parameters, int flavourId) {
+    //TODO talvez esse metodo fique melhor em outro lugar
+    static List<Price> getPricesFromParameters(Map<String, String[]> parameters, int flavourId) {
         ArrayList<Price> prices = new ArrayList<Price>();
 
         Iterator<String> it = parameters.keySet().iterator();

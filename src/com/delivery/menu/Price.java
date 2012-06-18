@@ -7,6 +7,8 @@ public class Price {
 
     private double mPrice;
 
+    private String mCachedSizeName;
+
     public int getFlavourId() {
         return mFlavourId;
     }
@@ -29,6 +31,14 @@ public class Price {
 
     public void setPrice(double price) {
         mPrice = price;
+    }
+
+    public String getCachedSizeName() {
+        return mCachedSizeName;
+    }
+
+    public void setCachedSizeName(String sizeName) {
+        mCachedSizeName = sizeName;
     }
 
 }

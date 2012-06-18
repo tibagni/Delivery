@@ -2,7 +2,10 @@ package com.delivery.persistent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.delivery.Logger;
@@ -66,7 +69,7 @@ public class OptionalDao extends Dao<Optional> {
     }
 
     @Override
-    public int update(List<Optional> objectsToUpdate) throws SQLException {
+    public int update(Optional objectsToUpdate) throws SQLException {
         // TODO Auto-generated method stub
         return 0;
     }
@@ -79,8 +82,34 @@ public class OptionalDao extends Dao<Optional> {
 
     @Override
     public List<Optional> get(Optional param) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        String query = buildQuery(param);
+
+        ArrayList<Optional> optionals = null;
+        Statement stm = null;
+        try {
+            stm = mConnection.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            optionals = new ArrayList<Optional>();
+            while(rs.next()) {
+                Optional o = new Optional();
+                o.setId(rs.getInt(IND_COLUMN_ID));
+                o.setProductId(rs.getInt(IND_COLUMN_PRODUCT_ID));
+                o.setPrice(rs.getDouble(IND_COLUMN_PRICE));
+                o.setName(rs.getString(IND_COLUMN_NAME));
+
+                optionals.add(o);
+            }
+        } catch (SQLException e) {
+            Logger.error("Erro ao listar opcionais", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+        return optionals;
     }
 
     @Override
@@ -89,4 +118,37 @@ public class OptionalDao extends Dao<Optional> {
         return 0;
     }
 
+
+    private String buildQuery(Optional param) {
+        final String where = " WHERE";
+        final String and = " AND";
+        String nextToken = where;
+        StringBuilder queryBuilder = new StringBuilder();
+
+        queryBuilder.append("SELECT * FROM " + TABLE_NAME);
+        if (param != null) {
+            if (param.getProductId() != NO_PRODUCT) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_PRODUCT_ID + " = " + param.getProductId());
+                nextToken = and;
+            }
+            if (param.getId() != INVALID_ID) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_ID + " = " + param.getId());
+                nextToken = and;
+            }
+            if (!StringUtils.isEmpty(param.getName())) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_NAME + " = '" + param.getName() + "'");
+                nextToken = and;
+            }
+            if (param.getPrice() > 0) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_PRICE + " = " + param.getPrice());
+                nextToken = and;
+            }
+        }
+
+        return queryBuilder.toString();
+    }
 }

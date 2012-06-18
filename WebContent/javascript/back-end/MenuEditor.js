@@ -46,6 +46,36 @@ $(document).ready(function(){
 		$.post( url, { cmd : 'AddCategory', catName: nome, parentId: parent }, callback());
 	  });
 	  
+		//Envio de formulario de edicao de categoria/sub-categoria
+	  $(".editCat").live("submit", function(event) {
+	    /* stop form from submitting normally */
+	    event.preventDefault();
+	    /* pega os valores dos elementos do form: */
+	    var $form = $( this ),
+	        nome = $form.find( 'input[name="catName"]' ).val(),
+	        catId = $form.find( 'input[name="catId"]' ).val(),
+	        url = $form.attr( 'action' );
+
+	    if (nome == null || nome == "") {
+	    	$(".error").html("Nome da categoria inválido!");
+	    	$(".error").show();
+	    	return;
+	    }
+
+	    var callback = function() {
+	        return function(data) {
+	        	// E melhor carregar o cardapio de novo para que as alteracoes tenham efeito
+				$("div#MainArea").load('PageLoader?page=MenuEditor');
+				$.modal.close();
+	        };
+	    };
+	    
+	    $.modal.close();
+	    startLoading();
+
+		$.post( url, { cmd : 'UpdateCategory', catName: nome, catId: catId }, callback());
+	  });
+	  
 	  $(function() {	
 			// Dialog Link - Nova categoria
 			$(".dialog_cat").live("click", function() {
@@ -68,6 +98,20 @@ $(document).ready(function(){
 				
 				$("#dialogSubCat").modal({overlayClose:true, overlayCss: {backgroundColor:"#000"}});
 				return false;
+			});	
+			// Dialog Link - editar categoria
+			$(".dialog_editCat").live("click", function() {
+				$("#dialogEditCat").modal({overlayClose:true, overlayCss: {backgroundColor:"#000"}});
+				// Antes de mais nada, é melhor esconder qualquer mensagem de erro que possa estar vsivel
+				$(".error").hide();
+				
+				var catInfo = $(this).attr("id").split("-");
+				var catName = catInfo[1];
+				var catId = catInfo[2];
+				
+				$("#editCatName").attr("value", catName);
+				$("#editHiddenId").attr("value", catId);
+				return false;
 			});
 		});
 	  
@@ -75,5 +119,10 @@ $(document).ready(function(){
 		  // Pega a categoria em que o produto será inserido
 		  var category = $(this).attr("id").split("-")[1];
 		  $("div#MainArea").load('PageLoader?page=ProductEditor&cat=' + category);
+	  });
+	  
+	  $(".page_edit_Prod").live("click", function() {
+		  var product = $(this).attr("href").split("-")[1];
+		  $("div#MainArea").load('PageLoader?page=ProductOverviewEditor&prodId=' + product);
 	  });
 });

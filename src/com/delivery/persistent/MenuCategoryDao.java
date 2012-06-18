@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.delivery.Logger;
 import com.delivery.menu.MenuCategory;
-import com.delivery.menu.Product;
 import com.delivery.util.SQLUtils;
 import com.delivery.util.StringUtils;
 
@@ -25,7 +24,8 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
     private static final int IND_COLUMN_PARENT = 2;
     private static final int IND_COLUMN_NAME = 3;
 
-    private static final int NO_PARENT = (int) SQLUtils.INVALID_ID;
+    private static final int INVALID_ID = (int) SQLUtils.INVALID_ID;;
+    private static final int NO_PARENT = INVALID_ID;
 
     public MenuCategoryDao(Connection connection) {
         super(connection);
@@ -80,9 +80,36 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
     }
 
     @Override
-    public int update(List<MenuCategory> objectsToUpdate) {
-        // TODO Auto-generated method stub
-        return 0;
+    public int update(MenuCategory objectToUpdate) throws SQLException {
+        if (objectToUpdate == null) {
+            return 0;
+        }
+
+        int updated = 0;
+        Statement stm = null;
+        try {
+            if (objectToUpdate.getCategoryId() == INVALID_ID ||
+                StringUtils.isEmpty(objectToUpdate.getName())) {
+                // Nada para atualizar
+                return 0;
+            }
+
+            String sql = "UPDATE " + TABLE_NAME + " SET " +
+            		COLUMN_NAME + "='" + objectToUpdate.getName() + "' WHERE " +
+                    COLUMN_ID + "=" + objectToUpdate.getCategoryId();
+            stm = mConnection.createStatement();
+            updated = stm.executeUpdate(sql);
+        } catch (SQLException e) {
+            Logger.error("Erro ao editar categoria", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+        return updated;
     }
 
     @Override
@@ -115,17 +142,6 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
                 // Chama get recursivamente para popular as
                 // sub categorias
                 mc.setSubCategories(get(null, id));
-
-                // Query para os produtos desta categoria
-
-                // TODO Talvez uma query mais leve aqui fosse melhor
-                // Somente com o nome e o id do produto, e carrega-lo sob demanda mais tarde
-                ProductDao pDao = new ProductDao(mConnection);
-                Product productQuery = new Product();
-                productQuery.setCategoryId(id);
-                mc.setProducts(pDao.get(productQuery));
-
-
                 result.add(mc);
             }
         } catch (SQLException e) {
@@ -164,7 +180,7 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
             }
             if (!StringUtils.isEmpty(catName)) {
                 queryBuilder.append(nextToken);
-                queryBuilder.append(" " + COLUMN_NAME + " LIKE " + catName);
+                queryBuilder.append(" " + COLUMN_NAME + " LIKE '" + catName + "'");
                 nextToken = and;
             }
         }
@@ -176,6 +192,8 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
                 nextToken = and;
             }
         }
+        // Ordena as categorias pelo nome
+        queryBuilder.append(" ORDER BY " + COLUMN_NAME + " ASC");
         return queryBuilder.toString();
     }
 }

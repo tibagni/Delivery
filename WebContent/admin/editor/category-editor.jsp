@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <p class="flip" id="catTitle-${categoria.categoryId}">
-	${categoria.name} <a href="#">[Editar]</a>
+	${categoria.name} <a class="dialog_editCat" href="#" id="edit-${categoria.name}-${categoria.categoryId}">[Editar]</a>
 </p>
 <div class="panel">
 	<!-- Dialogo para adicionar sub-categoria -->
@@ -23,7 +23,7 @@
 	<ul class="products">
 	<c:forEach var="prod" items="${categoria.products}">
 		<li>
-			<a href="#-${prod.id}"> ${prod.name }</a>
+			<a class="page_edit_Prod" href="#Prod-${prod.id}"> ${prod.name }</a>
 			<div>${prod.description }</div>		
 		</li>
 	</c:forEach>

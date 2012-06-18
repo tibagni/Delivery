@@ -15,7 +15,7 @@ import com.delivery.util.StringUtils;
 public class ProductSizeDao extends Dao<ProductSize> {
     private static final String TABLE_NAME = "tamanhos";
 
-    private static final String COLUMN_COD     = "cod_tamanho";
+    private static final String COLUMN_ID      = "cod_tamanho";
     private static final String COLUMN_NAME    = "nome";
     private static final String COLUMN_PRODUCT = "produto_cod_produto";
 
@@ -61,9 +61,36 @@ public class ProductSizeDao extends Dao<ProductSize> {
     }
 
     @Override
-    public int update(List<ProductSize> objectsToUpdate) {
-        // TODO Auto-generated method stub
-        return 0;
+    public int update(ProductSize objectToUpdate) throws SQLException {
+        if (objectToUpdate == null) {
+            return 0;
+        }
+
+        int updated = 0;
+        Statement stm = null;
+        try {
+            if (objectToUpdate.getId() == INVALID_ID ||
+                StringUtils.isEmpty(objectToUpdate.getName())) {
+                // Nada para atualizar
+                return 0;
+            }
+
+            String sql = "UPDATE " + TABLE_NAME + " SET " +
+                    COLUMN_NAME + "='" + objectToUpdate.getName() + "' WHERE " +
+                    COLUMN_ID + "=" + objectToUpdate.getId();
+            stm = mConnection.createStatement();
+            updated = stm.executeUpdate(sql);
+        } catch (SQLException e) {
+            Logger.error("Erro ao editar tamanho de produto", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+        return updated;
     }
 
     @Override
@@ -122,7 +149,7 @@ public class ProductSizeDao extends Dao<ProductSize> {
         if (param != null) {
             if (param.getId() != INVALID_ID) {
                 queryBuilder.append(nextToken);
-                queryBuilder.append(" " + COLUMN_COD + " = " + param.getId());
+                queryBuilder.append(" " + COLUMN_ID + " = " + param.getId());
                 nextToken = and;
             }
             if (param.getProductId() != NO_PRODUCT) {

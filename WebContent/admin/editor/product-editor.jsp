@@ -4,7 +4,7 @@
 <script type="text/javascript" src="../javascript/common/Form.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	var sheepItForm = $('#sheepItForm').sheepIt({
+	    $('#sheepItForm').sheepIt({
         separator: '',
         allowRemoveLast: true,
         allowRemoveCurrent: true,

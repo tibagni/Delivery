@@ -28,10 +28,10 @@ public abstract class Dao<T> {
      * Os objetos devem conter um id unico para que possam ser identificados
      * (ex: em banco de dados seria a chave primaria)
      *
-     * @param objectsToUpdate Lista contendo os objetos a serem atualizados
+     * @param objectsToUpdate Objetos a sere atualizado
      * @return Numero de objetos atualizados com sucesso
      */
-    public abstract int update(List<T> objectsToUpdate) throws SQLException;
+    public abstract int update(T objectToUpdate) throws SQLException;
 
     /**
      * Remove objetos

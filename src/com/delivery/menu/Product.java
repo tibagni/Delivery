@@ -12,7 +12,12 @@ public class Product {
     private int mOptionalsPerOrder;
     private int mFlavoursPerOrder;
 
+    // Atributos relacionais (nao estao na mesma entidade no banco de dados)
     private List<ProductSize> mSizes;
+    private List<Flavour> mFlavours;
+    private List<Optional> mOptionals;
+
+    public static final int MAX_SIZES = 3;
 
     public int getId() {
         return mId;
@@ -42,7 +47,7 @@ public class Product {
         return mDecription;
     }
 
-    public void setDecription(String decription) {
+    public void setDescription(String decription) {
         mDecription = decription;
     }
 
@@ -76,5 +81,21 @@ public class Product {
 
     public void setSizesAvailable(List<ProductSize> sizes) {
         mSizes = sizes;
+    }
+
+    public List<Flavour> getFlavours() {
+        return mFlavours;
+    }
+
+    public void setFlavours(List<Flavour> flavours) {
+        mFlavours = flavours;
+    }
+
+    public List<Optional> getOptionals() {
+        return mOptionals;
+    }
+
+    public void setOptionals(List<Optional> optionals) {
+        mOptionals = optionals;
     }
 }

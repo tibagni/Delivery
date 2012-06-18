@@ -67,9 +67,38 @@ public class PriceDao extends Dao<Price> {
     }
 
     @Override
-    public int update(List<Price> objectsToUpdate) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+    public int update(Price objectToUpdate) throws SQLException {
+        if (objectToUpdate == null) {
+            return 0;
+        }
+
+        int updated = 0;
+        Statement stm = null;
+        try {
+            if (objectToUpdate.getSizeId() == INVALID_ID ||
+                objectToUpdate.getFlavourId() == INVALID_ID ||
+                objectToUpdate.getPrice() <= 0) {
+                // Nada para atualizar
+                return 0;
+            }
+
+            String sql = "UPDATE " + TABLE_NAME + " SET " +
+                    COLUMN_PRICE + "=" + objectToUpdate.getPrice() + " WHERE " +
+                    COLUMN_SIZE_ID + "=" + objectToUpdate.getSizeId() + " AND " +
+                    COLUMN_FLAVOUR_ID + "=" + objectToUpdate.getFlavourId();
+            stm = mConnection.createStatement();
+            updated = stm.executeUpdate(sql);
+        } catch (SQLException e) {
+            Logger.error("Erro ao editar preco", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+        return updated;
     }
 
     @Override

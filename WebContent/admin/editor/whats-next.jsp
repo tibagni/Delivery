@@ -15,7 +15,7 @@ $(document).ready(function() {
 });
 </script>
 
-<h1>/Novo produto/Ok!</h1>
+<h1>/Novo produto/Fim!</h1>
 <blockquote>
 	<p>${finalMsg }</p>
 	<c:if test="${not empty finalPicture }">
@@ -24,7 +24,9 @@ $(document).ready(function() {
 </blockquote>
 <h3>O que deseja fazer agora?</h3>
 <ul>
-	<li><a class="whatsNext" href="#FlavourEditor">Adicionar novo sabor ao produto</a></li>
-	<li><a class="whatsNext" href="#OptionalEditor">Adicionar opcionais ao produto</a></li>
-	<li><a class="whatsNext" href="#Menu">Voltar ao editor de cardapio</a></li>	
+	<c:if test="${prodId != 0}">
+		<li><a class="whatsNext" href="#FlavourEditor">Adicionar novo sabor ao produto</a></li>
+		<li><a class="whatsNext" href="#OptionalEditor">Adicionar opcionais ao produto</a></li>
+	</c:if>
+	<li><a class="whatsNext" href="#MenuEditor">Voltar ao editor de cardapio</a></li>	
 </ul>

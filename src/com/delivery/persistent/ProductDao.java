@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.delivery.Logger;
 import com.delivery.menu.Product;
-import com.delivery.menu.ProductSize;
 import com.delivery.util.SQLUtils;
 import com.delivery.util.StringUtils;
 
@@ -79,9 +78,40 @@ public class ProductDao extends Dao<Product> {
     }
 
     @Override
-    public int update(List<Product> objectsToUpdate) {
-        // TODO Auto-generated method stub
-        return 0;
+    public int update(Product objectToUpdate) throws SQLException {
+        if (objectToUpdate == null) {
+            return 0;
+        }
+
+        int updated = 0;
+        Statement stm = null;
+        try {
+            if (objectToUpdate.getId() == INVALID_ID ||
+                StringUtils.isEmpty(objectToUpdate.getName())) {
+                // Nada para atualizar
+                return 0;
+            }
+
+            String sql = "UPDATE " + TABLE_NAME + " SET " +
+                    COLUMN_NAME + "='" + objectToUpdate.getName() + "', " +
+                    COLUMN_DESC + "='" + objectToUpdate.getDescription() + "', " +
+                    COLUMN_FLAVOURS + "=" + objectToUpdate.getFlavoursPerOrder() + ", " +
+                    COLUMN_OPTIONALS + "=" + objectToUpdate.getOptionalsPerOrder() + ", " +
+                    COLUMN_PICTURE + "='" + objectToUpdate.getPicturePath() + "' WHERE " +
+                    COLUMN_ID + "=" + objectToUpdate.getId();
+            stm = mConnection.createStatement();
+            updated = stm.executeUpdate(sql);
+        } catch (SQLException e) {
+            Logger.error("Erro ao editar produto", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+        return updated;
     }
 
     @Override
@@ -103,19 +133,13 @@ public class ProductDao extends Dao<Product> {
             while(rs.next()) {
                 Product p = new Product();
                 p.setCategoryId(rs.getInt(IND_COLUMN_CATEGORY));
-                p.setDecription(rs.getString(IND_COLUMN_DESC));
+                p.setDescription(rs.getString(IND_COLUMN_DESC));
                 p.setFlavoursPerOrder(rs.getInt(IND_COLUMN_FLAVOURS));
                 int id = rs.getInt(IND_COLUMN_ID);
                 p.setId(id);
                 p.setName(rs.getString(IND_COLUMN_NAME));
                 p.setOptionalsPerOrder(rs.getInt(IND_COLUMN_OPTIONALS));
                 p.setPicturePath(rs.getString(IND_COLUMN_PICTURE));
-
-                // Preenche os precos
-                ProductSizeDao psDao = new ProductSizeDao(mConnection);
-                ProductSize psQuery = new ProductSize();
-                psQuery.setProductId(id);
-                p.setSizesAvailable(psDao.get(psQuery));
 
                 products.add(p);
             }

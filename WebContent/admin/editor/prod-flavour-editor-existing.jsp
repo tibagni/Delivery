@@ -40,15 +40,55 @@ $(document).ready(function() {
 		$("div#previewFoto").html("<img src=\"../images/arrow-loading.gif\" />");
 		$.modal.close();
 	});	
+	
+	  $(".editPriceLink").live("click", function() {
+			$("#dialogEditPrice").modal({overlayClose:true, overlayCss: {backgroundColor:"#000"}});
+			// Antes de mais nada, é melhor esconder qualquer mensagem de erro que possa estar vsivel
+			$(".error").hide();
+			var priceInfo = $(this).attr("href").split("-");
+			var sizeId = priceInfo[3];
+			var currentName = priceInfo[4];
+			$("#editPriceLabel").html('Novo valor para o tamanho ' + currentName);
+			$("#editHiddenSizeId").attr("value", sizeId);
+			return false;
+	  });
+
+	  $(".editPrice").live("submit", function(event) {
+		    /* stop form from submitting normally */
+		    event.preventDefault();
+		    /* pega os valores dos elementos do form: */
+		    var $form = $( this ),
+		        price = $form.find( 'input[name="price"]' ).val(),
+		        sizeId = $form.find( '#editHiddenSizeId' ).val(),
+		        flavourId = $form.find( '#editHiddenFlavourId' ).val(),
+		        url = $form.attr( 'action' );
+
+		    if (price == null || price == "") {
+		    	$(".error").html("Preço inválido!");
+		    	$(".error").show();
+		    	return;
+		    }
+
+		    var callback = function() {
+		        return function(data) {
+		        	$("i#-priceValue-" + flavourId + "-" + sizeId).html(price);	
+		        	$.modal.close();
+		        };
+		    };
+		    
+		    $.modal.close();
+		    startLoading();
+
+			$.post( url, { cmd : 'UpdatePrice', price: price, sizeId: sizeId, flavourId: flavourId }, callback());
+		  });
+	  
+	  $('input[name="cancel"]').live("click", function() {
+			$("div#MainArea").load('PageLoader?page=MenuEditor');
+	  });
 });
 </script>
 
-<h1>/Novo produto/Sabor</h1>
-	<c:if test="${not empty finalMsg }">
-		<blockquote>
-			${finalMsg }
-		</blockquote>
-	</c:if>
+<h1>/Editar sabor/${flavour.name}</h1>
 <br />
 <div class="tooltip"></div>
 <div class="form">
@@ -57,11 +97,11 @@ $(document).ready(function() {
 			<legend>Sabor do produto</legend>
 			<div>
 				<label for="sab-nome">Nome do sabor:</label>
-				<input name="nome" id="sab-nome" type="text" title="Nome do sabor (por exemplo: Calabresa, se o produto for uma pizza, ou maracujá, se for um suco...)"/>
+				<input name="nome" id="sab-nome" value="${flavour.name}" type="text" title="Nome do sabor (por exemplo: Calabresa, se o produto for uma pizza, ou maracujá, se for um suco...)"/>
 			</div>
 			<div>
 				<label for="sab-desc">Descrição:</label>
-				<input name="desc" id="sab-desc" type="text" title="Breve descrição do sabor (Ex: ingrediantes da pizza de calabbresa)"/>
+				<input name="desc" id="sab-desc" value="${flavour.description}" type="text" title="Breve descrição do sabor (Ex: ingrediantes da pizza de calabbresa)"/>
 			</div>
 			<div>
 				<label for="sab-foto">Foto:</label>
@@ -69,15 +109,31 @@ $(document).ready(function() {
 					<span class="ButtonInput"><span>
 						<input id="sab-foto" type="button" value="Selecionar foto..." title="Foto que será exibida no cardápio (Se não for especificada, a foto do produto será usada)"/>
 					</span></span>
-					<div id="previewFoto" style="display:none; float:right;">
-						<img src="../images/arrow-loading.gif" />
-					</div>
+					<c:choose>
+						<c:when test="${not empty product.picturePath}">
+							<div id="previewFoto" style="float:right;">
+								<img src="../${flavour.picturePath}" />
+							</div>						
+						</c:when>
+						<c:otherwise>
+							<div id="previewFoto" style="display:none; float:right;">
+								<img src="../images/arrow-loading.gif" />
+							</div>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</fieldset>
 		
 		<fieldset>
 			<legend>Preço</legend>
+				<ul>
+					<c:forEach var="price" items="${flavour.prices}">
+						<li><span id="-price-${price.flavourId}-${price.sizeId}">${price.cachedSizeName} - R$ <i id="-priceValue-${price.flavourId}-${price.sizeId}">${price.price}</i></span> 
+						<a class="editPriceLink" href="#-editPrice-${price.flavourId}-${price.sizeId}-${price.cachedSizeName}">[Editar]</a></li>
+					</c:forEach>	
+				</ul>
+				<h3>Adicionar Novos precos</h3>
 				<!-- sheepIt Form -->
 				<div id="sheepItForm">
 				  <!-- Form template-->
@@ -99,7 +155,7 @@ $(document).ready(function() {
 				  <!-- /Form template-->
 				   
 				  <!-- No forms template - Nao deveria ser exbido! -->
-				  <div id="sheepItForm_noforms_template">Nenhum tamanho foi especificado</div>
+				  <div id="sheepItForm_noforms_template">Nenhum Preco foi especificado</div>
 				  <!-- /No forms template-->
 				   
 				  <!-- Controls -->
@@ -113,10 +169,11 @@ $(document).ready(function() {
 		</fieldset>
 		
 		
-		<input type="hidden" name="prodId" value="${produto.id}" />
+		<input type="hidden" name="flavId" value="${flavour.id}" />
 		<input type="hidden" name="foto" value="" id="fotoHidden" />
-		<input type="hidden" name="cmd" value="AddFlavour" />
-		<span class="ButtonInput"><span><input type="submit" value="Avançar >>" /></span></span>
+		<input type="hidden" name="cmd" value="UpdateFlavour" />
+		<span class="ButtonInput"><span><input type="submit" value="Atualizar" /></span></span>
+		<span class="ButtonInput"><span><input type="button" name="cancel" value="Cancelar" /></span></span>
 	</form>
 
 	<div class="dialog" id="upload-dialog">
@@ -128,6 +185,21 @@ $(document).ready(function() {
 			</div>
 			<span class="ButtonInput"><span><input type="submit" value="Fazer upload..." /></span></span>
 		</form>
+	</div>	
+	<div class="dialog" id="dialogEditPrice">
+		<span class="BlockHeader"><span>:: Alterar Preço</span></span>
+		<div class="BlockContentBorder">
+			<div class="error"></div>
+			<form action="MenuEditor" class="editPrice">
+				<label id="editPriceLabel" for="editPrice"></label> 
+				<input type="text" name="price" id="editPrice" />
+				<br />
+				<input type="hidden" name="sizeId" id="editHiddenSizeId" />
+				<input type="hidden" name="flavourId" id="editHiddenFlavourId" value="${flavour.id}" />
+				<span class="ButtonInput"><span><input type="submit" value="Ok" /></span></span>
+				<span class="ButtonInput simplemodal-close"><span><input type="button" value="Cancelar" /></span></span>
+			</form>
+		</div>
 	</div>
 	<!-- gambi -->
 	<iframe id="upload_target" name="upload_target" src="#" style="display:none;"></iframe>

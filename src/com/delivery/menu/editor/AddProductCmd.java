@@ -61,7 +61,7 @@ public class AddProductCmd extends MenuEditorCommand {
             final Product finalProduct = new Product();
             finalProduct.setCategoryId(categoryId);
             finalProduct.setName(prodName);
-            finalProduct.setDecription(prodDesc);
+            finalProduct.setDescription(prodDesc);
             finalProduct.setPicturePath(picturePath);
             finalProduct.setOptionalsPerOrder(opPerOrder);
             finalProduct.setFlavoursPerOrder(flavoursPerOrder);

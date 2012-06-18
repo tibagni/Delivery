@@ -10,7 +10,7 @@ $(document).ready(function() {
 	});
 	
 	// Envio do formulário usando ajax
-	$(".ajaxForm").live("submit", function() {
+	$(".ajaxForm").submit(function() {
 		var serializedForm = $(this).serialize();
 		var url = $(this).attr( 'action' );
 		startLoading();

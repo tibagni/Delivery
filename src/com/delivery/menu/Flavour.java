@@ -1,7 +1,6 @@
 package com.delivery.menu;
 
 import java.util.List;
-import java.util.Map;
 
 public class Flavour {
 
@@ -13,7 +12,6 @@ public class Flavour {
     private int mProductId;
 
     private List<Price> mPrices;
-    private Map<String, Double> mCacheCost;
 
     public int getId() {
         return mId;
@@ -61,13 +59,5 @@ public class Flavour {
 
     public void setPrices(List<Price> prices) {
         mPrices = prices;
-    }
-
-    public Map<String, Double> getCacheCost() {
-        return mCacheCost;
-    }
-
-    public void setCacheCost(Map<String, Double> cacheCost) {
-        mCacheCost = cacheCost;
     }
 }

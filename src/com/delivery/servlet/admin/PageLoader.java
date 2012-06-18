@@ -22,6 +22,7 @@ public class PageLoader extends HttpServlet {
             throws ServletException, IOException {
 
         String cmdName = req.getParameter("page");
+        Logger.debug("[AdminPageLoader] Page=" + cmdName);
         try {
             AdminPageLoaderCommand pageLoader = Command.getFromName(cmdName, AdminPageLoaderCommand.class);
             pageLoader.prepareToLoad(req, resp);
@@ -30,6 +31,9 @@ public class PageLoader extends HttpServlet {
         } catch (CommandNotFoundException e) {
             Logger.warning("[AdminPageLoader]Comando não definido! - " + cmdName);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        } catch (Exception e) {
+            Logger.error("[AdminPageLoader] Erro ao tentar carregar pagina!", e);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
