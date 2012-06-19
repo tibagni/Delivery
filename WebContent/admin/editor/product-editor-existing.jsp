@@ -4,6 +4,8 @@
 
 <script type="text/javascript" src="../javascript/jquery.sheepItPlugin-1.0.0.js"></script>
 <script type="text/javascript" src="../javascript/common/Form.js"></script>
+<script type="text/javascript" src="../javascript/masked-Input.js"></script>
+<script type="text/javascript" src="../javascript/back-end/productForm-mask.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#sheepItForm').sheepIt({
@@ -168,7 +170,7 @@ $(document).ready(function() {
 		</fieldset>
 		
 		<input type="hidden" name="prodId" value="${product.id}" />
-		<input type="hidden" name="foto" value="" id="fotoHidden" />
+		<input type="hidden" name="foto" id="fotoHidden" value="${product.picturePath}" />
 		<input type="hidden" name="cmd" value="UpdateProduct" />
 		<span class="ButtonInput"><span><input type="submit" value="Atualizar" /></span></span>
 		<span class="ButtonInput"><span><input type="button" name="cancel" value="Cancelar" /></span></span>

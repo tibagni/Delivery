@@ -4,6 +4,8 @@
 
 <script type="text/javascript" src="../javascript/jquery.sheepItPlugin-1.0.0.js"></script>
 <script type="text/javascript" src="../javascript/common/Form.js"></script>
+<script type="text/javascript" src="../javascript/jquery.maskMoney.js"></script>
+<script type="text/javascript" src="../javascript/back-end/price-mask.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {     
     var sheepItForm = $('#sheepItForm').sheepIt({
@@ -51,7 +53,7 @@ $(document).ready(function() {
 				    <input id="sheepItForm_#index#_nome_op" name="produto[opcionais][#index#][nome]" type="text" title="Nome do ocpional" />
 				    <br />
 				    <label for="sheepItForm_#index#_preco_op">Preço do opcional <span id="sheepItForm_label"></span></label>
-				    <input id="sheepItForm_#index#_preco_op" name="produto[opcionais][#index#][preco]" type="text" title="Preço do opcional" />
+				    <input class="price" id="sheepItForm_#index#_preco_op" name="produto[opcionais][#index#][preco]" type="text" title="Preço do opcional" />
 				    <a id="sheepItForm_remove_current">
 				      <img class="delete" src="../images/cross.gif" border="0">
 				    </a>

@@ -4,6 +4,8 @@
 
 <script type="text/javascript" src="../javascript/jquery.sheepItPlugin-1.0.0.js"></script>
 <script type="text/javascript" src="../javascript/common/Form.js"></script>
+<script type="text/javascript" src="../javascript/jquery.maskMoney.js"></script>
+<script type="text/javascript" src="../javascript/back-end/price-mask.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {     
     $('#sheepItForm').sheepIt({
@@ -14,8 +16,8 @@ $(document).ready(function() {
         allowAdd: true,
         allowAddN: true,
         maxFormsCount: 3,
-        minFormsCount: 1,
-        iniFormsCount: 1,
+        minFormsCount: 0,
+        iniFormsCount: 0,
         
         // Confirmations
         removeLastConfirmation: false,
@@ -146,7 +148,7 @@ $(document).ready(function() {
 					</select>
 				    <br />
 				    <label for="sheepItForm_#index#_preco">Preço <span id="sheepItForm_label"></span></label>
-				    <input id="sheepItForm_#index#_preco" name="produto[precos][#index#][preco]" type="text" title="Preço do produto para o tamanho especificado" />
+				    <input class="price" id="sheepItForm_#index#_preco" name="produto[precos][#index#][preco]" type="text" title="Preço do produto para o tamanho especificado" />
 				    <a id="sheepItForm_remove_current">
 				      <img class="delete" src="../images/cross.gif" border="0">
 				    </a>
@@ -170,7 +172,7 @@ $(document).ready(function() {
 		
 		
 		<input type="hidden" name="flavId" value="${flavour.id}" />
-		<input type="hidden" name="foto" value="" id="fotoHidden" />
+		<input type="hidden" name="foto" value="${flavour.picturePath}" id="fotoHidden" />
 		<input type="hidden" name="cmd" value="UpdateFlavour" />
 		<span class="ButtonInput"><span><input type="submit" value="Atualizar" /></span></span>
 		<span class="ButtonInput"><span><input type="button" name="cancel" value="Cancelar" /></span></span>
@@ -192,7 +194,7 @@ $(document).ready(function() {
 			<div class="error"></div>
 			<form action="MenuEditor" class="editPrice">
 				<label id="editPriceLabel" for="editPrice"></label> 
-				<input type="text" name="price" id="editPrice" />
+				<input class="price" type="text" name="price" id="editPrice" />
 				<br />
 				<input type="hidden" name="sizeId" id="editHiddenSizeId" />
 				<input type="hidden" name="flavourId" id="editHiddenFlavourId" value="${flavour.id}" />

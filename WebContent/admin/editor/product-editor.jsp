@@ -2,6 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <script type="text/javascript" src="../javascript/jquery.sheepItPlugin-1.0.0.js"></script>
 <script type="text/javascript" src="../javascript/common/Form.js"></script>
+<script type="text/javascript" src="../javascript/masked-Input.js"></script>
+<script type="text/javascript" src="../javascript/back-end/productForm-mask.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	    $('#sheepItForm').sheepIt({

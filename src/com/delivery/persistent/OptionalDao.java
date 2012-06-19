@@ -69,9 +69,37 @@ public class OptionalDao extends Dao<Optional> {
     }
 
     @Override
-    public int update(Optional objectsToUpdate) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+    public int update(Optional objectToUpdate) throws SQLException {
+        if (objectToUpdate == null) {
+            return 0;
+        }
+
+        int updated = 0;
+        Statement stm = null;
+        try {
+            if (objectToUpdate.getId() == INVALID_ID ||
+                objectToUpdate.getPrice() <= 0) {
+                // Nada para atualizar
+                return 0;
+            }
+
+            String sql = "UPDATE " + TABLE_NAME + " SET " +
+                    COLUMN_PRICE + "=" + objectToUpdate.getPrice() + ", " +
+                    COLUMN_NAME + "='" + objectToUpdate.getName() + "' WHERE " +
+                    COLUMN_ID + "=" + objectToUpdate.getId();
+            stm = mConnection.createStatement();
+            updated = stm.executeUpdate(sql);
+        } catch (SQLException e) {
+            Logger.error("Erro ao editar opcional", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+        return updated;
     }
 
     @Override

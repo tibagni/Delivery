@@ -4,6 +4,8 @@
 
 <script type="text/javascript" src="../javascript/jquery.sheepItPlugin-1.0.0.js"></script>
 <script type="text/javascript" src="../javascript/common/Form.js"></script>
+<script type="text/javascript" src="../javascript/jquery.maskMoney.js"></script>
+<script type="text/javascript" src="../javascript/back-end/price-mask.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {     
     $('#sheepItForm').sheepIt({

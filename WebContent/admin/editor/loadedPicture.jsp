@@ -15,7 +15,7 @@
 	<c:otherwise> 
 		<script type="text/javascript">
 			// Falha no processamento da imagem, avisar o usuário
-			$("div#upload-btn", top.document).html("Não foi possível carregar a imagem");
+			$("div#previewFoto", top.document).html("Não foi possível carregar a imagem");
 		</script>
 	</c:otherwise>
 </c:choose> 
