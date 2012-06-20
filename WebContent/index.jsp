@@ -3,6 +3,9 @@
     <title>Web Site Name</title>
     <link rel="stylesheet" href="css/style.css" />
     
+    <!-- Arquivo que define os paths para o front-end -->
+    <script type="text/javascript" src="javascript/front-end/front-end-paths.js"></script>
+    
     <script type="text/javascript" src="javascript/jquery.js"></script>
     <script type="text/javascript" src="javascript/jquery.simplemodal.js"></script>
 	<script type="text/javascript" src="javascript/common/Util.js"></script>

@@ -17,6 +17,9 @@ public class Product {
     private List<Flavour> mFlavours;
     private List<Optional> mOptionals;
 
+    // Usado pela UI
+    private int mCurrentSizeId;
+
     public static final int MAX_SIZES = 3;
 
     public int getId() {
@@ -97,5 +100,13 @@ public class Product {
 
     public void setOptionals(List<Optional> optionals) {
         mOptionals = optionals;
+    }
+
+    public int getCurrentSizeId() {
+        return mCurrentSizeId;
+    }
+
+    public void setCurrentSizeId(int currentSizeId) {
+        mCurrentSizeId = currentSizeId;
     }
 }
