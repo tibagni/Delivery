@@ -112,7 +112,7 @@ $(document).ready(function() {
 						<input id="sab-foto" type="button" value="Selecionar foto..." title="Foto que será exibida no cardápio (Se não for especificada, a foto do produto será usada)"/>
 					</span></span>
 					<c:choose>
-						<c:when test="${not empty product.picturePath}">
+						<c:when test="${not empty flavour.picturePath}">
 							<div id="previewFoto" style="float:right;">
 								<img src="../${flavour.picturePath}" />
 							</div>						

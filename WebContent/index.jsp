@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="javascript/common/Util.js"></script>
 	<script type="text/javascript" src="javascript/common/Navigation.js"></script>
 	<script type="text/javascript" src="javascript/common/Menu.js"></script>
+	
 </head>
 <body>
     <div class="BackgroundGradient"></div>
@@ -48,8 +49,8 @@
 	
 		<!-- Begin Caixa de usuário/login -->	
 		<div class="Block">
-            <span class="BlockHeader"><span>:: Login</span></span>
-            <div class="BlockContentBorder">
+            <span class="BlockHeader"><span id="userAreaTitle">:: Login</span></span>
+            <div class="BlockContentBorder" id="userArea">
 				<form>
 					<table>
 						<tr>

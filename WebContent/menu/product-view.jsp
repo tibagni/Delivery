@@ -2,6 +2,9 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<script type="text/javascript" src="javascript/easyTooltip.js"></script>
+<script type="text/javascript" src="javascript/common/Form.js"></script>
+
 <script type="text/javascript">
 <!--
 // Limita a quantidade de sabores que podem ser escolhidos
@@ -26,6 +29,17 @@ $(document).ready(function() {
 		  var sizeId = this.value;
 		  $("div#MainArea").load('PageLoader?page=ProductView&prodId=${product.id}&sizeId=' + sizeId);
 	});
+	
+	$(document).ready(function(){	
+		$(".detail_trigger").easyTooltip({
+			useElement: "detail"				   
+		});
+	});	
+	  
+	//Volta ao menu em caso de cancelamento
+	  $('input[name="cancel"]').live("click", function() {
+			$("div#MainArea").load('PageLoader?page=Menu');
+	  });
 });
 //-->
 </script>
@@ -33,6 +47,7 @@ $(document).ready(function() {
 <c:set var="flavourInputType" scope="page" value="radio"/>
 <c:set var="optionalInputType" scope="page" value="radio"/>
 <h1>${product.name}</h1>
+<a href="http://cssglobe.com" id="link">this link</a>
 Tamanho: 
 <select id="sizeSelect">
 	<c:forEach var="size" items="${product.sizesAvailable}">
@@ -46,7 +61,7 @@ Tamanho:
 		</c:choose>
 	</c:forEach>
 </select>
-<form>
+<form action="Order" class="ajaxForm">
 	<div class="content">
 		<img src="${product.picturePath}" />
 		<h3 style="border:none;">Sabores:</h3>
@@ -57,8 +72,15 @@ Tamanho:
 		<div class="elements">
 			<ul>
 				<c:forEach var="flavour" items="${product.flavours}">
-					<li>
-						 <input class="flavourSelection" value="-flavour-${flavour.id}" type="${flavourInputType}" name="flavour"/>${flavour.name}
+					<li class="detail_trigger">
+						 <input class="flavourSelection" value="${flavour.id}-${flavour.name}" type="${flavourInputType}" name="flavour"/>${flavour.name}
+						 <div class="detail">
+						 	<h3>${flavour.name }</h3>
+						 	<c:if test="${not empty flavour.picturePath}">
+						 		<img src="${flavour.picturePath }" />
+						 	</c:if>
+						 	<p>${flavour.description }</p>
+						 </div>
 					</li>
 				</c:forEach>	
 			</ul>
@@ -72,10 +94,15 @@ Tamanho:
 			<ul>
 				<c:forEach var="optional" items="${product.optionals}">
 					<li>
-					<input class="optionalSelection" value="-optional-${optional.id}" type="${optionalInputType}" name="flavour"/>${optional.name}
+					<input class="optionalSelection" value="${optional.id}-${optional.name}" type="${optionalInputType}" name="optional"/>${optional.name}
 					</li>
 				</c:forEach>
 			</ul>
 		</div>
 	</div>
+	<input type="hidden" name="product" value="${product.id }-${product.name}" />
+	<input type="hidden" name="size" value="${product.currentSizeId}" />
+	<input type="hidden" name="cmd" value="AddNewOrder" />
+	<span class="ButtonInput"><span><input type="submit" value="Adicionar ao pedido" /></span></span>
+	<span class="ButtonInput"><span><input type="button" name="cancel" value="Cancelar" /></span></span>
 </form>
