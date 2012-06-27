@@ -21,10 +21,19 @@ public class OrderItem {
     // Atributos utilizados enquanto o pedido esta na memoria
     private Map<Integer, String> mFlavours;
     private Map<Integer, String> mOptionals;
+    private int mTemporaryId;
 
     //Usado na Ui para mostrar a descricao do item
     private String mDescription;
     private String mCachedSizeName;
+
+
+    public int getTemporaryId() {
+        return mTemporaryId;
+    }
+    public void setmTeporaryId(int temporaryId) {
+        mTemporaryId = temporaryId;
+    }
 
     public int getId() {
         return mId;

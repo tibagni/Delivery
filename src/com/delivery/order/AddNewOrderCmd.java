@@ -27,10 +27,12 @@ public class AddNewOrderCmd extends OrderCommand {
     public void execute(HttpServletRequest request) {
         Map<String, String[]> parameters;
 
-        Order order = (Order) request.getSession().getAttribute("Order");
+        Order order = (Order) request.getSession().getAttribute("SessionOrder");
         if (order == null) {
             order = new Order();
         }
+
+        int temporaryId = order.getNextTemporaryId();
 
         final OrderItem item = new OrderItem();
         parameters = request.getParameterMap();
@@ -44,6 +46,7 @@ public class AddNewOrderCmd extends OrderCommand {
             //mRedirect TODO
             return;
         }
+        item.setmTeporaryId(temporaryId);
         try {
             String[] productParts = product[0].split("-");
             item.setProductId(Integer.parseInt(productParts[0]));
@@ -129,7 +132,7 @@ public class AddNewOrderCmd extends OrderCommand {
 
             item.setPrice(orderItemPrice);
             order.addItem(item);
-            request.getSession().setAttribute("Order", order);
+            request.getSession().setAttribute("SessionOrder", order);
         } catch (Exception e) {
             Logger.error("erro ao inserir item de pedido", e);
             //mRedirect TODO

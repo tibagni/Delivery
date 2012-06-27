@@ -47,7 +47,6 @@ $(document).ready(function() {
 <c:set var="flavourInputType" scope="page" value="radio"/>
 <c:set var="optionalInputType" scope="page" value="radio"/>
 <h1>${product.name}</h1>
-<a href="http://cssglobe.com" id="link">this link</a>
 Tamanho: 
 <select id="sizeSelect">
 	<c:forEach var="size" items="${product.sizesAvailable}">

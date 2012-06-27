@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Web Site Name</title>
@@ -11,7 +12,6 @@
 	<script type="text/javascript" src="javascript/common/Util.js"></script>
 	<script type="text/javascript" src="javascript/common/Navigation.js"></script>
 	<script type="text/javascript" src="javascript/common/Menu.js"></script>
-	
 </head>
 <body>
     <div class="BackgroundGradient"></div>
@@ -51,19 +51,26 @@
 		<div class="Block">
             <span class="BlockHeader"><span id="userAreaTitle">:: Login</span></span>
             <div class="BlockContentBorder" id="userArea">
-				<form>
-					<table>
-						<tr>
-							<td><label for="login_user">Usuário</label></td>
-							<td><input type="text" style="width:120px" id="login_user" name="user" /></td>
-						</tr>
-						<tr>
-							<td><label for="login_pwd">Senha</label></td>
-							<td><input type="password" style="width:120px" id="login_pwd" name="password" /></td>
-						</tr>
-					</table>
-					<span class="ButtonInput"><span><input type="button" value="Login" /></span></span>
-				</form><div style="text-align: right;"><a href="#" class="debugPageLoader"  title="cardapio/novoProd-opcional.jsp">Criar conta</a></div>
+            <c:choose>
+            	<c:when test="${not empty SessionOrder }">
+            		<jsp:include page="order/ShopCar.jsp"/>
+            	</c:when>
+            	<c:otherwise>
+					<form>
+						<table>
+							<tr>
+								<td><label for="login_user">Usuário</label></td>
+								<td><input type="text" style="width:120px" id="login_user" name="user" /></td>
+							</tr>
+							<tr>
+								<td><label for="login_pwd">Senha</label></td>
+								<td><input type="password" style="width:120px" id="login_pwd" name="password" /></td>
+							</tr>
+						</table>
+						<span class="ButtonInput"><span><input type="button" value="Login" /></span></span>
+					</form><div style="text-align: right;"><a href="#" class="debugPageLoader"  title="cardapio/novoProd-opcional.jsp">Criar conta</a></div>
+				</c:otherwise>
+			</c:choose>
             </div>
         </div>
 		<!-- End Caixa de usuário/login -->

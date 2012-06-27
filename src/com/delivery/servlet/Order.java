@@ -21,12 +21,16 @@ public class Order extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        // Não aceita requisições GET
-        resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        doRequest(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        doRequest(req, resp);
+    }
+
+    private void doRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Logger.debug("Order servlet");
         String cmdName = req.getParameter("cmd");
