@@ -62,7 +62,7 @@
 						</tr>
 					</table>
 					<span class="ButtonInput"><span><input type="button" value="Login" /></span></span>
-				</form><div style="text-align: right;"><a href="#" class="debugPageLoader"  title="cardapio/novoProd-opcional.jsp">Criar conta</a></div>
+				</form><div style="text-align: right;"><a href="#" class="debugPageLoader"  title="SignUp">Criar conta</a></div>
             </div>
         </div>
 		<!-- End Caixa de usuário/login -->
