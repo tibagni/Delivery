@@ -8,7 +8,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	//Define o titulo da area de usuario
-	$("#userAreaTitle").html(":: Pedido");
+	$("#userAreaTitle").html(":: Pedido"); 
 });
 </script>
 
@@ -46,5 +46,5 @@ $(document).ready(function(){
 
 <c:if test="${not empty SessionOrder.items}">
 <span class="ButtonInput"><span><input class="removeItem" id="#RemoveOrderItem_-1" type="button" value="Cancelar" /></span></span>
-<span class="ButtonInput"><span><input type="button" value="Finalizar" /></span></span>
+<span class="ButtonInput"><span><input id="finalize" type="button" value="Finalizar" /></span></span>
 </c:if>

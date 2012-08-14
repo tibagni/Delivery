@@ -7,7 +7,7 @@ public class OrderItem {
 
     private int mId;
     private int mProductId;
-    private int mOrderId;
+    private long mOrderId;
     private double mPrice;
     private int mSize;
 
@@ -47,10 +47,10 @@ public class OrderItem {
     public void setProductId(int productId) {
         this.mProductId = productId;
     }
-    public int getOrderId() {
+    public long getOrderId() {
         return mOrderId;
     }
-    public void setOrderId(int orderId) {
+    public void setOrderId(long orderId) {
         this.mOrderId = orderId;
     }
     public double getPrice() {

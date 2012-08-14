@@ -9,34 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.delivery.Logger;
+import com.delivery.engine.command.AccountDbCommand;
 import com.delivery.engine.command.Command;
 import com.delivery.engine.command.Command.CommandNotFoundException;
-import com.delivery.engine.command.OrderCommand;
 import com.delivery.util.StringUtils;
 
-public class Order extends HttpServlet {
+public class Account extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4882683169703894400L;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        doRequest(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        doRequest(req, resp);
-    }
-
-    private void doRequest(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        Logger.debug("Order servlet");
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+        Logger.debug("Account servlet");
         String cmdName = req.getParameter("cmd");
 
         try {
-            OrderCommand command = Command.getFromName(cmdName, OrderCommand.class);
+            AccountDbCommand command = Command.getFromName(cmdName, AccountDbCommand.class);
             command.execute(req);
             if (!StringUtils.isEmpty(command.getRedirect())) {
                 RequestDispatcher dispatcher = req.getRequestDispatcher(command.getRedirect());
@@ -46,7 +35,7 @@ public class Order extends HttpServlet {
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
         } catch (CommandNotFoundException e) {
-            Logger.warning("[Order]Comando nao definido! - " + cmdName);
+            Logger.warning("[Account]Comando n‹o definido! - " + cmdName);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         } catch (Exception e) {
             Logger.error("Erro!", e);
@@ -54,5 +43,5 @@ public class Order extends HttpServlet {
             // TODO mostrar algo ao usuario
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-    }
+	}
 }

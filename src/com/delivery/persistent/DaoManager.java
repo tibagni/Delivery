@@ -20,7 +20,15 @@ public class DaoManager {
     private PriceDao mPriceDao;
     private OptionalDao mOptionalDao;
 
-    private DataSource mDataSource;
+    private AccountDao mAccountDao;
+    private AddressDao mAddressDao;
+
+    private OrderDao mOrderDao;
+    private OrderItemDao mOrderItemDao;
+    private OrderItemOptionlRelDao mOrderItemOptionlRelDao;
+    private OrderItemFlavourRelDao mOrderItemFlavourRelDao;
+
+    private final DataSource mDataSource;
     private Connection mConnection;
 
     public DaoManager(DataSource dataSource) {
@@ -69,6 +77,48 @@ public class DaoManager {
         return mOptionalDao;
     }
 
+    public AccountDao getAccountDao() throws SQLException {
+        if (mAccountDao == null) {
+            mAccountDao = new AccountDao(getConnection());
+        }
+        return mAccountDao;
+    }
+
+    public AddressDao getAddressDao() throws SQLException {
+        if (mAddressDao == null) {
+            mAddressDao = new AddressDao(getConnection());
+        }
+        return mAddressDao;
+    }
+
+    public OrderDao getOrderDao() throws SQLException {
+        if (mOrderDao == null) {
+            mOrderDao = new OrderDao(getConnection());
+        }
+        return mOrderDao;
+    }
+
+    public OrderItemDao getOrderItemDao() throws SQLException {
+        if (mOrderItemDao == null) {
+            mOrderItemDao = new OrderItemDao(getConnection());
+        }
+        return mOrderItemDao;
+    }
+
+    public OrderItemOptionlRelDao getOrderItemOptionlRelDao() throws SQLException {
+    	if (mOrderItemOptionlRelDao == null) {
+    		mOrderItemOptionlRelDao = new OrderItemOptionlRelDao(getConnection());
+    	}
+    	return mOrderItemOptionlRelDao;
+    }
+
+    public OrderItemFlavourRelDao getOrderItemFlavourRelDao() throws SQLException {
+    	if (mOrderItemFlavourRelDao == null) {
+    		mOrderItemFlavourRelDao = new OrderItemFlavourRelDao(getConnection());
+    	}
+    	return mOrderItemFlavourRelDao;
+    }
+
     private Connection getConnection() throws SQLException {
         if (mConnection == null) {
             mConnection = mDataSource.getConnection();
@@ -87,6 +137,12 @@ public class DaoManager {
         mFlavourDao = null;
         mPriceDao = null;
         mOptionalDao = null;
+        mAccountDao = null;
+        mAddressDao = null;
+        mOrderDao = null;
+        mOrderItemDao = null;
+        mOrderItemOptionlRelDao = null;
+        mOrderItemFlavourRelDao = null;
     }
 
     public Object execute(DaoCommand command) {
@@ -108,7 +164,7 @@ public class DaoManager {
         try {
             getConnection().setAutoCommit(false);
             return command.execute(this);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Logger.error("Erro ao executar transacao - DaoCommand");
             Logger.debug("Rollback!!!");
             try {

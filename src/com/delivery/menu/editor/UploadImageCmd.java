@@ -46,7 +46,7 @@ public class UploadImageCmd extends MenuEditorCommand {
             }
             Iterator<FileItem> itr = items.iterator();
             while (itr.hasNext()) {
-                FileItem item = (FileItem) itr.next();
+                FileItem item = itr.next();
                 if (item.isFormField()){
                     String name = item.getFieldName();
                     String value = item.getString();

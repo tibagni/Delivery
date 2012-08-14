@@ -48,7 +48,25 @@
   <servlet-mapping>
       <servlet-name>Order</servlet-name>
       <url-pattern>/Order</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>  
+  
+  <servlet>
+      <servlet-name>CepService</servlet-name>
+      <servlet-class>com.delivery.servlet.CepService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>CepService</servlet-name>
+      <url-pattern>/AddressLookup</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+      <servlet-name>Account</servlet-name>
+      <servlet-class>com.delivery.servlet.Account</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>Account</servlet-name>
+      <url-pattern>/Account</url-pattern>
+  </servlet-mapping>  
   
   <!-- Banco de dados -->
   <resource-ref>

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import com.delivery.Logger;
+import com.delivery.SessionConstants;
 import com.delivery.engine.command.OrderCommand;
 import com.delivery.menu.Optional;
 import com.delivery.menu.Price;
@@ -27,7 +28,7 @@ public class AddNewOrderCmd extends OrderCommand {
     public void execute(HttpServletRequest request) {
         Map<String, String[]> parameters;
 
-        Order order = (Order) request.getSession().getAttribute("SessionOrder");
+        Order order = (Order) request.getSession().getAttribute(SessionConstants.ORDER);
         if (order == null) {
             order = new Order();
         }
@@ -51,7 +52,6 @@ public class AddNewOrderCmd extends OrderCommand {
             String[] productParts = product[0].split("-");
             item.setProductId(Integer.parseInt(productParts[0]));
             item.setDescription(productParts[1]);
-            // TODO mudar o db para que tenha o size tambem!!! FIXME
             item.setSize(Integer.parseInt(size[0]));
             for (String f : flavours) {
                 String[] flavourParts = f.split("-");

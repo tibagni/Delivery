@@ -1,51 +1,142 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<script type="text/javascript" src="javascript/jquery.sheepItPlugin-1.0.0.js"></script>
+
 <script type="text/javascript" src="javascript/common/Form.js"></script>
 <script type="text/javascript" src="javascript/common/Util.js"></script>
+<script type="text/javascript" src="javascript/jquery.validate.js"></script>
 <script type="text/javascript" src="javascript/masked-Input.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-        $('#sheepItForm').sheepIt({
-        separator: '',
-        allowRemoveLast: true,
-        allowRemoveCurrent: true,
-        allowRemoveAll: true,
-        allowAdd: true,
-        allowAddN: true,
-        maxFormsCount: 3,
-        minFormsCount: 1,
-        iniFormsCount: 1,
+	
+	function highlightField(field) {
+		field.addClass('highlightedWrong');
+	};
+	
+	function clearHighlights() {
+		$(":input").removeClass('highlightedWrong');
+	};
+	
+	//validacao do form
+	$("#form-cli").submit(function () {
+		clearHighlights();
+		var errorMsgs = "";
+		var name = $("#cli-nome");
+		var cpf = $("#cli-cpf");
+        var tel = $("#cli-tel");
+        var email = $("#cli-email");
+        var pwd = $("#cli-pwd");
+        var pwd2 = $("#cli-pwd2");
         
-        // Confirmations
-        removeLastConfirmation: false,
-        removeCurrentConfirmation: false,
-        removeAllConfirmation: true,
-        removeLastConfirmationMsg: 'Você tem certeza?',
-        removeCurrentConfirmationMsg: 'Você tem certeza?',
-        removeAllConfirmationMsg: 'Você tem certeza?'
+        var submit = true;
         
-    });
+        var focus = null;
         
+        var form = $(this);
+		
+		if (isEmpty(name.val())) {
+			highlightField(name);
+			errorMsgs += "<li>O nome é obrigatório</li>";
+			focus = name;
+		}
+		if (isEmpty(cpf.val())) {
+			highlightField(cpf);
+            errorMsgs += "<li>O CPF é obrigatório</li>";
+            if (focus == null) focus = cpf;
+		} else if (!isCPFValid(cpf.val())) {
+			highlightField(cpf);
+            errorMsgs += "<li>Insira um CPF válido!</li>";
+            if (focus == null) focus = cpf;
+        }
+        if (isEmpty(tel.val())) {
+            highlightField(tel);
+            errorMsgs += "<li>O Telefone é obrigatório</li>";
+            if (focus == null) focus = tel;
+        }
+        if (isEmpty(email.val())) {
+            highlightField(email);
+            errorMsgs += "<li>O Email é obrigatório</li>";
+            if (focus == null) focus = email;
+        } else if (!isEmailValid(email.val())) {
+            highlightField(email);
+            errorMsgs += "<li>Insira um Email válido!</li>";
+            if (focus == null) focus = email;
+        }
+        
+        //Validacao de senha
+        if (isEmpty(pwd.val())) {
+            highlightField(pwd);
+            highlightField(pwd2);
+            pwd2.val("");
+            errorMsgs += "<li>Insira uma senha válida!</li>";
+            if (focus == null) focus = pwd;
+        } else {
+        	if (pwd.val().length < 4) {
+                pwd2.val("");
+                pwd.val("");
+                highlightField(pwd);
+                highlightField(pwd2);
+                errorMsgs += "<li>A senha deve ter, no mínimo, 4 caracteres!</li>";
+                if (focus == null) focus = pwd;
+        	} else if (pwd.val() != pwd2.val()) {
+                pwd2.val("");
+                pwd.val("");
+                highlightField(pwd);
+                highlightField(pwd2);
+                errorMsgs += "<li>A senha e a confirmação não batem!</li>";
+                if (focus == null) focus = pwd;
+        	}
+        }
+        
+        if (!isEmpty(errorMsgs)) {
+        	$("#errorBox").show();
+            $("#errorBox").html(errorMsgs);
+            submit = false;
+        }
+        if (focus != null) {
+        	focus.focus();
+        }
+        
+        if (submit) {
+        	ajaxSubmit(form);
+        }
+        
+		return false;
+		
+	});
+       
     // Aplicar mascara nos campos de formulario 
     $("#cli-cpf").mask("999.999.999-99");
     $("#cli-tel").mask("(99) 9999-9999");
     
 
-    $(".cep").live("focusin", function() {
-    	$(this).mask("99999-999");
-    });
-    $(".uf").live("focusin", function() {
-        $(this).mask("aa");
-    });
+    $("#cli-end-cep").mask("99999-999");
+    $("#cli-end-uf").mask("aa");
     
-    // Validacao do email
-    $("#cli-email").focusout(function() {
-    	var sEmail = $(this).val();
-        if ($.trim(sEmail).length == 0 || !isEmailValid(sEmail)) {
-            alert('Email inválido!');
-            e.preventDefault();
-        }
+    $("#addressLookup").click(function() {
+    	var cep = $("#cli-end-cep").attr("value");
+    	if (cep == null) {
+    		return false;
+    	}
+    	$("#addressLookup").hide();
+    	$("#addressLookingUp").show();
+    	$.get('AddressLookup?formato=javascript&cep='+ cep, function(data) {
+    	    $("#addressLookingUp").hide();
+            $("#addressLookup").show();
+            eval(data);
+            // Agora (depois do eval) temos uma variavel para o cep, resultadoCEP
+            if (resultadoCEP['resultado'] == 1) {
+            	$("#cli-end-rua").attr("value", unescape(resultadoCEP['logradouro']));
+                $("#cli-end-bair").attr("value", unescape(resultadoCEP['bairro']));
+                $("#cli-end-cidade").attr("value", unescape(resultadoCEP['cidade']));
+                $("#cli-end-uf").attr("value", unescape(resultadoCEP['uf']));
+            } else {
+                $("#cli-end-rua").attr("value", "");
+                $("#cli-end-bair").attr("value", "");
+                $("#cli-end-cidade").attr("value", "");
+                $("#cli-end-uf").attr("value", "");
+            	alert("cep não encontrado!");
+            }
+    	});
     });
 });
 </script>
@@ -54,7 +145,8 @@ $(document).ready(function() {
 
 <div class="tooltip"></div>
 <div class="form">
-    <form action="MenuEditor" class="ajaxForm">
+    <ul id="errorBox"></ul> 
+    <form action="Account" id="form-cli">
         <fieldset>
             <legend>Informações pessoais</legend>
             <div>
@@ -66,64 +158,58 @@ $(document).ready(function() {
                 <input name="cpf" id="cli-cpf" type="text" title="Número do Cpf"/>
             </div>
             <div>
-                <label for="cli-email">Email:</label>
-                <input name="email" id="cli-email" type="text" title="Email"/>
-            </div>
-            <div>
                 <label for="cli-tel">Telefone:</label>
                 <input name="tel" id="cli-tel" type="text" title="Telefone para contato"/>
+            </div>
+            <div>
+                <label for="cli-email">Email:</label>
+                <input name="email" id="cli-email" type="text" title="Email. Será usado como Login no site!"/>
+            </div>
+            <div>
+                <label for="cli-pwd">Senha:</label>
+                <input name="pwd" id="cli-pwd" type="password" title="Senha para acesso ao site"/>
+            </div>
+            <div>
+                <label for="cli-pwd2">Confirme a senha:</label>
+                <input name="pwd2" id="cli-pwd2" type="password" title="Senha para acesso ao site"/>
             </div>
         </fieldset>
         
         <fieldset>
             <legend>Endereço</legend>
-                <!-- sheepIt Form -->
-                <div id="sheepItForm">
-                  <!-- Form template-->
-                  <div id="sheepItForm_template">
-                    <label for="sheepItForm_#index#_cep">Cep <span id="sheepItForm_label"></span></label>
-                    <input class="cep" id="sheepItForm_#index#_cep" size="10" name="cliente[enderecos][#index#][cep]" type="text" title="" />
-                    <br />                    
-                    <label for="sheepItForm_#index#_rua">Rua <span id="sheepItForm_label"></span></label>
-                    <input id="sheepItForm_#index#_rua" name="cliente[enderecos][#index#][rua]" type="text" title="" />
-                    <br />
-                    <label for="sheepItForm_#index#_num">Número <span id="sheepItForm_label"></span></label>
-                    <input id="sheepItForm_#index#_num" size="4" name="cliente[enderecos][#index#][num]" type="text" title="" />
-                    <br />
-                    <label for="sheepItForm_#index#_comp">Complemento <span id="sheepItForm_label"></span></label>
-                    <input id="sheepItForm_#index#_comp" size="4" name="cliente[enderecos][#index#][comp]" type="text" title="" />
-                    <br />
-                    <label for="sheepItForm_#index#_bair">Bairro <span id="sheepItForm_label"></span></label>
-                    <input id="sheepItForm_#index#_bair" name="cliente[enderecos][#index#][bair]" type="text" title="" />
-                    <br />
-                    <label for="sheepItForm_#index#_cidade">Cidade <span id="sheepItForm_label"></span></label>
-                    <input id="sheepItForm_#index#_cidade" name="cliente[enderecos][#index#][cidade]" type="text" title="" />
-                    <br />
-                    <label for="sheepItForm_#index#_uf">UF <span id="sheepItForm_label"></span></label>
-                    <input class="uf" id="sheepItForm_#index#_uf" name="cliente[enderecos][#index#][uf]" size="2" type="text" title="" />
-
-                    <a id="sheepItForm_remove_current">
-                      <img class="delete" src="images/cross.gif" border="0">
-                    </a>
-                    <hr>
-                  </div>
-                  <!-- /Form template-->
-                   
-                  <!-- No forms template -->
-                  <div id="sheepItForm_noforms_template">Nenhum tamanho foi especificado</div>
-                  <!-- /No forms template-->
-                   
-                  <!-- Controls -->
-                  <div id="sheepItForm_controls">
-                    <div id="sheepItForm_add"><a><span>Adicionar</span></a></div>
-                    <div id="sheepItForm_remove_all"><a><span>Remover todos</span></a></div>
-                  </div>
-                  <!-- /Controls -->
-                </div>
-                <!-- /sheepIt Form -->
+             <div>        
+	            <label for="cli-end-cep">Cep </label>
+	            <input id="cli-end-cep" size="10" name="cep" type="text" title="CEP da rua" />
+	            <img id="addressLookup" src="images/lookup.gif" title="auto-preencher endereço"/>
+                <img id="addressLookingUp" src="images/arrow-loading.gif" style="display: none;"/>
+            </div>
+            <div>          
+               <label for="cli-end-rua">Rua </label>
+               <input id="cli-end-rua" name="rua" type="text" title="Nome da ruda" />
+            </div>
+            <div>
+               <label for="cli-end-num">Número </label>
+               <input id="cli-end-num" size="4" name="num" type="text" title="Número..." />
+            </div>
+            <div>
+               <label for="cli-end-comp">Complemento </label>
+               <input id="cli-end-comp" size="4" name="comp" type="text" title="Complemento" />
+            </div>
+            <div>
+               <label for="cli-end-bair">Bairro </label>
+               <input id="cli-end-bair" name="bair" type="text" title="Bairro" />
+            </div>
+            <div>
+               <label for="cli-end-cidade">Cidade </label>
+               <input id="cli-end-cidade" name="cidade" type="text" title="Cidade" />
+            </div>
+            <div>
+               <label for="cli-end-uf">UF </label>
+               <input id="cli-end-uf" name="uf" size="2" type="text" title="UF" />
+            </div>
         </fieldset>
 
-        <input type="hidden" name="cmd" value="AddProduct" />
+        <input type="hidden" name="cmd" value="AddNewUser" />
         <span class="ButtonInput"><span><input type="submit" value="Avançar >>" /></span></span>
     </form>
 </div>

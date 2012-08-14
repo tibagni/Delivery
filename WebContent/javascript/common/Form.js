@@ -21,3 +21,14 @@ $(document).ready(function() {
 		return false;
 	});
 });
+
+function ajaxSubmit(form) {
+	var serializedForm = form.serialize();
+	var url = form.attr( 'action' );
+	startLoading();
+	$.post(url, serializedForm, function(data) {
+		$("div#MainArea").html(data);
+		$.modal.close();
+	});
+	return false;
+}

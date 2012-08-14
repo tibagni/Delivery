@@ -28,6 +28,9 @@ public abstract class Dao<T> {
      * Os objetos devem conter um id unico para que possam ser identificados
      * (ex: em banco de dados seria a chave primaria)
      *
+     * CUIDADO: Todos os campos do objeto serao atualizados, mesmo se estiverem vazios.
+     * Mantenha os campos com os valores corretos!
+     *
      * @param objectsToUpdate Objetos a sere atualizado
      * @return Numero de objetos atualizados com sucesso
      */

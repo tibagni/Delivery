@@ -133,8 +133,15 @@ fieldset{margin:1px;border:none;border-top:1px solid #ccc; border-right: solid 1
 fieldset div{padding: 2px;display:block;}
 fieldset label{font-size:12px;float:left;width:200px;text-align:right;padding:0 1em;}
 legend{margin:1em 0;padding:0 .5em;color:#404040;background:transparent;font-size:1.3em;font-weight:bold;}
+input{border: solid 1px #000;}
 .form{float:left;}
 .tooltip{float:right; padding:10px; max-width:200px; text-align: left;}
+.highlightedWrong{ border-color: #FF0000; background: #FF9999;}
+#errorBox{border: solid 1px #000; background: #FF9999; padding: 3px; display: none}
+
+.addressBox{background-color:#F0E6D3; padding:10px; color: #404040; cursor: hand;}
+.addressBox:hover{background-color:#EE9933}
+
 
 /****************************** Menu (Cardapio) ************************************/
 div.panel,p.flip {margin:0px;padding:5px;}
