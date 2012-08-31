@@ -13,13 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import com.delivery.Logger;
-import com.delivery.SessionConstants;
+import com.delivery.SessionUtils;
+import com.delivery.account.UserAccount;
 import com.delivery.engine.command.OrderCommand;
 import com.delivery.persistent.DaoManager;
 import com.delivery.persistent.OrderDao;
 import com.delivery.persistent.OrderItemDao;
 import com.delivery.persistent.OrderItemFlavourRelDao;
 import com.delivery.persistent.OrderItemOptionlRelDao;
+import com.delivery.util.LongPollingUtils;
 
 public class FinalizeOrderCmd extends OrderCommand {
 	private String mRedirect;
@@ -32,7 +34,7 @@ public class FinalizeOrderCmd extends OrderCommand {
 	        Context envContext  = (Context)initContext.lookup("java:/comp/env");
 	        DataSource dataSource = (DataSource)envContext.lookup("jdbc/deliveryDB");
 
-			final Order order = (Order) request.getSession().getAttribute(SessionConstants.ORDER);
+			final Order order = SessionUtils.getActiveOrder(request.getSession());
 	        if (order == null) {
 	        	// Nao ha pedidos nesta sessao. Talvez a sessao tenha expirado
 	        	// talvez simplesmente na haja pedidos
@@ -58,9 +60,13 @@ public class FinalizeOrderCmd extends OrderCommand {
 	        	order.close();
 	        }
 
-	        // TODO recupera os dados da conta do usuario da sessao e preenche o objeto order
-	        // Quando o controle de sessao estiver implementado
-	        order.setUserAccountId(22114393810L); // TODO remover implementacao hard-coded
+	        // Recupera os dados da conta do usuario da sessao e preenche o objeto order
+	        UserAccount loggedUser = SessionUtils.getLoggedUser(request.getSession());
+	        if (loggedUser == null) {
+	        	Logger.wtf("Nao ha usuario logado na sessao");
+	        	return;
+	        }
+	        order.setUserAccountId(loggedUser.getCpf());
 
 	        // Quando o pedido e inserido, ainda nao ha pagemeto entao o primeiro status
 	        // e o de esperando por pagamento
@@ -85,6 +91,13 @@ public class FinalizeOrderCmd extends OrderCommand {
 
 	        final FinalizeOrderResult result = new FinalizeOrderResult();
 	        DaoManager daoManager = new DaoManager(dataSource);
+	        daoManager.addTransactionTrigger(new Runnable() {
+				@Override
+				public void run() {
+					// Obriga a atualizar o(s) dashboard de pedidos (se estiver aberto)
+					LongPollingUtils.notifyOrderChange();
+				}
+			});
 	        daoManager.transaction(new DaoManager.DaoCommand() {
 				@Override public Object execute(DaoManager manager) throws SQLException {
 
@@ -181,8 +194,8 @@ public class FinalizeOrderCmd extends OrderCommand {
 	        if (result.result == FinalizeOrderResult.SUCCESS) {
 	        	// O pedido ja foi inserido no banco de dados.
 	        	// nao precisamos mais te-lo na sessao!
-	        	request.getSession().removeAttribute(SessionConstants.ORDER);
-	        	request.setAttribute("OrderToPay", order.getId());
+	        	SessionUtils.setActiveOrder(request.getSession(), null);
+	        	request.setAttribute("OrderToPay", order.getId()); // TODO
 	        	mRedirect = "RequestPayment.jsp";
 	        }
 

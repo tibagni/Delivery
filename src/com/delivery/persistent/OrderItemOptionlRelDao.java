@@ -2,18 +2,26 @@ package com.delivery.persistent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.delivery.Logger;
 import com.delivery.order.OrderItemRelOptional;
+import com.delivery.util.SQLUtils;
 
 public class OrderItemOptionlRelDao extends Dao<OrderItemRelOptional> {
-    private static final String TABLE_NAME = "item_pedido_has_optional";
+    private static final String TABLE_NAME = "item_pedido_has_opcional";
 
     private static final String COLUMN_ORDER_ITEM_ID = "item_pedido_cod_item_pedido";
     private static final String COLUMN_OPTIONAL_ID = "opcional_cod_opcional";
     private static final String COLUMN_ORDER_ID = "item_pedido_pedido_cod_pedido";
+
+    private static final int IND_COLUMN_ORDER_ITEM_ID = 1;
+    private static final int IND_COLUMN_OPTIONAL_ID = 2;
+    private static final int IND_COLUMN_ORDER_ID = 3;
 
 	public OrderItemOptionlRelDao(Connection connection) {
 		super(connection);
@@ -63,16 +71,67 @@ public class OrderItemOptionlRelDao extends Dao<OrderItemRelOptional> {
 	}
 
 	@Override
-	public List<OrderItemRelOptional> get(OrderItemRelOptional param)
-			throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<OrderItemRelOptional> get(OrderItemRelOptional param) throws SQLException {
+        String query = buildQuery(param);
+
+        ArrayList<OrderItemRelOptional> rels = null;
+        Statement stm = null;
+        try {
+            stm = mConnection.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            rels = new ArrayList<OrderItemRelOptional>();
+            while(rs.next()) {
+            	OrderItemRelOptional rel = new OrderItemRelOptional();
+            	rel.setOptionalId(rs.getInt(IND_COLUMN_OPTIONAL_ID));
+            	rel.setOrderId(rs.getLong(IND_COLUMN_ORDER_ID));
+            	rel.setOrderItemId(rs.getInt(IND_COLUMN_ORDER_ITEM_ID));
+
+                rels.add(rel);
+            }
+        } catch (SQLException e) {
+            Logger.error("Erro ao listar relacionamentos entre item de pedido e opcional", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+        return rels;
 	}
+
+	private String buildQuery(OrderItemRelOptional param) {
+        final String where = " WHERE";
+        final String and = " AND";
+        String nextToken = where;
+        StringBuilder queryBuilder = new StringBuilder();
+
+        queryBuilder.append("SELECT * FROM " + TABLE_NAME);
+        if (param != null) {
+            if (param.getOptionalId() != SQLUtils.INVALID_ID) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_OPTIONAL_ID + " = " + param.getOptionalId());
+                nextToken = and;
+            }
+            if (param.getOrderId() != SQLUtils.INVALID_ID) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_ORDER_ID + " = " + param.getOrderId());
+                nextToken = and;
+            }
+            if (param.getOrderItemId() != SQLUtils.INVALID_ID) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_ORDER_ITEM_ID + " = " + param.getOrderItemId());
+                nextToken = and;
+            }
+        }
+
+        return queryBuilder.toString();
+    }
 
 	@Override
 	public int getLastSavedId() throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new UnsupportedOperationException();
 	}
 
 }

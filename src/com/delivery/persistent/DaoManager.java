@@ -2,6 +2,7 @@ package com.delivery.persistent;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
@@ -23,6 +24,8 @@ public class DaoManager {
     private AccountDao mAccountDao;
     private AddressDao mAddressDao;
 
+    private AdminDao mAdminDao;
+
     private OrderDao mOrderDao;
     private OrderItemDao mOrderItemDao;
     private OrderItemOptionlRelDao mOrderItemOptionlRelDao;
@@ -30,6 +33,8 @@ public class DaoManager {
 
     private final DataSource mDataSource;
     private Connection mConnection;
+
+    private ArrayList<Runnable> mTriggers;
 
     public DaoManager(DataSource dataSource) {
         mDataSource = dataSource;
@@ -119,6 +124,13 @@ public class DaoManager {
     	return mOrderItemFlavourRelDao;
     }
 
+    public AdminDao getAdminDao() throws SQLException {
+    	if (mAdminDao == null) {
+    		mAdminDao = new AdminDao(getConnection());
+    	}
+    	return mAdminDao;
+    }
+
     private Connection getConnection() throws SQLException {
         if (mConnection == null) {
             mConnection = mDataSource.getConnection();
@@ -143,6 +155,7 @@ public class DaoManager {
         mOrderItemDao = null;
         mOrderItemOptionlRelDao = null;
         mOrderItemFlavourRelDao = null;
+        mAdminDao = null;
     }
 
     public Object execute(DaoCommand command) {
@@ -163,8 +176,11 @@ public class DaoManager {
         Object returnObj = null;
         try {
             getConnection().setAutoCommit(false);
-            return command.execute(this);
+            returnObj = command.execute(this);
+            executeTriggers();
         } catch (Exception e) {
+        	returnObj = null;
+        	mTriggers = null;
             Logger.error("Erro ao executar transacao - DaoCommand");
             Logger.debug("Rollback!!!");
             try {
@@ -181,6 +197,24 @@ public class DaoManager {
 
     public final void cancelTransaction() throws SQLException {
         throw new SQLException("Rollback!");
+    }
+
+    private void executeTriggers() {
+    	if (mTriggers != null) {
+    		for (Runnable r : mTriggers) {
+    			r.run();
+    		}
+    	}
+    }
+
+    /**
+     * Adiciona acoes que serao executadas depois de uma transacao (se for completa com sucesso)
+     */
+    public final void addTransactionTrigger(Runnable action) {
+    	if (mTriggers == null) {
+    		mTriggers = new ArrayList<Runnable>();
+    	}
+    	mTriggers.add(action);
     }
 
     public interface DaoCommand {

@@ -59,6 +59,32 @@ function isCPFValid(cpf) {
 		return false;
 };
 
+function setCurrentMainPage(page) {
+	$("div#mainArea").attr("title", page);
+}
+
+function isCurrentMainPage(page) {
+	var current = $("div#mainArea").attr("title");
+	if (current == page) {
+		return true;
+	}
+	return false;
+}
+
+function notifyNewOrder() {
+	var countStr = $("#orderManagerLink").html();
+	var currentCount = countStr.substring(1, countStr.length - 1);
+	
+	currentCount++;
+	$("#orderManagerLink").html("[" + currentCount + "]");
+}
+
+function handleUnauthorizedError() {
+	$("div#MainArea").load('PageLoader?page=Login');
+	// Identifica, na div, qual e a pagina ativa no momento
+	$("div#mainArea").attr("title", "Login");
+}
+
 function isEmpty(string) {
 	if (string == null || string == '') {
 		return true;

@@ -5,12 +5,6 @@
 
 <script type="text/javascript" src="javascript/easyTooltip.js"></script>
 <script type="text/javascript" src="javascript/front-end/ordering.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	//Define o titulo da area de usuario
-	$("#userAreaTitle").html(":: Pedido"); 
-});
-</script>
 
 
 <ul id="shopList">

@@ -2,11 +2,15 @@ package com.delivery.persistent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.delivery.Logger;
 import com.delivery.order.OrderItem;
+import com.delivery.util.SQLUtils;
 
 public class OrderItemDao extends Dao<OrderItem> {
     private static final String TABLE_NAME = "item_pedido";
@@ -16,6 +20,12 @@ public class OrderItemDao extends Dao<OrderItem> {
     private static final String COLUMN_PRODUCT_ID = "produto_cod_produto";
     private static final String COLUMN_PRICE = "valor";
     private static final String COLUMN_SIZE = "tamanhos_cod_tamanho";
+
+    private static final int IND_COLUMN_ID = 1;
+    private static final int IND_COLUMN_ORDER_ID = 2;
+    private static final int IND_COLUMN_PRODUCT_ID = 3;
+    private static final int IND_COLUMN_PRICE = 4;
+    private static final int IND_COLUMN_SIZE = 5;
 
 	public OrderItemDao(Connection connection) {
 		super(connection);
@@ -68,9 +78,64 @@ public class OrderItemDao extends Dao<OrderItem> {
 
 	@Override
 	public List<OrderItem> get(OrderItem param) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+        String query = buildQuery(param);
+
+        ArrayList<OrderItem> itens = null;
+        Statement stm = null;
+        try {
+            stm = mConnection.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            itens = new ArrayList<OrderItem>();
+            while(rs.next()) {
+            	OrderItem oi = new OrderItem();
+            	oi.setId(rs.getInt(IND_COLUMN_ID));
+            	oi.setOrderId(rs.getLong(IND_COLUMN_ORDER_ID));
+            	oi.setPrice(rs.getDouble(IND_COLUMN_PRICE));
+            	oi.setProductId(rs.getInt(IND_COLUMN_PRODUCT_ID));
+            	oi.setSize(rs.getInt(IND_COLUMN_SIZE));
+
+                itens.add(oi);
+            }
+        } catch (SQLException e) {
+            Logger.error("Erro ao listar itens de pedido", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+        return itens;
 	}
+
+	private String buildQuery(OrderItem param) {
+        final String where = " WHERE";
+        final String and = " AND";
+        String nextToken = where;
+        StringBuilder queryBuilder = new StringBuilder();
+
+        queryBuilder.append("SELECT * FROM " + TABLE_NAME);
+        if (param != null) {
+            if (param.getOrderId() != SQLUtils.INVALID_ID) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_ORDER_ID + " = " + param.getOrderId());
+                nextToken = and;
+            }
+            if (param.getId() != SQLUtils.INVALID_ID) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_ID + " = " + param.getId());
+                nextToken = and;
+            }
+            if (param.getProductId() != SQLUtils.INVALID_ID) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_PRODUCT_ID + " = " + param.getProductId());
+                nextToken = and;
+            }
+        }
+
+        return queryBuilder.toString();
+    }
 
 	@Override
 	public int getLastSavedId() throws SQLException {

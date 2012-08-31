@@ -17,7 +17,7 @@ import com.delivery.engine.command.MenuEditorCommand;
 import com.delivery.util.StringUtils;
 
 /**
- * Concentra as requisições referentes ao cardápio
+ * Concentra as requisicoes referentes ao cardapio
  * Adicionar categoria, remover categoria, adicionar produto...
  *
  *

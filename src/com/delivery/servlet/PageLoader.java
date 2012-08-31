@@ -22,15 +22,7 @@ public class PageLoader extends HttpServlet {
             throws ServletException, IOException {
 
 
-        boolean debugMode = req.getParameter("debug") != null;
         String cmdName = req.getParameter("page");
-
-        //TODO remover depois de terminados os testes
-        if (debugMode) {
-            RequestDispatcher dispatcher = req.getRequestDispatcher(cmdName);
-            dispatcher.forward(req, resp);
-            return;
-        }
 
         try {
             PageLoaderCommand pageLoader = Command.getFromName(cmdName, PageLoaderCommand.class);

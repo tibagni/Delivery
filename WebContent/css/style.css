@@ -1,6 +1,9 @@
 body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#F0E6D3;color:#000;background:#F0E6D3;}
 ul{margin:5px;padding-left:20px; list-style: none;}
 label{font-size:11px;}
+a{color:#351100;text-decoration:underline;}
+a:visited{color:#351100;text-decoration:underline;}
+a:hover{color:#000;text-decoration:none;}
 .BodyContent{position:relative;left:0;top:0;width:100%;margin:0 auto 0 auto;}
 .BackgroundGradient{position:absolute;left:0;top:0;width:100%;height:100%;z-index:-1000;background:url('../images/BackgroundGradient.png') repeat-x;}
 .Border{position:relative;z-index:1;overflow:hidden;padding:5px 5px 5px 5px;color:#000;font-size:13px;}
@@ -66,6 +69,8 @@ img{border:0;}
 h2{margin:0;color: #404040;}
 h1{color: #404040; border-bottom: dashed 1px #404040;}
 h3{color: #404040; border-bottom: solid 1px;}
+h4{margin:0; color: #404040; border-bottom: solid 1px; font-size: 14px}
+h5{color: #404040; font-size: 13px}
 blockquote{width:80%;color:#000;border:solid 1px #503416;background:#FFF;margin:0 auto;padding:15px;-webkit-border-radius:5px;-moz-border-radius:5px;}
 blockquote a,blockquote a:link{color:#491700!important;text-decoration:underline;}
 blockquote a:visited{color:#491700!important;text-decoration:underline;}
@@ -142,6 +147,28 @@ input{border: solid 1px #000;}
 .addressBox{background-color:#F0E6D3; padding:10px; color: #404040; cursor: hand;}
 .addressBox:hover{background-color:#EE9933}
 
+.orderBox{border: dashed 1px #000; background-color:#F0E6D3; padding:2px; color: #404040; cursor: hand; font-size: 12px;}
+.orderBox:hover{background-color:#EE9933}
+table.orderDashboard td{padding: 3px; border-right: solid 1px #000; border-bottom: solid 1px #000; vertical-align: top;}
+
+
+ul.orderDetail{margin:5px;padding-left:10px; list-style: none;}
+ul.orderDetail li{padding: 5px;}
+ul.orderDetail li div{padding-left:15px; font-size: 12px;}
+ul.orderDetail li div ul li{display: inline;}
+
+div.orderInfo{padding: 5px; font-size: 12px; border: dashed 1px #404040; background-color: #FFFFE9; margin: 5px;}
+
+ul.userInfoList {margin: 5px; border-bottom: dashed 1px #404040;}
+ul.userInfoList li{margin: 5px;}
+
+div.homeBox{margin: 10px; padding: 15px; background: -webkit-gradient(linear, left top, left bottom, from(#feb884), to(#cf8402));
+border-radius: 5px; border: solid 1px #404040; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; color: #333; }
+
+.containerSteps{display:block;}
+.boxStep{width: 150px; float:left; padding: 7px;}
+.setaStep{width: 45px; height: 15px; float: left; background: url(../images/arrow.png); margin: 65px 0px 0px 0px;}
+.clear{clear:both;}
 
 /****************************** Menu (Cardapio) ************************************/
 div.panel,p.flip {margin:0px;padding:5px;}

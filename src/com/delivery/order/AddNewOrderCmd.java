@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import com.delivery.Logger;
-import com.delivery.SessionConstants;
+import com.delivery.SessionUtils;
 import com.delivery.engine.command.OrderCommand;
 import com.delivery.menu.Optional;
 import com.delivery.menu.Price;
@@ -28,7 +28,7 @@ public class AddNewOrderCmd extends OrderCommand {
     public void execute(HttpServletRequest request) {
         Map<String, String[]> parameters;
 
-        Order order = (Order) request.getSession().getAttribute(SessionConstants.ORDER);
+        Order order = SessionUtils.getActiveOrder(request.getSession());
         if (order == null) {
             order = new Order();
         }
@@ -132,7 +132,7 @@ public class AddNewOrderCmd extends OrderCommand {
 
             item.setPrice(orderItemPrice);
             order.addItem(item);
-            request.getSession().setAttribute("SessionOrder", order);
+            SessionUtils.setActiveOrder(request.getSession(), order);
         } catch (Exception e) {
             Logger.error("erro ao inserir item de pedido", e);
             //mRedirect TODO

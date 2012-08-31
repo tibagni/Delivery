@@ -3,10 +3,12 @@
  * ja que o menu de navegacao e no mesmo igual
  */
 
+var currentPage = "none";
+
 $(document).ready(function() {
 	$("a.MenuButton, a.ActiveMenuButton").click(function() {
-		// Workaround para poder setar quem é o item ativo no próprio html
-		if ($(this).hasClass("ActiveMenuButton")) return;
+		// Workaround para poder setar quem e o item ativo no proprio html
+		//if ($(this).hasClass("ActiveMenuButton")) return;
 		
 		// Desativa o item ativo atual
 		$("a.ActiveMenuButton").addClass("MenuButton");
@@ -21,12 +23,29 @@ $(document).ready(function() {
 		
 		if (requestedPage != null && requestedPage.length > 0) {
 			$("div#MainArea").load('PageLoader?page=' + requestedPage);
+			// Identifica, na div, qual e a pagina ativa no momento
+			$("div#mainArea").attr("title", requestedPage);
+			
+			if (requestedPage == "OrderManager") {
+				// Limpa o contador de novos pedidos do order manager
+				$("#orderManagerLink").html("");
+			}
 		}
 	});
 	
-	$("a.debugPageLoader").click(function() {
-		$("div#mainArea").html("<img src=\"images/loading-circle.gif\" />");
-		var requestedPage = $(this).attr("title");
-		$("div#MainArea").load('PageLoader?debug=true&page=' + requestedPage);
+	$("a.AjaxLink").live("click", function() {
+		$("div#mainArea").html("<img src=\"" + getLoadingSpinnerImg() + "\" />");
+		var requestedPage = $(this).attr("href").substring(1);
+		
+		if (requestedPage != null && requestedPage.length > 0) {
+			$("div#MainArea").load('PageLoader?page=' + requestedPage);
+			// Identifica, na div, qual e a pagina ativa no momento
+			$("div#mainArea").attr("title", requestedPage);
+			
+			if (requestedPage == "OrderManager") {
+				// Limpa o contador de novos pedidos do order manager
+				$("#orderManagerLink").html("");
+			}
+		}
 	});
 });

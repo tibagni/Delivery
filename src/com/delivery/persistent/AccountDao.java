@@ -162,6 +162,11 @@ public class AccountDao extends Dao<UserAccount> {
                 queryBuilder.append(" " + COLUMN_EMAIL + " = '" + param.getEmail() + "'");
                 nextToken = and;
             }
+            if (!StringUtils.isEmpty(param.getPassword())) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_PWD + " = '" + param.getPassword() + "'");
+                nextToken = and;
+            }
             if (!StringUtils.isEmpty(param.getTel())) {
                 queryBuilder.append(nextToken);
                 queryBuilder.append(" " + COLUMN_TEL + " = " + param.getTel());

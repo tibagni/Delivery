@@ -17,6 +17,13 @@ $(document).ready(function() {
 		$.post(url, serializedForm, function(data) {
 			$("div#MainArea").html(data);
 			$.modal.close();
+		}).error(function (jqXHR, textStatus, errorThrown) {
+			if (textStatus == "error") {
+				if (errorThrown == "Unauthorized") {
+					handleUnauthorizedError();
+				}
+			}
+			$.modal.close();
 		});
 		return false;
 	});
@@ -28,6 +35,13 @@ function ajaxSubmit(form) {
 	startLoading();
 	$.post(url, serializedForm, function(data) {
 		$("div#MainArea").html(data);
+		$.modal.close();
+	}).error(function (jqXHR, textStatus, errorThrown) {
+		if (textStatus == "error") {
+			if (errorThrown == "Unauthorized") {
+				handleUnauthorizedError();
+			}
+		}
 		$.modal.close();
 	});
 	return false;

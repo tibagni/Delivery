@@ -6,8 +6,9 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	var content = $("#shopCar").html();
-	$("#userArea").html(content);
-	$("div#mainArea").html("<img src=\"../images/loading-circle.gif\" />");
+	$("#shopCarArea").html(content);
+	$("#shopCarArea").show(200);
+	$("div#MainArea").html("<img src=\"../images/loading-circle.gif\" />");
 	$("div#MainArea").load('PageLoader?page=Menu');	
 });
 </script>

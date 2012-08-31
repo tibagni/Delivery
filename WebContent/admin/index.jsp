@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Web Site Name</title>
@@ -32,75 +33,42 @@
         
     	<!-- Begin Menu de navegação -->
 		<div class="Menu">
+		<c:if test="${not empty AdminSession }">
+            <a style="float: right" href="Login?action=logout">Sair</a>
             <ul>
 				<li><a href="#Home" class="ActiveMenuButton"><span>Home</span></a></li> 
-				<li><a href="#MenuEditor" class="MenuButton"><span>Editor de Cardápio</span></a></li> 
-				<li><a href="#" class="MenuButton"><span>Archive</span></a></li> 
-				<li><a href="#" class="MenuButton"><span>About</span></a></li>
+				<li><a href="#MenuEditor" class="MenuButton"><span>Editor de cardápio</span></a></li> 
+				<li><a href="#OrderManager" class="MenuButton"><span>Gerenciador de pedidos 
+				    <b id="orderManagerLink" style="color: #FF0000;"></b></span></a></li>
 			</ul>
+	    </c:if>
         </div>
     	<!-- End Menu de navegação -->
 		
-		<div class="Columns"><div class="Column1"><div class="BlockBorder"><div class="BlockBL"><div></div></div>
-		<div class="BlockBR"><div></div></div><div class="BlockTL"></div><div class="BlockTR"><div></div></div>
-		<div class="BlockT"></div><div class="BlockR"><div></div></div><div class="BlockB"><div></div></div>
-		<div class="BlockL"></div><div class="BlockC"></div>
-	
-		<!-- Begin Caixa de usuário/login -->	
-		<div class="Block">
-            <span class="BlockHeader"><span>:: Login</span></span>
-            <div class="BlockContentBorder">
-				<form>
-					<table>
-						<tr>
-							<td><label for="login_user">Usuário</label></td>
-							<td><input type="text" style="width:120px" id="login_user" name="user" /></td>
-						</tr>
-						<tr>
-							<td><label for="login_pwd">Senha</label></td>
-							<td><input type="password" style="width:120px" id="login_pwd" name="password" /></td>
-						</tr>
-					</table>
-					<span class="ButtonInput"><span><input type="button" value="Login" /></span></span>
-				</form><div style="text-align: right;"><a href="#" class="debugPageLoader"  title="SignUp">Criar conta</a></div>
-            </div>
-        </div>
-		<!-- End Caixa de usuário/login -->
-		
-		</div>
-        <div class="BlockBorder"><div class="BlockBL"><div></div></div><div class="BlockBR"><div></div></div>
-        <div class="BlockTL"></div><div class="BlockTR"><div></div></div><div class="BlockT"></div>
-        <div class="BlockR"><div></div></div><div class="BlockB"><div></div></div>
-        <div class="BlockL"></div><div class="BlockC"></div>
-        
-		<!-- Begin links -->
-        <div class="Block">
-            <span class="BlockHeader"><span>:: Links</span></span>
-            <div class="BlockContentBorder">
-                <ul>
-                    <li><a href="#">Test Link 1</a></li>
-                    <li><a href="#">Test Link 2</a></li>
-                    <li><a href="#">Test Link 3</a></li>
-                    <li><a href="#">Test Link 4</a></li>
-                    <li><a href="#">Test Link 5</a></li>
-                </ul>
-            </div>
-        </div>
-		<!-- End links -->
-		
-		</div>
-        </div>
+		<div class="Columns">
         
         <!-- Begin Conteúdo -->
         <div class="MainColumn">
-	        <div class="Article" id="MainArea"></div>
+	        <div class="Article" id="MainArea" title="">
+                <c:choose>
+                    <c:when test="${empty AdminSession}">
+                        <jsp:include page="Login.jsp"/>
+                    </c:when>
+                    <c:otherwise>
+                        <jsp:include page="home.jsp"/>
+                    </c:otherwise>
+                </c:choose>
+	        </div>
         </div>
         <!-- End Conteúdo -->
         </div>
         
         <!-- Begin Rodape -->
         <div class="Footer">
-           Sei la. Rodape - <a href="#">Contato?</a>
+        <c:if test="${not empty AdminSession }">
+           <a href="#Home" class="AjaxLink">Home</a> | <a href="#MenuEditor" class="AjaxLink">Editor de cardápio</a> 
+           | <a href="#OrderManager" class="AjaxLink">Gerenciador de pedidos</a>
+        </c:if>
         </div>
         <!-- End Rodape -->                
 

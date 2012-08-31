@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import com.delivery.Logger;
-import com.delivery.SessionConstants;
+import com.delivery.SessionUtils;
 import com.delivery.account.Address;
 import com.delivery.account.UserAccount;
 import com.delivery.engine.command.OrderCommand;
@@ -28,7 +28,7 @@ public class SelectOrderAddressCmd extends OrderCommand {
 	        Context envContext  = (Context)initContext.lookup("java:/comp/env");
 	        DataSource dataSource = (DataSource)envContext.lookup("jdbc/deliveryDB");
 
-			UserAccount user = (UserAccount) request.getSession().getAttribute(SessionConstants.USER_LOGGED);
+			UserAccount user = SessionUtils.getLoggedUser(request.getSession());
 			if (user == null) {
 				// TODO - Enquanto o controle de sessao nao esta funcionando,
 				// vamos usar um user hardcoded. Quando o controle de sessao for implementado

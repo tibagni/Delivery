@@ -35,9 +35,11 @@
 		<div class="Menu">
             <ul>
 				<li><a href="#Home" class="ActiveMenuButton"><span>Home</span></a></li> 
-				<li><a href="#Menu" class="MenuButton"><span>Cardápio</span></a></li> 
-				<li><a href="#" class="MenuButton"><span>Archive</span></a></li> 
-				<li><a href="#" class="MenuButton"><span>About</span></a></li>
+				<li><a href="#Menu" class="MenuButton"><span>Cardápio</span></a></li>
+				<c:if test="${not empty UserSession }">
+					<li><a href="#" class="MenuButton"><span>Meus pedidos</span></a></li> 
+					<li><a href="#" class="MenuButton"><span>Recomendações</span></a></li>
+				</c:if> 
 			</ul>
         </div>
     	<!-- End Menu de navegação -->
@@ -52,11 +54,11 @@
             <span class="BlockHeader"><span id="userAreaTitle">:: Login</span></span>
             <div class="BlockContentBorder" id="userArea">
             <c:choose>
-            	<c:when test="${not empty SessionOrder }">
-            		<jsp:include page="order/ShopCar.jsp"/>
-            	</c:when>
+                <c:when test="${not empty UserSession }">
+                    <jsp:include page="userInfo.jsp"/>
+                </c:when>
             	<c:otherwise>
-					<form>
+					<form method="post" action="Login">
 						<table>
 							<tr>
 								<td><label for="login_user">Usuário</label></td>
@@ -67,8 +69,8 @@
 								<td><input type="password" style="width:120px" id="login_pwd" name="password" /></td>
 							</tr>
 						</table>
-						<span class="ButtonInput"><span><input type="button" value="Login" /></span></span>
-					</form><div style="text-align: right;"><a href="#" class="debugPageLoader"  title="signup.jsp">Criar conta</a></div>
+						<span class="ButtonInput"><span><input type="submit" value="Login" /></span></span>
+					</form><div style="text-align: right;"><a href="#SignUp" class="AjaxLink" >Criar conta</a></div>
 				</c:otherwise>
 			</c:choose>
             </div>
@@ -81,34 +83,44 @@
         <div class="BlockR"><div></div></div><div class="BlockB"><div></div></div>
         <div class="BlockL"></div><div class="BlockC"></div>
         
-		<!-- Begin links -->
-        <div class="Block">
-            <span class="BlockHeader"><span>:: Links</span></span>
-            <div class="BlockContentBorder">
-                <ul>
-                    <li><a href="#">Test Link 1</a></li>
-                    <li><a href="#">Test Link 2</a></li>
-                    <li><a href="#">Test Link 3</a></li>
-                    <li><a href="#">Test Link 4</a></li>
-                    <li><a href="#">Test Link 5</a></li>
-                </ul>
-            </div>
-        </div>
-		<!-- End links -->
+		<!-- Begin ShopCar -->
+		<!-- Só mostra o carrinho se o usuario estiver logado! -->
+		<c:if test="${not empty UserSession }">
+	        <div class="Block">
+	            <span class="BlockHeader"><span>:: Pedido</span></span>
+	            <div class="BlockContentBorder" id="shopCarArea">
+                    <jsp:include page="order/ShopCar.jsp"/>
+	            </div>
+	        </div>
+        </c:if>
+		<!-- End ShopCar -->
 		
 		</div>
         </div>
         
         <!-- Begin Conteúdo -->
         <div class="MainColumn">
-	        <div class="Article" id="MainArea"></div>
+	        <div class="Article" id="MainArea" title="">
+	            <c:choose>
+	                <c:when test="${defaultPage == 'login'}">
+                        <c:remove var="defaultPage"/>
+	                    <jsp:include page="Login.jsp"/>
+	                </c:when>
+	                <c:otherwise>
+                        <jsp:include page="home.jsp"/>
+	                </c:otherwise>
+	            </c:choose>
+	        </div>
         </div>
         <!-- End Conteúdo -->
         </div>
         
         <!-- Begin Rodape -->
         <div class="Footer">
-           Sei la. Rodape - <a href="#">Contato?</a>
+           <a href="#Home" class="AjaxLink">Home</a> | <a href="#Menu" class="AjaxLink">Cardápio</a> 
+           <c:if test="${not empty UserSession }">
+            | <a href="#" class="AjaxLink">Meus pedidos</a> | <a href="#" class="AjaxLink">Recomendações</a>
+            </c:if>
         </div>
         <!-- End Rodape -->                
 

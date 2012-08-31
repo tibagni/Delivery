@@ -2,6 +2,7 @@ package com.delivery.account;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -63,15 +64,41 @@ public class AddNewUserCmd extends AccountDbCommand {
 
         checkAddress(newAddress);
 
+        final AddNewUserStatus status = new AddNewUserStatus();
+        status.mStatus = AddNewUserStatus.OK;
+
         DaoManager daoManager = new DaoManager(dataSource);
         daoManager.transaction(new DaoManager.DaoCommand() {
 			@Override public Object execute(DaoManager manager) throws SQLException {
 				ArrayList<UserAccount> accountToInsert = new ArrayList<UserAccount>();
 				AccountDao accDao = manager.getAccountDao();
 
+				// Antes de inserir uma nova conta, verificamos se esa ja nao existe
+				List<UserAccount> queryResult;
+				UserAccount query = new UserAccount();
+				query.setCpf(newAccount.getCpf());
+				queryResult = accDao.get(query);
+				if (queryResult != null && queryResult.size() > 0) {
+					status.mStatus = AddNewUserStatus.CPF_EXISTS;
+					// Mesmo nao inserindo nada no db, devemos cancelar a transacao
+					// para que o auto commit volte a ser true
+					manager.cancelTransaction();
+				}
+				query.setCpf(0);
+				query.setEmail(newAccount.getEmail());
+				queryResult = accDao.get(query);
+				if (queryResult != null && queryResult.size() > 0) {
+					status.mStatus = AddNewUserStatus.EMAIL_EXISTS;
+					// Mesmo nao inserindo nada no db, devemos cancelar a transacao
+					// para que o auto commit volte a ser true
+					manager.cancelTransaction();
+				}
+
+
 				accountToInsert.add(newAccount);
 				int[] saved = accDao.save(accountToInsert);
 				if (saved == null || saved.length == 0) {
+					status.mStatus = AddNewUserStatus.UNKNOWN_ERROR;
 					manager.cancelTransaction();
 				}
 
@@ -82,13 +109,32 @@ public class AddNewUserCmd extends AccountDbCommand {
 				addrToInsert.add(newAddress);
 				saved = addrDao.save(addrToInsert);
 				if (saved == null || saved.length == 0) {
+					status.mStatus = AddNewUserStatus.UNKNOWN_ERROR;
 					manager.cancelTransaction();
 				}
-
 
 				return null;
 			}
 		});
+
+        switch(status.mStatus) {
+        	case AddNewUserStatus.CPF_EXISTS:
+        		request.setAttribute("errorMsg", "Não foi possível realizar o cadastro. O seu Cpf já está sendo usado!");
+        		mRedirect = "ErrorMessage.jsp";
+        		break;
+        	case AddNewUserStatus.EMAIL_EXISTS:
+        		request.setAttribute("errorMsg", "Não foi possível realizar o cadastro. O seu Email já está sendo usado!");
+        		mRedirect = "ErrorMessage.jsp";
+        		break;
+        	case AddNewUserStatus.UNKNOWN_ERROR:
+        		request.setAttribute("errorMsg", "Não foi possível realizar o cadastro.");
+        		mRedirect = "ErrorMessage.jsp";
+        		break;
+        	case AddNewUserStatus.OK:
+        		request.setAttribute("loginMsg", "Cadastro realizado com sucesso! Faça o login para começar a pedir online!");
+        		mRedirect = "Login.jsp";
+        		break;
+        }
 
 		} catch (NamingException e) {
             Logger.error("NamingException", e);
@@ -127,4 +173,12 @@ public class AddNewUserCmd extends AccountDbCommand {
 
 	}
 
+	private class AddNewUserStatus {
+		public static final int OK = 0;
+		public static final int CPF_EXISTS = 1;
+		public static final int EMAIL_EXISTS = 2;
+		public static final int UNKNOWN_ERROR = 3;
+
+		public int mStatus;
+	}
 }

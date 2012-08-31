@@ -7,6 +7,10 @@ public class Logger {
         t.printStackTrace();
     }
 
+    public static void wtf(String msg) {
+    	error("WTF !!! " + msg);
+    }
+
     public static void error(String msg) {
         stdOut("!!! " + msg);
     }

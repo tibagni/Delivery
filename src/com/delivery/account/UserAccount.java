@@ -1,5 +1,7 @@
 package com.delivery.account;
 
+import com.delivery.util.StringUtils;
+
 public class UserAccount {
 
 	private String mName;
@@ -63,6 +65,13 @@ public class UserAccount {
 
 	public void setAddress(Address address) {
 		mAddress = address;
+	}
+
+	public boolean isValid() {
+		if (StringUtils.isEmpty(mEmail)) return false;
+		if (mCpf <= 0) return false;
+
+		return true;
 	}
 
 }
