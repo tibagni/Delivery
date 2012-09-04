@@ -32,14 +32,6 @@ public class Login extends HttpServlet {
 	        Context envContext  = (Context)initContext.lookup("java:/comp/env");
 	        DataSource dataSource = (DataSource)envContext.lookup("jdbc/deliveryDB");
 
-
-	        // Se nao foi passado nem user nem password, retorna para a pagina inicial
-			if (SessionUtils.getLoggedUser(req.getSession()) != null) {
-
-				RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
-	            dispatcher.forward(req, resp);
-			}
-
 			String user = req.getParameter("user");
 			String password = req.getParameter("password");
 

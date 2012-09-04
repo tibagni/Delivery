@@ -36,7 +36,15 @@ public class Order extends HttpServlet {
         String cmdName = req.getParameter("cmd");
 
         try {
-            OrderCommand command = Command.getFromName(cmdName, OrderCommand.class);
+        	OrderCommand command;
+        	try {
+        		command = Command.getFromName(cmdName, OrderCommand.class);
+        	} catch(CommandNotFoundException e) {
+                Logger.warning("[Order]Comando nao definido. Tentando attribute! - " + cmdName);
+        		String cmdName2 = (String) req.getAttribute("cmd");
+                Logger.warning("[Order]Attribute cmd - " + cmdName2);
+        		command = Command.getFromName(cmdName2, OrderCommand.class);
+        	}
             command.execute(req);
             if (!StringUtils.isEmpty(command.getRedirect())) {
                 RequestDispatcher dispatcher = req.getRequestDispatcher(command.getRedirect());

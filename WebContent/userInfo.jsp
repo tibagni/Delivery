@@ -13,8 +13,8 @@ $(document).ready(function(){
 <h4>Bem vindo, ${UserSession.name }</h4>
 <ul class="userInfoList">
 	<li>${UserSession.email }</li>
-	<li>${UserSession.tel } <a href="#" class="AjaxLink">[Alterar]</a></li>
-	<li><a href="#" class="AjaxLink">[Alterar senha]</a></li>
+	<li><span id="userTel">${UserSession.tel }</span> <a href="#ChangeTel" class="AjaxLink">[Alterar]</a></li>
+	<li><a href="#ChangePwd" class="AjaxLink">[Alterar senha]</a></li>
 </ul>
 
 <a href="Login?action=logout">Sair</a>

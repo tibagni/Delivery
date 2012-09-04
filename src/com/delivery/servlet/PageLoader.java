@@ -30,7 +30,7 @@ public class PageLoader extends HttpServlet {
             RequestDispatcher dispatcher = req.getRequestDispatcher(pageLoader.getRedirect());
             dispatcher.forward(req, resp);
         } catch (CommandNotFoundException e) {
-            Logger.warning("[PageLoader]Comando não definido! - " + cmdName);
+            Logger.warning("[PageLoader]Comando nao definido! - " + cmdName);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
@@ -38,7 +38,7 @@ public class PageLoader extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        // Não aceita requisições POST
+        // Nao aceita requisicoes POST
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 }

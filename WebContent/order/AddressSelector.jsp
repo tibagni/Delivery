@@ -15,4 +15,4 @@
 		</div>
 	</c:forEach>
 </p>
-<a href="#">[+] Adicionar outro endereço</a>
+<a href="#AddAddress" class="AjaxLink">[+] Adicionar outro endereço</a>

@@ -177,4 +177,43 @@ public class AccountDao extends Dao<UserAccount> {
         return queryBuilder.toString();
     }
 
+    public boolean changeAccountPwd(long accId, String newPwd) throws SQLException {
+    	Statement stm = null;
+        try {
+            stm = mConnection.createStatement();
+            int result = stm.executeUpdate("UPDATE " + TABLE_NAME + " SET " + COLUMN_PWD + "='" + newPwd +
+            		"' WHERE " + COLUMN_ID + "=" + accId);
+
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.error("Erro ao atualizar senha", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+    }
+
+    public boolean changeAccountTel(long accId, String newTel) throws SQLException {
+    	Statement stm = null;
+        try {
+            stm = mConnection.createStatement();
+            int result = stm.executeUpdate("UPDATE " + TABLE_NAME + " SET " + COLUMN_TEL + "='" + newTel +
+            		"' WHERE " + COLUMN_ID + "=" + accId);
+
+            return result > 0;
+        } catch (SQLException e) {
+            Logger.error("Erro ao atualizar Telefone", e);
+            throw e;
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException ignore) { }
+            }
+        }
+    }
 }

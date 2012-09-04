@@ -37,7 +37,7 @@
 				<li><a href="#Home" class="ActiveMenuButton"><span>Home</span></a></li> 
 				<li><a href="#Menu" class="MenuButton"><span>Cardápio</span></a></li>
 				<c:if test="${not empty UserSession }">
-					<li><a href="#" class="MenuButton"><span>Meus pedidos</span></a></li> 
+					<li><a href="#MyOrder" class="MenuButton"><span>Meus pedidos</span></a></li> 
 					<li><a href="#" class="MenuButton"><span>Recomendações</span></a></li>
 				</c:if> 
 			</ul>
@@ -119,7 +119,7 @@
         <div class="Footer">
            <a href="#Home" class="AjaxLink">Home</a> | <a href="#Menu" class="AjaxLink">Cardápio</a> 
            <c:if test="${not empty UserSession }">
-            | <a href="#" class="AjaxLink">Meus pedidos</a> | <a href="#" class="AjaxLink">Recomendações</a>
+            | <a href="#MyOrder" class="AjaxLink">Meus pedidos</a> | <a href="#" class="AjaxLink">Recomendações</a>
             </c:if>
         </div>
         <!-- End Rodape -->                

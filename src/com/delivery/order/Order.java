@@ -189,6 +189,7 @@ public class Order {
 			case OrderStatus.PREPARING:
 			case OrderStatus.READY_TO_DELIVER:
 			case OrderStatus.WAITING_FOR_PAYMENT:
+			case OrderStatus.CANCELLED:
 				return true;
 		}
 		return false;
@@ -270,7 +271,12 @@ public class Order {
     	 */
     	public static final int FINISHED		    = 6;
 
-    	private static final String[] STATUS_TEXT = new String[7];
+    	/**
+    	 * Pedido cancelado!
+    	 */
+    	public static final int CANCELLED		    = 7;
+
+    	private static final String[] STATUS_TEXT = new String[8];
     	static {
     		STATUS_TEXT[NOT_INITIALIZED] = "Pedido n‹o inicializado";
     		STATUS_TEXT[WAITING_FOR_PAYMENT] = "Aguardando pagamento";
@@ -279,10 +285,11 @@ public class Order {
     		STATUS_TEXT[READY_TO_DELIVER] = "Pedido pronto para ser entregue";
     		STATUS_TEXT[DELIVERING] = "Pedido sendo entregue";
     		STATUS_TEXT[FINISHED] = "Pedido finalizado";
+    		STATUS_TEXT[CANCELLED] = "Pedido cancelado";
     	}
 
     	public static String getTextFromStatus(int status) {
-    		if (status < 0 || status > 5) return null;
+    		if (status < 0 || status > 7) return null;
 
     		return STATUS_TEXT[status];
     	}

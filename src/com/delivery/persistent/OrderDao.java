@@ -170,7 +170,7 @@ public class OrderDao extends Dao<Order> {
                     queryBuilder.append(")");
             	}
             } else if (param.getQueryExcludeStatusSet() != null && param.getQueryExcludeStatusSet().size() > 0) {
-            	HashSet<Integer> statusSet = param.getQueryStatusSet();
+            	HashSet<Integer> statusSet = param.getQueryExcludeStatusSet();
             	if (statusSet.size() > 0) {
             		queryBuilder.append(nextToken);
                     queryBuilder.append(" " + COLUMN_STATUS + " NOT IN (");
@@ -195,6 +195,9 @@ public class OrderDao extends Dao<Order> {
                 queryBuilder.append(" " + COLUMN_STATUS + " = " + param.getStatus());
             }
         }
+
+        // Ordena pelo timestamp
+        queryBuilder.append(" ORDER BY " + COLUMN_TIMESTAMP + " DESC");
 
         return queryBuilder.toString();
     }

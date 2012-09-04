@@ -41,6 +41,7 @@ public class OrderManagerLoader extends AdminPageLoaderCommand {
 					// Primeiro vamos pegar a lista de pedidos abertos
 					Order query = new Order();
 					query.addExcludeStatusToQuery(Order.OrderStatus.FINISHED);
+					query.addExcludeStatusToQuery(Order.OrderStatus.CANCELLED);
 					OrderDao orderDao = manager.getOrderDao();
 					List<Order> orders = orderDao.get(query);
 
@@ -111,7 +112,6 @@ public class OrderManagerLoader extends AdminPageLoaderCommand {
             req.setAttribute("delivering", delivering);
         } catch (NamingException e) {
             Logger.error("NamingException", e);
-            // TODO mostra a pagina de cardapio sem nada mesmo?!?!
         }
 	}
 

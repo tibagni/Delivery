@@ -30,13 +30,8 @@ public class SelectOrderAddressCmd extends OrderCommand {
 
 			UserAccount user = SessionUtils.getLoggedUser(request.getSession());
 			if (user == null) {
-				// TODO - Enquanto o controle de sessao nao esta funcionando,
-				// vamos usar um user hardcoded. Quando o controle de sessao for implementado
-				// esse codigo devera ser substituido por um tratamento de erro
-				// nao poderia ser possivel chegar a este ponto se o usuario nao tem uma
-				// sessao estabelecida (pode ter expirado)
-				user = new UserAccount();
-				user.setCpf(22114393810L);
+				mRedirect = "Login.jsp";
+				return;
 			}
 
 			final long accountId = user.getCpf();
@@ -55,7 +50,8 @@ public class SelectOrderAddressCmd extends OrderCommand {
 			if (addresses == null || addresses.size() == 0) {
 				// Nao deveria acontecer. Mas se acontecer devemos mandar o usuario
 				// para a pagina de cadastro de novo endereco
-				mRedirect = "seila"; // TODO
+				// (Em addressSelector tem um link ara cadasro de endereco)
+				mRedirect = "order/AddressSelector.jsp";
 			} else {
 				// Tudo ok, adiciona a lista de enderecos no request
 				// E manda o usuario para o addressSelector
