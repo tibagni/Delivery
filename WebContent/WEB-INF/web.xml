@@ -136,6 +136,14 @@
       <url-pattern>/admin/Login</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+      <servlet-name>Payment</servlet-name>
+      <servlet-class>com.delivery.servlet.Payment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>Payment</servlet-name>
+      <url-pattern>/Payment</url-pattern>
+  </servlet-mapping>
   
   <!-- Banco de dados -->
   <resource-ref>

@@ -19,6 +19,7 @@ public class Order {
     List<OrderItem> mItems;
     int mNextTemporaryId = 0;
     private boolean mClosed;
+    private boolean mFinalized;
 
     private final HashSet<Integer> mQueryStatusSet;
     private final HashSet<Integer> mQueryExcludeStatusSet;
@@ -94,6 +95,13 @@ public class Order {
     	calculateOrderPrice();
     }
 
+    public void setOrderSeccessufullyFinalized() {
+    	if (!mClosed) {
+    		throw new IllegalStateException("O pedido nao esta fechado");
+    	}
+    	mFinalized = true;
+    }
+
     private void calculateOrderPrice() {
     	double price = 0.0;
     	for (OrderItem item : mItems) {
@@ -104,6 +112,10 @@ public class Order {
 
     public boolean isClosed() {
     	return mClosed;
+    }
+
+    public boolean isSuccessfullyFinalized() {
+    	return mFinalized;
     }
 
     public int getAddressId() {

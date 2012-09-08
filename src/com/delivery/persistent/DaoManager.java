@@ -31,6 +31,8 @@ public class DaoManager {
     private OrderItemOptionlRelDao mOrderItemOptionlRelDao;
     private OrderItemFlavourRelDao mOrderItemFlavourRelDao;
 
+    private PaymentDao mPaymentDao;
+
     private final DataSource mDataSource;
     private Connection mConnection;
 
@@ -131,6 +133,13 @@ public class DaoManager {
     	return mAdminDao;
     }
 
+    public PaymentDao getPaymentDao() throws SQLException {
+    	if (mPaymentDao == null) {
+    		mPaymentDao = new PaymentDao(getConnection());
+    	}
+    	return mPaymentDao;
+    }
+
     private Connection getConnection() throws SQLException {
         if (mConnection == null) {
             mConnection = mDataSource.getConnection();
@@ -156,6 +165,7 @@ public class DaoManager {
         mOrderItemOptionlRelDao = null;
         mOrderItemFlavourRelDao = null;
         mAdminDao = null;
+        mPaymentDao = null;
     }
 
     public Object execute(DaoCommand command) {
