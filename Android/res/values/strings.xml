@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">DeliveryAndroid</string>
+    <string name="title_order_detail">Order Detail</string>
+    <string name="title_order_list">Orders</string>
+
+</resources>

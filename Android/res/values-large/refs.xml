@@ -1,0 +1,3 @@
+<resources>
+    <item type="layout" name="activity_order_list">@layout/activity_order_twopane</item>
+</resources>
