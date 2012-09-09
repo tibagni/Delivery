@@ -31,13 +31,13 @@ public class XMLParserUtils {
 
     /**
      * Gets XML elements
-     * 
+     *
      * @param elementTag
      * @param fromElement
      * @return
      */
-    public static List getElements(String elementTag, Element fromElement) {
-        List elements = new ArrayList();
+    public static List<Element> getElements(String elementTag, Element fromElement) {
+        List<Element> elements = new ArrayList<Element>();
         NodeList nodeList = fromElement.getElementsByTagName(elementTag);
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
@@ -50,7 +50,7 @@ public class XMLParserUtils {
 
     /**
      * Gets an element from the XML
-     * 
+     *
      * @param elementTag
      * @param fromElement
      * @return
@@ -69,7 +69,7 @@ public class XMLParserUtils {
 
     /**
      * Gets an element value
-     * 
+     *
      * @param valueTag
      * @param fromElement
      * @return
@@ -79,7 +79,7 @@ public class XMLParserUtils {
         if (nodeList != null && nodeList.getLength() > 0) {
             NodeList childList = nodeList.item(0).getChildNodes();
             if (childList != null && childList.getLength() > 0) {
-                Node node = (Node) childList.item(0);
+                Node node = childList.item(0);
                 return node.getNodeValue();
             }
         }
@@ -88,7 +88,7 @@ public class XMLParserUtils {
 
     /**
      * Creates a new element
-     * 
+     *
      * @param doc
      * @param tag
      * @param data

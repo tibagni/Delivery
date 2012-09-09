@@ -15,16 +15,15 @@
  */
 package br.com.uol.pagseguro.service;
 
+import java.net.HttpURLConnection;
 import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import br.com.uol.pagseguro.domain.Credentials;
 import br.com.uol.pagseguro.domain.PaymentRequest;
 import br.com.uol.pagseguro.exception.PagSeguroServiceException;
 import br.com.uol.pagseguro.infra.HttpsURLConnectionUtil;
-import br.com.uol.pagseguro.logs.PagSeguroDummyLogger;
 import br.com.uol.pagseguro.logs.Logger;
+import br.com.uol.pagseguro.logs.PagSeguroDummyLogger;
 import br.com.uol.pagseguro.logs.PagSeguroLoggerFactory;
 import br.com.uol.pagseguro.properties.PagSeguroSystem;
 import br.com.uol.pagseguro.util.UrlUtil;
@@ -37,7 +36,7 @@ public class PaymentService {
 
 	/**
 	 * PagSeguro Log tool
-	 * 
+	 *
 	 * @see PagSeguroDummyLogger
 	 */
     static Logger log = PagSeguroLoggerFactory.getLogger(PaymentService.class);
@@ -64,7 +63,7 @@ public class PaymentService {
 
     /**
      * Requests a payment
-     * 
+     *
      * @param paymentRequest
      * @return The Uri to where the user needs to be redirected to in order to complete the payment process
      * @throws PagSeguroServiceException
@@ -76,16 +75,16 @@ public class PaymentService {
         String xml = PaymentParser.writePaymentXml(paymentRequest);
 
         // calling payment web service
-        HttpsURLConnection connection = HttpsURLConnectionUtil.getHttpsPostConnection(buildUrl(credentials, paymentRequest),
+        HttpURLConnection connection = HttpsURLConnectionUtil.getHttpsPostConnection(buildUrl(credentials, paymentRequest),
                 URL_CONTENT_TYPE + "; charset=" + CHARSET, xml);
 
         try {
             // parsing web service response
             URL paymentURL = new URL(URL_REDIR + PaymentParser.readPaymentReturnXml(connection.getInputStream()));
-            
+
             log.info("PaymentService.Register("+paymentRequest+") - end - " + paymentURL);
             return paymentURL;
-            
+
         } catch (Exception e) {
             log.error("PaymentService.Register(" + paymentRequest + ") - error ", e);
             throw new RuntimeException(e);

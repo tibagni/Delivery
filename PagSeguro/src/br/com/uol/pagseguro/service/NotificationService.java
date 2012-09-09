@@ -15,7 +15,7 @@
  */
 package br.com.uol.pagseguro.service;
 
-import javax.net.ssl.HttpsURLConnection;
+import java.net.HttpURLConnection;
 
 import br.com.uol.pagseguro.domain.Credentials;
 import br.com.uol.pagseguro.domain.Transaction;
@@ -50,7 +50,7 @@ public class NotificationService {
 
     /**
      * Returns a transaction from a notification code
-     * 
+     *
      * @param credentials
      * @param notificationCode
      * @return a transaction from a notification code
@@ -62,7 +62,7 @@ public class NotificationService {
         log.info("NotificationService.CheckTransaction(notificationCode=" + notificationCode + ") - begin");
 
         // calling transaction notifications webservice
-        HttpsURLConnection connection = HttpsURLConnectionUtil.getHttpsGetConnection(
+        HttpURLConnection connection = HttpsURLConnectionUtil.getHttpsGetConnection(
                 buildURL(credentials, notificationCode), CONTENT_TYPE);
 
         try {

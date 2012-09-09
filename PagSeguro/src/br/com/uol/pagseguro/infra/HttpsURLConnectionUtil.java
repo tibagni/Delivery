@@ -16,6 +16,7 @@
 package br.com.uol.pagseguro.infra;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
@@ -27,8 +28,8 @@ import org.xml.sax.SAXException;
 import br.com.uol.pagseguro.domain.Error;
 import br.com.uol.pagseguro.domain.HttpError;
 import br.com.uol.pagseguro.exception.PagSeguroServiceException;
-import br.com.uol.pagseguro.logs.PagSeguroDummyLogger;
 import br.com.uol.pagseguro.logs.Logger;
+import br.com.uol.pagseguro.logs.PagSeguroDummyLogger;
 import br.com.uol.pagseguro.logs.PagSeguroLoggerFactory;
 import br.com.uol.pagseguro.properties.PagSeguroSystem;
 import br.com.uol.pagseguro.xmlparser.ErrorsParser;
@@ -49,8 +50,8 @@ public class HttpsURLConnectionUtil {
 	private static final String HTTP_METHOD_GET = "GET";
 
     /**
-     * Creates a http connection and makes a remote call 
-     * 
+     * Creates a http connection and makes a remote call
+     *
      * @param method
      * @param urlPath
      * @param contentType
@@ -58,18 +59,18 @@ public class HttpsURLConnectionUtil {
      * @return
      * @throws PagSeguroServiceException
      */
-    private static HttpsURLConnection getHttpsURLConnection(String method, String urlPath, String contentType,
+    private static HttpURLConnection getHttpsURLConnection(String method, String urlPath, String contentType,
             String xml) throws PagSeguroServiceException {
 
         log.debug("method: " + method + ", content-type:" + contentType + ", target URL: " + urlPath);
 
         URL url;
-        HttpsURLConnection connection;
+        HttpURLConnection connection;
         try {
 
             // Creates a connection
             url = new URL(urlPath);
-            connection = (HttpsURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(method);
             connection.setDoOutput(true);
             connection.setDoInput(true);
@@ -116,27 +117,27 @@ public class HttpsURLConnectionUtil {
 
     /**
      * makes a post request in the informed URL
-     * 
+     *
      * @param urlPath
      * @param contentType
      * @param xml
      * @return
      * @throws PagSeguroServiceException
      */
-    public static HttpsURLConnection getHttpsPostConnection(String urlPath, String contentType, String xml)
+    public static HttpURLConnection getHttpsPostConnection(String urlPath, String contentType, String xml)
             throws PagSeguroServiceException {
         return getHttpsURLConnection(HTTP_METHOD_POST, urlPath, contentType, xml);
     }
 
     /**
      * makes a get request n the informed URL
-     * 
+     *
      * @param urlPath
      * @param contentType
      * @return
      * @throws PagSeguroServiceException
      */
-    public static HttpsURLConnection getHttpsGetConnection(String urlPath, String contentType)
+    public static HttpURLConnection getHttpsGetConnection(String urlPath, String contentType)
             throws PagSeguroServiceException {
         return getHttpsURLConnection(HTTP_METHOD_GET, urlPath, contentType, null);
     }

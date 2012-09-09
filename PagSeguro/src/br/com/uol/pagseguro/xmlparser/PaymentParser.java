@@ -19,9 +19,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -36,8 +39,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import br.com.uol.pagseguro.domain.Address;
 import br.com.uol.pagseguro.domain.Item;
 import br.com.uol.pagseguro.domain.PaymentRequest;
+import br.com.uol.pagseguro.domain.Phone;
+import br.com.uol.pagseguro.domain.Sender;
+import br.com.uol.pagseguro.domain.Shipping;
+import br.com.uol.pagseguro.domain.ShippingType;
 import br.com.uol.pagseguro.logs.Logger;
 import br.com.uol.pagseguro.logs.PagSeguroDummyLogger;
 import br.com.uol.pagseguro.logs.PagSeguroLoggerFactory;
@@ -211,7 +219,7 @@ public class PaymentParser {
                         address.appendChild(addressNumber);
                     }
 
-                    if (paymentRequest.getShipping().getAddress().getComplement() != null) {
+                    if (paymentRequest.getShipping().getAddress().getComplement() != null && !"".equals(paymentRequest.getShipping().getAddress().getComplement())) {
                         Element addressComplement = XMLParserUtils.createElement(doc, "complement", paymentRequest
                                 .getShipping().getAddress().getComplement());
                         address.appendChild(addressComplement);
@@ -308,5 +316,172 @@ public class PaymentParser {
         log.debug("Checkout registered Success! Payment request code: "+ paymentRequestCode);
 
         return paymentRequestCode;
+    }
+
+    public static PaymentRequest readPaymentRequestXml(InputStream xmlInputStream)
+    		throws ParserConfigurationException, SAXException, IOException {
+    	log.debug("Parsing Payment request.");
+    	PaymentRequest pr = new PaymentRequest();
+
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(xmlInputStream);
+        Element paymentRequestElement = doc.getDocumentElement();
+
+        //<sender>
+        Element senderElement = XMLParserUtils.getElement("sender", paymentRequestElement);
+        if (senderElement != null) {
+        	Sender sender = new Sender();
+        	Element senderName = XMLParserUtils.getElement("name", senderElement);
+        	if (senderName != null) {
+        		sender.setName(senderName.getFirstChild().getNodeValue());
+        	}
+        	Element senderEmail = XMLParserUtils.getElement("emil", senderElement);
+        	if (senderEmail != null) {
+        		sender.setEmail(senderEmail.getFirstChild().getNodeValue());
+        	}
+        	//<phone>
+        	Element senderPhone = XMLParserUtils.getElement("phone", senderElement);
+        	if (senderPhone != null) {
+        		Element areaCode = XMLParserUtils.getElement("areaCode", senderPhone);
+        		Element number = XMLParserUtils.getElement("number", senderPhone);
+        		if (areaCode != null && number != null) {
+        			sender.setPhone(new Phone(areaCode.getFirstChild().getNodeValue(), number.getFirstChild().getNodeValue()));
+        		}
+        	}
+        	//</phone>
+        	pr.setSender(sender);
+        }
+        //</sender>
+        //<currency>
+        Element currencyElement = XMLParserUtils.getElement("currency", paymentRequestElement);
+        if (currencyElement != null) {
+        	pr.setCurrency(currencyElement.getFirstChild().getNodeValue());
+        }
+        //</currency>
+        //<redirectURL>
+        Element redirectURLElement = XMLParserUtils.getElement("redirectURL", paymentRequestElement);
+        if (redirectURLElement != null) {
+        	pr.setRedirectURL(new URL(redirectURLElement.getFirstChild().getNodeValue()));
+        }
+        //</redirectURL>
+        //<items>
+        Element itemsElement = XMLParserUtils.getElement("items", paymentRequestElement);
+        if (itemsElement != null) {
+    		//<item>
+        	List<Element> items = XMLParserUtils.getElements("item", itemsElement);
+        	for (Element e : items) {
+        		Item i = new Item();
+        		Element itemId = XMLParserUtils.getElement("id", e);
+        		if (itemId != null) {
+        			i.setId(itemId.getFirstChild().getNodeValue());
+        		}
+        		Element itemDescription = XMLParserUtils.getElement("description", e);
+        		if (itemDescription != null) {
+        			i.setDescription(itemDescription.getFirstChild().getNodeValue());
+        		}
+        		Element itemQuantity = XMLParserUtils.getElement("quantity", e);
+        		if (itemQuantity != null) {
+        			i.setQuantity(Integer.parseInt(itemQuantity.getFirstChild().getNodeValue()));
+        		}
+        		Element itemAmount = XMLParserUtils.getElement("amount", e);
+        		if (itemAmount != null) {
+        			i.setAmount(new BigDecimal(itemAmount.getFirstChild().getNodeValue()));
+        		}
+        		Element itemWeight = XMLParserUtils.getElement("weight", e);
+        		if (itemWeight != null) {
+        			i.setWeight(Long.parseLong(itemWeight.getFirstChild().getNodeValue()));
+        		}
+        		Element itemShippingCost = XMLParserUtils.getElement("shippingCost", e);
+        		if (itemShippingCost != null) {
+        			i.setShippingCost(new BigDecimal(itemShippingCost.getFirstChild().getNodeValue()));
+        		}
+
+        		pr.addItem(i);
+        	}
+    		//</item>
+        }
+        //<items>
+        //<extraAmount>
+        Element extraAmountElement = XMLParserUtils.getElement("extraAmount", paymentRequestElement);
+        if (extraAmountElement != null) {
+        	pr.setExtraAmount(new BigDecimal(extraAmountElement.getFirstChild().getNodeValue()));
+        }
+        //</extraAmount>
+        //<reference>
+        Element referenceElement = XMLParserUtils.getElement("reference", paymentRequestElement);
+        if (referenceElement != null) {
+        	pr.setReference(referenceElement.getFirstChild().getNodeValue());
+        }
+        //</reference>
+        //<shipping>
+        Element shippingElement = XMLParserUtils.getElement("shipping", paymentRequestElement);
+        if (shippingElement != null) {
+        	Element shippingType = XMLParserUtils.getElement("type", shippingElement);
+        	if (shippingType != null) {
+        		pr.setShippingType(ShippingType.fromValue(Integer.parseInt(shippingType.getFirstChild().getNodeValue())));
+        	}
+        	Element shippingCost = XMLParserUtils.getElement("cost", shippingElement);
+        	if (shippingCost != null) {
+        		Shipping s = pr.getShipping();
+        		if (s == null) {
+        			s = new Shipping();
+        		}
+        		s.setCost(new BigDecimal(shippingCost.getFirstChild().getNodeValue()));
+        	}
+        	//<address>
+        	Element shippingAddress = XMLParserUtils.getElement("address", shippingElement);
+        	if (shippingAddress != null) {
+        		Element addressStreet = XMLParserUtils.getElement("street", shippingAddress);
+        		Address addr = new Address();
+        		if (addressStreet != null) {
+        			addr.setStreet(addressStreet.getFirstChild().getNodeValue());
+        		}
+        		Element addressNumber = XMLParserUtils.getElement("number", shippingAddress);
+        		if (addressNumber != null) {
+        			addr.setNumber(addressNumber.getFirstChild().getNodeValue());
+        		}
+        		Element addressComplement = XMLParserUtils.getElement("complement", shippingAddress);
+        		if (addressComplement != null) {
+        			addr.setComplement(addressComplement.getFirstChild().getNodeValue());
+        		}
+        		Element addressCity = XMLParserUtils.getElement("city", shippingAddress);
+        		if (addressCity != null) {
+        			addr.setCity(addressCity.getFirstChild().getNodeValue());
+        		}
+        		Element addressState = XMLParserUtils.getElement("state", shippingAddress);
+        		if (addressState != null) {
+        			addr.setState(addressState.getFirstChild().getNodeValue());
+        		}
+        		Element addressDistrict = XMLParserUtils.getElement("district", shippingAddress);
+        		if (addressDistrict != null) {
+        			addr.setDistrict(addressDistrict.getFirstChild().getNodeValue());
+        		}
+        		Element addressPostalCode = XMLParserUtils.getElement("postalCode", shippingAddress);
+        		if (addressPostalCode != null) {
+        			addr.setPostalCode(addressPostalCode.getFirstChild().getNodeValue());
+        		}
+        		Element addressCountry = XMLParserUtils.getElement("country", shippingAddress);
+        		if (addressCountry != null) {
+        			addr.setCountry(addressCountry.getFirstChild().getNodeValue());
+        		}
+        		pr.setShippingAddress(addr);
+        	}
+        	//</address>
+        }
+        // <maxAge>
+        Element maxAgeElement = XMLParserUtils.getElement("maxAge", paymentRequestElement);
+        if (maxAgeElement != null) {
+        	pr.setMaxAge(new BigInteger(maxAgeElement.getFirstChild().getNodeValue()));
+        }
+        // </maxAge>
+        // <maxUses>
+        Element maxUsesElement = XMLParserUtils.getElement("maxUses", paymentRequestElement);
+        if (maxUsesElement != null) {
+        	pr.setMaxUses(new BigInteger(maxUsesElement.getFirstChild().getNodeValue()));
+        }
+        // <maxUses>
+
+        return pr;
     }
 }

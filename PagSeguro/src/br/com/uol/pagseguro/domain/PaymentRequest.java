@@ -35,7 +35,7 @@ public class PaymentRequest {
     private Sender sender;
 
     /**
-     * Payment currency. 
+     * Payment currency.
  	 * @see Currency
      */
     private String currency;
@@ -53,7 +53,7 @@ public class PaymentRequest {
 
     /**
      * Extra amount to be added to the transaction total
-     * 
+     *
      * This value can be used to add an extra charge to the transaction
      * or provide a discount in the case ExtraAmount is a negative value.
      */
@@ -61,8 +61,8 @@ public class PaymentRequest {
 
     /**
      * Reference code
-     * 
-     * Optional. You can use the reference code to store an identifier so you can 
+     *
+     * Optional. You can use the reference code to store an identifier so you can
      * associate the PagSeguro transaction to a transaction in your system.
      */
     private String reference;
@@ -74,21 +74,21 @@ public class PaymentRequest {
 
     /**
      * How long this payment request will remain valid, in seconds.
-     * 
+     *
      * Optional. After this payment request is submitted, the payment code returned
-     * will remain valid for the period specified here. 
+     * will remain valid for the period specified here.
      */
     private BigInteger maxAge;
 
     /**
      * How many times the payment redirect uri returned by the payment web service can be accessed.
-     * 
+     *
      * Optional. After this payment request is submitted, the payment redirect uri returned by
-     * the payment web service will remain valid for the number of uses specified here. 
+     * the payment web service will remain valid for the number of uses specified here.
      */
     private BigInteger maxUses;
 
-    
+
     /**
      * Initializes a new instance of the PaymentRequest class
      */
@@ -98,7 +98,7 @@ public class PaymentRequest {
 
     /**
      * @return the sender
-     * 
+     *
      * Party that will be sending the Uri to where the PagSeguro payment page should redirect the user after the payment information is processed.
      * money
      */
@@ -108,7 +108,7 @@ public class PaymentRequest {
 
     /**
      * Sets the Sender, party that will be sending the money
-     * 
+     *
      * @param sender
      * @return
      */
@@ -119,7 +119,7 @@ public class PaymentRequest {
 
     /**
      * Sets the Sender, party that will be sending the money
-     * 
+     *
      * @param name
      * @param email
      * @return
@@ -135,7 +135,7 @@ public class PaymentRequest {
 
     /**
      * Sets the Sender, party that will be sending the money
-     * 
+     *
      * @param name
      * @param email
      * @param areaCode
@@ -154,7 +154,7 @@ public class PaymentRequest {
 
     /**
      * Sets the Sender phone number, phone of the party that will be sending the money
-     * 
+     *
      * @param areaCode
      * @param number
      * @return
@@ -179,7 +179,7 @@ public class PaymentRequest {
     /**
      * Sets the currency
      * @see Currency
-     *  
+     *
      * @param currency
      * @return
      */
@@ -199,7 +199,7 @@ public class PaymentRequest {
     /**
      * Sets the items/products list in this payment request
      * @see Item
-     * 
+     *
      * @param items
      * @return
      */
@@ -211,7 +211,7 @@ public class PaymentRequest {
     /**
      * Adds a new product/item in this payment request
      * @see Item
-     * 
+     *
      * @param id
      * @param description
      * @param quantity
@@ -229,7 +229,7 @@ public class PaymentRequest {
     /**
      * Adds a new product/item in this payment request
      * @see Item
-     * 
+     *
      * @param item
      */
     public void addItem(Item item) {
@@ -242,7 +242,7 @@ public class PaymentRequest {
     /**
      * Uri to where the PagSeguro payment page should redirect the user after the payment information is processed.
      * Typically this is a confirmation page on your web site.
-     * 
+     *
      * @return the redirectURL
      */
     public URL getRedirectURL() {
@@ -251,10 +251,10 @@ public class PaymentRequest {
 
     /**
      * Sets the redirect URL
-     * 
+     *
      * Uri to where the PagSeguro payment page should redirect the user after the payment information is processed.
      * Typically this is a confirmation page on your web site.
-     * 
+     *
      * @param redirectURL
      * @return
      */
@@ -266,7 +266,7 @@ public class PaymentRequest {
     /**
      * This value can be used to add an extra charge to the transaction
      * or provide a discount in the case ExtraAmount is a negative value.
-     * 
+     *
      * @return the extra amount
      */
     public BigDecimal getExtraAmount() {
@@ -277,7 +277,7 @@ public class PaymentRequest {
      * Sets the extra amount
      * This value can be used to add an extra charge to the transaction
      * or provide a discount in the case <b>extraAmount</b> is a negative value.
-     * 
+     *
      * @param extraAmount
      * @return
      */
@@ -295,7 +295,7 @@ public class PaymentRequest {
 
     /**
      * Sets the reference of this payment request
-     * 
+     *
      * @param reference
      * @return
      */
@@ -315,7 +315,7 @@ public class PaymentRequest {
     /**
      * Sets the shipping information for this payment request
      * @see Shipping
-     * 
+     *
      * @param shipping
 
      */
@@ -327,7 +327,7 @@ public class PaymentRequest {
     /**
      * Sets the shipping type for this payment request
      * @see ShippingType
-     * 
+     *
      * @param type
      * @return
      */
@@ -341,7 +341,7 @@ public class PaymentRequest {
 
     /**
      * Sets the shipping information for this payment
-     * 
+     *
      * @param type
      * @param country
      * @param state
@@ -365,7 +365,7 @@ public class PaymentRequest {
 
     /**
      * Sets the shipping address for this payment request
-     * 
+     *
      * @param country
      * @param state
      * @param city
@@ -386,10 +386,24 @@ public class PaymentRequest {
     }
 
     /**
+     * Sets the shipping address for this payment request
+     *
+     * @param address
+     * @return
+     */
+    public PaymentRequest setShippingAddress(Address address) {
+        if (shipping == null) {
+            shipping = new Shipping();
+        }
+        shipping.setAddress(address);
+        return this;
+    }
+
+    /**
      * @return the max age of this payment request
-     * 
+     *
      * After this payment request is submitted, the payment code returned
-     * will remain valid for the period specified. 
+     * will remain valid for the period specified.
      */
     public BigInteger getMaxAge() {
         return maxAge;
@@ -398,8 +412,8 @@ public class PaymentRequest {
     /**
      * Sets the max age of this payment request
      * After this payment request is submitted, the payment code returned
-     * will remain valid for the period specified here. 
-     * 
+     * will remain valid for the period specified here.
+     *
      * @param maxAge
      * @return
      */
@@ -411,7 +425,7 @@ public class PaymentRequest {
     /**
      * After this payment request is submitted, the payment redirect uri returned by
      * the payment web service will remain valid for the number of uses specified here.
-     * 
+     *
      * @return the max uses configured for this payment request
      */
     public BigInteger getMaxUses() {
@@ -420,10 +434,10 @@ public class PaymentRequest {
 
     /**
      * Sets the max uses of this payment request
-     * 
+     *
      * After this payment request is submitted, the payment redirect uri returned by
      * the payment web service will remain valid for the number of uses specified here.
-     * 
+     *
      * @param maxUses
      * @return
      */
@@ -434,7 +448,7 @@ public class PaymentRequest {
 
     /**
      * Calls the PagSeguro web service and register this request for payment
-     * 
+     *
      * @param credentials
      * @return The URL to where the user needs to be redirected to in order to complete the payment process
      * @throws PagSeguroServiceException
@@ -442,8 +456,9 @@ public class PaymentRequest {
     public URL register(Credentials credentials) throws PagSeguroServiceException {
         return PaymentService.doPayment(credentials, this);
     }
-    
-    public String toString(){
+
+    @Override
+	public String toString(){
         StringBuffer sb = new StringBuffer(128);
     	sb.append("PaymentRequest(Reference=");
     	sb.append(reference);
@@ -452,5 +467,5 @@ public class PaymentRequest {
     	sb.append(")");
     	return sb.toString();
     }
-    
+
 }

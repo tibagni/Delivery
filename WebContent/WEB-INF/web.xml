@@ -145,6 +145,17 @@
       <url-pattern>/Payment</url-pattern>
   </servlet-mapping>
   
+  <!-- Test -->
+  
+  <servlet>
+      <servlet-name>Checkout</servlet-name>
+      <servlet-class>com.delivery.servlet.pagsegurotest.Checkout</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>Checkout</servlet-name>
+      <url-pattern>/PagSeguroTest/checkout</url-pattern>
+  </servlet-mapping>
+  
   <!-- Banco de dados -->
   <resource-ref>
       <description>Database connection</description>

@@ -15,10 +15,9 @@
  */
 package br.com.uol.pagseguro.service;
 
+import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import br.com.uol.pagseguro.domain.Credentials;
 import br.com.uol.pagseguro.domain.Transaction;
@@ -57,7 +56,7 @@ public class TransactionSearchService {
 
     /**
      * Finds a transaction with a matching transaction code
-     * 
+     *
      * @param credentials
      * @param transactionCode
      * @return a transaction in PagSeguro
@@ -74,7 +73,7 @@ public class TransactionSearchService {
         }
 
         // calling transaction search web service
-        HttpsURLConnection connection = HttpsURLConnectionUtil.getHttpsGetConnection(
+        HttpURLConnection connection = HttpsURLConnectionUtil.getHttpsGetConnection(
                 buildURLByCode(credentials, transactionCode), CONTENT_TYPE);
 
         try {
@@ -106,29 +105,29 @@ public class TransactionSearchService {
      */
     public static TransactionSearchResult searchByDate(Credentials credentials, Date initialDate, Date finalDate,
             Integer page, Integer maxPageResults) throws PagSeguroServiceException {
-        
+
     	SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
     	String initialDateString = initialDate != null ? sdf.format(initialDate) : null;
     	String finalDateString = finalDate!= null ? sdf.format(finalDate) :  null;
-        
+
 		log.info("TransactionSearchService.SearchByDate(initialDate="
 				+ initialDateString + ", finalDate=" + finalDateString + ") - begin");
 
         // call transaction search web service
-        HttpsURLConnection connection = HttpsURLConnectionUtil.getHttpsGetConnection(
+        HttpURLConnection connection = HttpsURLConnectionUtil.getHttpsGetConnection(
                 buildURLByDate(credentials, initialDate, finalDate, page, maxPageResults), CONTENT_TYPE);
 
         TransactionSearchResult search = new TransactionSearchResult();
         try {
             // parsing PagSeguro response
             TransactionSearchResultXMLHandler.getHandler(connection.getInputStream(), search);
-            
+
             log.info("TransactionSearchService.SearchByDate(initialDate="
     				+ initialDateString + ", finalDate=" + finalDateString + ") - end - "
     				+ search);
-            
+
             return search;
-            
+
         } catch (Exception e) {
         	log.error("TransactionSearchService.SearchByDate(initialDate="
     				+ initialDateString + ", finalDate=" + finalDateString + ") - error "
