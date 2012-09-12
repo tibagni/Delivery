@@ -71,7 +71,7 @@ public class AddFlavourCmd extends MenuEditorCommand {
                     FlavourDao dao = manager.getFlavourDao();
                     int[] saved = dao.save(toInsert);
                     if (saved != null && saved.length > 0) {
-                        flavour.setId(dao.getLastSavedId());
+                        flavour.setId((int) dao.getLastSavedId());
 
                         // Depois de inserir o sabor, vamos inserir os precos de cada tamanho
                         List<Price> prices = getPricesFromParameters(requestParameters, flavour.getId());

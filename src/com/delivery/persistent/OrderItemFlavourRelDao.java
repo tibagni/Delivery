@@ -131,7 +131,7 @@ public class OrderItemFlavourRelDao extends Dao<OrderItemRelFlavour> {
     }
 
 	@Override
-	public int getLastSavedId() throws SQLException {
+	public long getLastSavedId() throws SQLException {
 		throw new UnsupportedOperationException();
 	}
 

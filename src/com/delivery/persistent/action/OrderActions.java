@@ -19,6 +19,7 @@ import com.delivery.order.Order;
 import com.delivery.order.OrderItem;
 import com.delivery.order.OrderItemRelFlavour;
 import com.delivery.order.OrderItemRelOptional;
+import com.delivery.order.Payment;
 import com.delivery.persistent.AccountDao;
 import com.delivery.persistent.AddressDao;
 import com.delivery.persistent.DaoManager;
@@ -28,6 +29,7 @@ import com.delivery.persistent.OrderDao;
 import com.delivery.persistent.OrderItemDao;
 import com.delivery.persistent.OrderItemFlavourRelDao;
 import com.delivery.persistent.OrderItemOptionlRelDao;
+import com.delivery.persistent.PaymentDao;
 import com.delivery.persistent.ProductDao;
 import com.delivery.persistent.ProductSizeDao;
 import com.delivery.util.StringUtils;
@@ -153,6 +155,17 @@ public class OrderActions {
 						item.setCachedSizeName(size.getName());
 					}
 
+					// Recupera tambem o pagamento associado ao pedido
+					PaymentDao paymentDao = manager.getPaymentDao();
+					Payment paymentQuery = new Payment();
+					paymentQuery.setOrderId(orderId);
+					List<Payment> paymentResult = paymentDao.get(paymentQuery);
+					if (paymentResult != null && paymentResult.size() == 1) {
+						order.setPayment(paymentResult.get(0));
+					} else {
+						Logger.wtf("WTF! sem pagamento associado ao pedido?");
+					}
+
 					return order;
 				}
 			});
@@ -164,4 +177,59 @@ public class OrderActions {
 	    }
 	}
 
+	public static void setOrderInManualPayment(final long orderId, final long paymentId, final double value) throws NamingException {
+		// Get DataSource
+		Context initContext = new InitialContext();
+		Context envContext = (Context) initContext.lookup("java:/comp/env");
+		DataSource dataSource = (DataSource) envContext.lookup("jdbc/deliveryDB");
+
+
+		DaoManager daoManager = new DaoManager(dataSource);
+		daoManager.transaction(new DaoManager.DaoCommand() {
+			@Override
+			public Object execute(DaoManager manager) throws SQLException {
+				PaymentDao dao = manager.getPaymentDao();
+				dao.changePaymentStatus(paymentId, Payment.PaymentStatus.MANUAL);
+				dao.setPaymentManualValue(paymentId, value);
+
+				// Ja que o pagamento sera realizado no momento da entrega
+				// devemos mudar o status do pedido para "na fila para preparo"
+				OrderDao oDao = manager.getOrderDao();
+				oDao.changeOrderStatus(Order.OrderStatus.WAITING_FOR_PAYMENT,
+						Order.OrderStatus.READY_TO_PREPARE, orderId);
+				return null;
+			}
+		});
+	}
+
+	public static void setOrderPaymentCompleted(final long paymentId) throws NamingException {
+		// Get DataSource
+		Context initContext = new InitialContext();
+		Context envContext = (Context) initContext.lookup("java:/comp/env");
+		DataSource dataSource = (DataSource) envContext.lookup("jdbc/deliveryDB");
+
+
+		DaoManager daoManager = new DaoManager(dataSource);
+		daoManager.transaction(new DaoManager.DaoCommand() {
+			@Override
+			public Object execute(DaoManager manager) throws SQLException {
+				Payment query = new Payment();
+				query.setId(paymentId);
+				PaymentDao dao = manager.getPaymentDao();
+				List<Payment> p = dao.get(query);
+				if (p == null || p.size() != 1) {
+					manager.cancelTransaction();
+				}
+				Payment payment = p.get(0);
+				dao.changePaymentStatus(paymentId, Payment.PaymentStatus.FINALIZED);
+
+				// Atualiza o status do pedido j‡ que o pagamento foi validado!
+				OrderDao oDao = manager.getOrderDao();
+				oDao.changeOrderStatus(Order.OrderStatus.WAITING_FOR_PAYMENT,
+						Order.OrderStatus.READY_TO_PREPARE, payment.getOrderId());
+
+				return null;
+			}
+		});
+	}
 }

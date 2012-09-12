@@ -37,23 +37,36 @@ public class PagSeguroConfig {
 
     /**
      * To activate the PagSeguro logging tool, set the <b>log.path<b> property in <b>pagseguro-config.properties</b> file.
-     * 
+     *
      * @return the path to PagSeguro log file
      */
     public static String getLogPath() {
         return resourceBundle.getString("log.path");
     }
-    
+
     public static String getLoggerImplementation() {
         return resourceBundle.getString("logger.implementation");
     }
 
+    public static String getAccountToken() {
+        String token = resourceBundle.getString("credential.token");
+
+        token = token == null ? null : token.trim();
+
+        //it is validated at this point to put a error message in the exception
+        if (token == null || token.equals("")) {
+            throw new RuntimeException("Malformed token");
+        }
+
+        return token;
+    }
+
     /**
      * Account credentials read from config file <b>pagseguro-config.properties</b>
-     * To read the account credentials from config, you have to set <b>credential.email</b> and <b>credential.token</b> 
+     * To read the account credentials from config, you have to set <b>credential.email</b> and <b>credential.token</b>
      * in the <b>pagseguro-config.properties</b> file
      * @return the account credentials read from <b>pagseguro-config.properties</b> file.
-     * 
+     *
      */
     public static AccountCredentials getAccountCredentials() {
 

@@ -192,11 +192,6 @@ public class FinalizeOrderCmd extends OrderCommand {
 			});
 
 	        if (result.result == FinalizeOrderResult.SUCCESS) {
-//	        	// O pedido ja foi inserido no banco de dados.
-//	        	// nao precisamos mais te-lo na sessao!
-//	        	SessionUtils.setActiveOrder(request.getSession(), null);
-//	        	request.setAttribute("OrderToPay", order.getId()); // TODO
-//	        	mRedirect = "RequestPayment.jsp";
 	        	order.setOrderSeccessufullyFinalized();
 	        	mRedirect = "/Payment";
 	        }

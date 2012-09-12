@@ -78,7 +78,7 @@ public class AddProductCmd extends MenuEditorCommand {
                     toInsert.add(product);
                     int[] saved = dao.save(toInsert);
                     if (saved != null && saved.length > 0) {
-                        product.setId(dao.getLastSavedId());
+                        product.setId((int) dao.getLastSavedId());
 
                         // Depois de inserir o produto, vamos inserir os tamanhos deste produto
                         List<ProductSize> sizes = getSizesFromParameters(requestParameters, product.getId());

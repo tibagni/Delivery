@@ -133,7 +133,7 @@ public class ProductSizeDao extends Dao<ProductSize> {
     }
 
     @Override
-    public int getLastSavedId() {
+    public long getLastSavedId() {
         // TODO Auto-generated method stub
         return 0;
     }

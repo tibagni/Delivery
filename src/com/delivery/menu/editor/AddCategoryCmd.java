@@ -47,7 +47,7 @@ public class AddCategoryCmd extends MenuEditorCommand {
 
                     int[] saved = dao.save(toInsert);
                     if (saved != null && saved.length > 0) {
-                        cat.setCategoryId(dao.getLastSavedId());
+                        cat.setCategoryId((int) dao.getLastSavedId());
                         return cat;
                     }
                     return null;

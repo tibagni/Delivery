@@ -141,7 +141,7 @@ public class OptionalDao extends Dao<Optional> {
     }
 
     @Override
-    public int getLastSavedId() throws SQLException {
+    public long getLastSavedId() throws SQLException {
         // TODO Auto-generated method stub
         return 0;
     }

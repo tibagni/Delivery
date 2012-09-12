@@ -94,7 +94,7 @@ public class AdminDao extends Dao<Admin> {
     }
 
 	@Override
-	public int getLastSavedId() throws SQLException {
+	public long getLastSavedId() throws SQLException {
 		throw new UnsupportedOperationException();
 	}
 

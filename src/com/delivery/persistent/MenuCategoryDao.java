@@ -64,7 +64,7 @@ public class MenuCategoryDao extends Dao<MenuCategory> {
     }
 
     @Override
-    public int getLastSavedId() throws SQLException {
+    public long getLastSavedId() throws SQLException {
         int id = 0;
         try {
             Statement stm = mConnection.createStatement();

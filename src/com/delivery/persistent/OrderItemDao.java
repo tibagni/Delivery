@@ -138,7 +138,7 @@ public class OrderItemDao extends Dao<OrderItem> {
     }
 
 	@Override
-	public int getLastSavedId() throws SQLException {
+	public long getLastSavedId() throws SQLException {
 		// TODO Auto-generated method stub
 		return 0;
 	}

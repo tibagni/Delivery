@@ -126,7 +126,7 @@ public class AddressDao extends Dao<Address> {
 	}
 
 	@Override
-	public int getLastSavedId() throws SQLException {
+	public long getLastSavedId() throws SQLException {
         int id = 0;
         try {
             Statement stm = mConnection.createStatement();

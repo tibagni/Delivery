@@ -66,6 +66,9 @@ $(document).ready(function() {
             <div id="order-${order.id}" class="orderBox orderStatus-${order.status }">
                 <p>#<b><i>${order.id }</i></b> - ${order.cachedUserName }</p>
                 <p>Pedido realizado em <b>${order.timestampAsText }</b> </p>
+                <c:if test="${order.payment.paymentStatus == 3 }">
+                    <p style="color: red">O pagamento será realizado no momento da entrega</p>
+                </c:if>
             </div>
         </c:if>
     </c:forEach>
@@ -78,6 +81,9 @@ $(document).ready(function() {
             <div id="order-${order.id}" class="orderBox orderStatus-${order.status }">
                 <p>#<b><i>${order.id }</i></b> - ${order.cachedUserName }</p>
                 <p>Pedido realizado em <b>${order.timestampAsText }</b> </p>
+                <c:if test="${order.payment.paymentStatus == 3 }">
+                    <p style="color: red">O pagamento será realizado no momento da entrega</p>
+                </c:if>
             </div>
         </c:if>
     </c:forEach>
@@ -90,6 +96,9 @@ $(document).ready(function() {
             <div id="order-${order.id}" class="orderBox orderStatus-${order.status }">
                 <p>#<b><i>${order.id }</i></b> - ${order.cachedUserName }</p>
                 <p>Pedido realizado em <b>${order.timestampAsText }</b> </p>
+                <c:if test="${order.payment.paymentStatus == 3 }">
+                    <p style="color: red">O pagamento será realizado no momento da entrega</p>
+                </c:if>
             </div>
         </c:if>
     </c:forEach>
@@ -102,6 +111,9 @@ $(document).ready(function() {
             <div id="order-${order.id}" class="orderBox orderStatus-${order.status }">
                 <p>#<b><i>${order.id }</i></b> - ${order.cachedUserName }</p>
                 <p>Pedido realizado em <b>${order.timestampAsText }</b> </p>
+                <c:if test="${order.payment.paymentStatus == 3 }">
+                    <p style="color: red">O pagamento será realizado no momento da entrega</p>
+                </c:if>
             </div>
         </c:if>
     </c:forEach>
@@ -114,6 +126,9 @@ $(document).ready(function() {
 	        <div id="order-${order.id}" class="orderBox orderStatus-${order.status }">
 	            <p>#<b><i>${order.id }</i></b> - ${order.cachedUserName }</p>
 	            <p>Pedido realizado em <b>${order.timestampAsText }</b> </p>
+                <c:if test="${order.payment.paymentStatus == 3 }">
+                    <p style="color: red">O pagamento será realizado no momento da entrega</p>
+                </c:if>
 	        </div>
         </c:if>
     </c:forEach>

@@ -145,6 +145,15 @@
       <url-pattern>/Payment</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+      <servlet-name>PaymentReturn</servlet-name>
+      <servlet-class>com.delivery.servlet.PaymentReturn</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>PaymentReturn</servlet-name>
+      <url-pattern>/PaymentReturn</url-pattern>
+  </servlet-mapping>
+  
   <!-- Test -->
   
   <servlet>
@@ -154,6 +163,24 @@
   <servlet-mapping>
       <servlet-name>Checkout</servlet-name>
       <url-pattern>/PagSeguroTest/checkout</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>TestPayment</servlet-name>
+      <servlet-class>com.delivery.servlet.pagsegurotest.Payment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>TestPayment</servlet-name>
+      <url-pattern>/PagSeguroTest/payment</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>AutomaticReply</servlet-name>
+      <servlet-class>com.delivery.servlet.pagsegurotest.AutomaticReply</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>AutomaticReply</servlet-name>
+      <url-pattern>/PagSeguroTest/AutomaticReply</url-pattern>
   </servlet-mapping>
   
   <!-- Banco de dados -->

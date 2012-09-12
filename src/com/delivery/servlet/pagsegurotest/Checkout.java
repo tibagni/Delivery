@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -41,17 +40,8 @@ public class Checkout extends HttpServlet {
 			Logger.debug(paymentRequest.toString());
 
 			// Salva o paymentRequest em um arquivo xml
-
 			//Primeiro gera o nome do arquivo - que sera o codigo do pagamento
-			Random r = new Random();
-			byte[] randomBytes = new byte[5];
-			r.nextBytes(randomBytes);
-
-			// Cria um hash combinando o xml com alguns bytes aleatorios (para que seja unico)
-			byte[] nameBytes = new byte[xmlBytes.length + randomBytes.length];
-			System.arraycopy(xmlBytes, 0, nameBytes, 0, xmlBytes.length);
-			System.arraycopy(randomBytes, 0, nameBytes, xmlBytes.length, randomBytes.length);
-			paymentCode = hashName(nameBytes);
+			paymentCode = hashName(xmlBytes);
 
 			File f = new File(req.getServletContext().getRealPath("/testePagSeguro/" + paymentCode));
 			OutputStream fos = new FileOutputStream(f);

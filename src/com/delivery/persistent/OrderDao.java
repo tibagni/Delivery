@@ -227,18 +227,22 @@ public class OrderDao extends Dao<Order> {
     private void checkOrderStatusTransition(int oldStatus, int newStatus) {
     	int expected = Order.OrderStatus.getNextAllowedState(oldStatus);
     	if (newStatus != expected) {
+    		if (newStatus == Order.OrderStatus.READY_TO_PREPARE &&
+    				oldStatus == Order.OrderStatus.WAITING_FOR_PAYMENT) {
+    			return;
+    		}
     		throw new IllegalStateException("Nao e possivel mover de " + oldStatus + " para " + newStatus + " Expected=" + expected);
     	}
     }
 
 	@Override
-	public int getLastSavedId() throws SQLException {
-        int id = 0;
+	public long getLastSavedId() throws SQLException {
+        long id = 0;
         try {
             Statement stm = mConnection.createStatement();
             ResultSet rs = stm.executeQuery("SELECT MAX(" + COLUMN_ID + ") FROM " + TABLE_NAME);
             if (rs.next()) {
-                id = rs.getInt(1);
+                id = rs.getLong(1);
             }
         } catch (SQLException e) {
             Logger.error("OrderDao.getLastSavedId", e);

@@ -17,7 +17,10 @@ $(document).ready(function() {
 });
 //-->
 </script>
-
+<c:if test="${order.payment.paymentStatus == 3 }">
+    <p style="color: red; text-decoration: blink;">O pagamento será realizado no momento da entrega - 
+     Valor combinado com o cliente R$: ${order.payment.manualPaymentValue }</p>
+</c:if>
 <div class="orderInfo">
 <p>
 <b>Endereço de entrega: </b>${order.cachedAddress }

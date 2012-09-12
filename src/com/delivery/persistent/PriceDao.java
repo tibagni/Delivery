@@ -140,7 +140,7 @@ public class PriceDao extends Dao<Price> {
     }
 
     @Override
-    public int getLastSavedId() throws SQLException {
+    public long getLastSavedId() throws SQLException {
         // TODO Auto-generated method stub
         return 0;
     }

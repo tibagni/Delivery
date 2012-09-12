@@ -59,5 +59,5 @@ public abstract class Dao<T> {
      *
      * @return Id do ultimo registro inserido
      */
-    public abstract int getLastSavedId() throws SQLException;
+    public abstract long getLastSavedId() throws SQLException;
 }

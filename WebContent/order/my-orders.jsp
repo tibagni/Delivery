@@ -34,7 +34,13 @@
         <div style="border-top: solid 1px #000; padding:3px">
             Total - R$: ${order.price}
         </div>
-        <p>Status atual:<b> ${order.statusText }</b></p>
+        <p>Status atual:<b> ${order.statusText }</b>
+        <c:if test="${order.waitingPaymentStatus }">
+            <c:if test="${not order.payment.manualPayment }">
+               - <a href="${order.payment.URL }" target="_blank">Pagar</a>
+            </c:if>
+        </c:if>
+        </p>
     </div>
 </c:forEach>
     </c:otherwise>

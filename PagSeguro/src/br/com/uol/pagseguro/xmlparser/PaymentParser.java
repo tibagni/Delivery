@@ -336,7 +336,7 @@ public class PaymentParser {
         	if (senderName != null) {
         		sender.setName(senderName.getFirstChild().getNodeValue());
         	}
-        	Element senderEmail = XMLParserUtils.getElement("emil", senderElement);
+        	Element senderEmail = XMLParserUtils.getElement("email", senderElement);
         	if (senderEmail != null) {
         		sender.setEmail(senderEmail.getFirstChild().getNodeValue());
         	}

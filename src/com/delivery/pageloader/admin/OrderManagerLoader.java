@@ -16,10 +16,12 @@ import com.delivery.account.Address;
 import com.delivery.account.UserAccount;
 import com.delivery.engine.command.AdminPageLoaderCommand;
 import com.delivery.order.Order;
+import com.delivery.order.Payment;
 import com.delivery.persistent.AccountDao;
 import com.delivery.persistent.AddressDao;
 import com.delivery.persistent.DaoManager;
 import com.delivery.persistent.OrderDao;
+import com.delivery.persistent.PaymentDao;
 
 public class OrderManagerLoader extends AdminPageLoaderCommand {
 	private String mRedirect;
@@ -72,6 +74,14 @@ public class OrderManagerLoader extends AdminPageLoaderCommand {
 						Address addr = addrL.get(0);
 						order.setCachedAddress(addr.getStreet() + ", " + addr.getNeighborhood());
 						order.setCachedUserName(ua.getName() + " (" + ua.getEmail() + ")");
+
+						PaymentDao pDao = manager.getPaymentDao();
+						Payment pQuery = new Payment();
+						pQuery.setOrderId(order.getId());
+						List<Payment> p = pDao.get(pQuery);
+						if (p != null && p.size() == 1) {
+							order.setPayment(p.get(0));
+						}
 					}
 
 					return orders;

@@ -28,6 +28,8 @@ public class Order {
     private String mCachedUserName;
     private String mCachedAddress;
 
+    private Payment mPayment;
+
     public Order() {
     	mQueryStatusSet = new HashSet<Integer>();
     	mQueryExcludeStatusSet = new HashSet<Integer>();
@@ -249,6 +251,18 @@ public class Order {
 
 	public void setCachedAddress(String mCachedAddress) {
 		this.mCachedAddress = mCachedAddress;
+	}
+
+	public Payment getPayment() {
+		return mPayment;
+	}
+
+	public void setPayment(Payment mPayment) {
+		this.mPayment = mPayment;
+	}
+
+	public boolean getWaitingPaymentStatus() {
+		return mStatus == OrderStatus.WAITING_FOR_PAYMENT;
 	}
 
 	public static class OrderStatus {

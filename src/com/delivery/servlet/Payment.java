@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,22 +39,22 @@ public class Payment extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		handlePaymentRequest(req);
+		handlePaymentRequest(req, resp);
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		handlePaymentRequest(req);
+		handlePaymentRequest(req, resp);
 	}
 
-	private void handlePaymentRequest(HttpServletRequest request) {
+	private void handlePaymentRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Logger.debug("PaymentServlet!");
 		// Primeiro verifica se a sessao ainda e valida e se o pedido
 		// esta realmente no estado para pagamento
 		final UserAccount account = SessionUtils.getLoggedUser(request.getSession());
 		if (account == null || !account.isValid()) {
 			Logger.debug("User nao esta logado!");
-			// TODO
+			redirect("Login.jsp", request, response);
 			return;
 		}
 
@@ -80,8 +84,19 @@ public class Payment extends HttpServlet {
 				}
 				itemDescription.append(" " + f);
 			}
-			itemDescription.append("");
-			//TODO opcionais
+			Map<Integer, String> optionals = item.getOptionals();
+			if (optionals != null && optionals.size() > 0) {
+				itemDescription.append(" -");
+				first = true;
+				for (String optional : optionals.values()) {
+					if (first) {
+						first = false;
+					} else {
+						itemDescription.append(",");
+					}
+					itemDescription.append(" " + optional);
+				}
+			}
 
 			paymentRequest.addItem(String.valueOf(item.getId()),
 								   itemDescription.toString(),
@@ -97,6 +112,7 @@ public class Payment extends HttpServlet {
 		tel = tel.substring(2);
 		paymentRequest.setSender(account.getName(), account.getEmail(), areaCode, tel);
 		paymentRequest.setShippingType(ShippingType.NOT_SPECIFIED);
+		paymentRequest.setRedirectURL(new URL("http://localhost:8080/Delivery/PaymentReturn"));
 
 		try {
 	        // Get DataSource
@@ -114,7 +130,7 @@ public class Payment extends HttpServlet {
 
 					PaymentDao pDao = manager.getPaymentDao();
 
-					payment.setId(pDao.getLastSavedId());
+					payment.setId(pDao.getNextSequenceVal());
 					payment.generateReferenceFromId();
 
 					int[] result = pDao.save(toInsert);
@@ -148,21 +164,47 @@ public class Payment extends HttpServlet {
 													   String.valueOf(addr.getNumber()),
 													   addr.getCompl());
 
+					order.setPayment(payment);
 					return true;
 				}
 	        });
 
 	        if (success) {
-	        	URL paymentURL = paymentRequest.register(PagSeguroConfig.getAccountCredentials());
+	        	final URL paymentURL = paymentRequest.register(PagSeguroConfig.getAccountCredentials());
 	        	Logger.debug(paymentURL.toString());
 	        	SessionUtils.setActiveOrder(request.getSession(), null);
+
+	        	// Atualiza a tabela de pagamento paa inserir a URL de pagamento
+	        	DaoManager daoManager2 = new DaoManager(dataSource);
+	        	daoManager2.transaction(new DaoManager.DaoCommand() {
+					@Override public Object execute(DaoManager manager) throws SQLException {
+						PaymentDao dao = manager.getPaymentDao();
+						long id = dao.getLastSavedId();
+						dao.setPaymentURL(id, paymentURL.toString());
+						return null;
+					}
+				});
+
+	        	request.setAttribute("paymentURL", paymentURL.toString());
+	        	NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+	        	request.setAttribute("ValueOfOrder", formatter.format(order.getPrice()));
+	        	request.setAttribute("ValueOfOrderD", order.getPrice());
+	        	request.setAttribute("OrderId", order.getId());
+	        	request.setAttribute("PaymentId", order.getPayment().getId());
+	        	redirect("goToPayment.jsp", request, response);
 	        } else {
-	        	Logger.debug("sei la, fodeu!");
+	        	Logger.wtf("sei la, fodeu!");
 	        }
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void redirect(String where, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		RequestDispatcher dispatcher = request.getRequestDispatcher(where);
+    	dispatcher.forward(request, response);
 	}
 }
