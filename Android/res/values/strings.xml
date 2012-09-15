@@ -1,7 +1,24 @@
 <resources>
 
     <string name="app_name">DeliveryAndroid</string>
+    <string name="provider_label">Pedidos</string>
     <string name="title_order_detail">Order Detail</string>
     <string name="title_order_list">Orders</string>
+    <string name="title_authenticator">LogIn</string>
+    <string name="login_title">Entre com seu código e seua senha para autenticar-se.</string>
+    <string name="login_hint">Código de entregador</string>
+    <string name="password_hint">Senha de acesso</string>
+    <string name="ok_btn">Ok!</string>
+    <string name="cancel_btn">Cancelar</string>
+    <string name="authenticator_label">Entregador</string>
+    <string name="select_server_menu_title">Selecionar servidor</string>
+    <string name="select_server_dialog_title">Servidor de entregas</string>
+    <string name="select_server_dialog_lbl">Insira o endereço (ou ip) do servidor:</string>
+    <string name="selected_server_msg">Endereço do servidor alterado para %1$s</string>
+    <string name="select_server_hint">Ex: 192.168.1.100:8080</string>
+    <string name="incomplete_login_info">Preencha os dados de login corretamente</string>
+    <string name="incorrect_login_info">Login ou senha inválidos</string>
+    <string name="authenticating">Aguarde enquanto a tentativa de login é realizada</string>
+    <string name="connection_error_message">Não foi possível conectar com o servidor</string>
 
 </resources>

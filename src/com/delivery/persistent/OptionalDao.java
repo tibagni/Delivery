@@ -16,18 +16,18 @@ import com.delivery.util.StringUtils;
 public class OptionalDao extends Dao<Optional> {
     private static final String TABLE_NAME = "opcional";
 
-    private static final String COLUMN_ID         = "cod_opcional";
-    private static final String COLUMN_PRODUCT_ID = "produto_cod_produto";
-    private static final String COLUMN_PRICE      = "valor_acrescimo";
-    private static final String COLUMN_NAME       = "nome";
+    private static final String COLUMN_ID          = "cod_opcional";
+    private static final String COLUMN_PRODUCT_ID  = "produto_cod_produto";
+    private static final String COLUMN_PRICE       = "valor_acrescimo";
+    private static final String COLUMN_DESCRIPTION = "descricao";
 
     private static final int INVALID_ID = (int) SQLUtils.INVALID_ID;
     private static final int NO_PRODUCT = INVALID_ID;
 
-    private static final int IND_COLUMN_ID         = 1;
-    private static final int IND_COLUMN_PRODUCT_ID = 2;
-    private static final int IND_COLUMN_PRICE      = 3;
-    private static final int IND_COLUMN_NAME       = 4;
+    private static final int IND_COLUMN_ID          = 1;
+    private static final int IND_COLUMN_PRODUCT_ID  = 2;
+    private static final int IND_COLUMN_DESCRIPTION = 3;
+    private static final int IND_COLUMN_PRICE       = 4;
 
     public OptionalDao(Connection connection) {
         super(connection);
@@ -42,8 +42,8 @@ public class OptionalDao extends Dao<Optional> {
         try {
             PreparedStatement stm = mConnection.prepareStatement("INSERT INTO " + TABLE_NAME + " (" +
                     COLUMN_PRODUCT_ID + ", " +
-                    COLUMN_PRICE + ", " +
-                    COLUMN_NAME + ") " +
+                    COLUMN_DESCRIPTION + ", " +
+                    COLUMN_PRICE + ") " +
                     "VALUES (?,?,?)");
             for (Optional optional : objectsToInsert) {
                 if (optional.getProductId() == NO_PRODUCT) {
@@ -56,13 +56,14 @@ public class OptionalDao extends Dao<Optional> {
                     Logger.warning("Inserindo preco ZERO para opcional - " + optional.getName());
                 }
                 stm.setInt(1, optional.getProductId());
-                stm.setDouble(2, optional.getPrice());
-                stm.setString(3, optional.getName());
+                stm.setString(2, optional.getName());
+                stm.setDouble(3, optional.getPrice());
                 stm.addBatch();
             }
             inserted = stm.executeBatch();
         } catch (SQLException e) {
             Logger.error("Erro ao adicionar opcional!", e);
+            Logger.error("next: ", e.getNextException());
             throw e;
         }
         return inserted;
@@ -85,7 +86,7 @@ public class OptionalDao extends Dao<Optional> {
 
             String sql = "UPDATE " + TABLE_NAME + " SET " +
                     COLUMN_PRICE + "=" + objectToUpdate.getPrice() + ", " +
-                    COLUMN_NAME + "='" + objectToUpdate.getName() + "' WHERE " +
+                    COLUMN_DESCRIPTION + "='" + objectToUpdate.getName() + "' WHERE " +
                     COLUMN_ID + "=" + objectToUpdate.getId();
             stm = mConnection.createStatement();
             updated = stm.executeUpdate(sql);
@@ -123,7 +124,7 @@ public class OptionalDao extends Dao<Optional> {
                 o.setId(rs.getInt(IND_COLUMN_ID));
                 o.setProductId(rs.getInt(IND_COLUMN_PRODUCT_ID));
                 o.setPrice(rs.getDouble(IND_COLUMN_PRICE));
-                o.setName(rs.getString(IND_COLUMN_NAME));
+                o.setName(rs.getString(IND_COLUMN_DESCRIPTION));
 
                 optionals.add(o);
             }
@@ -167,7 +168,7 @@ public class OptionalDao extends Dao<Optional> {
             }
             if (!StringUtils.isEmpty(param.getName())) {
                 queryBuilder.append(nextToken);
-                queryBuilder.append(" " + COLUMN_NAME + " = '" + param.getName() + "'");
+                queryBuilder.append(" " + COLUMN_DESCRIPTION + " = '" + param.getName() + "'");
                 nextToken = and;
             }
             if (param.getPrice() > 0) {

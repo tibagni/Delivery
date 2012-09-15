@@ -19,7 +19,7 @@ $(document).ready(function() {
 <blockquote>
 	<p>${finalMsg }</p>
 	<c:if test="${not empty finalPicture }">
-		<img src="${finalPicture }" />
+		<img src="../${finalPicture }" />
 	</c:if>
 </blockquote>
 <h3>O que deseja fazer agora?</h3>

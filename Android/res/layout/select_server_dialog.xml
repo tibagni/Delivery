@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_name"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_gravity="center" android:orientation="vertical"  >
+      
+    <TextView
+        android:text="@string/select_server_dialog_lbl" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" />
+    
+    <EditText
+        android:id="@+id/server_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/select_server_hint"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:singleLine="true" />
+
+</LinearLayout>

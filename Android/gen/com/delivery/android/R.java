@@ -10,26 +10,68 @@ package com.delivery.android;
 public final class R {
     public static final class attr {
     }
+    public static final class color {
+        public static final int red=0x7f050000;
+    }
+    public static final class dimen {
+        public static final int top_margin_activity=0x7f060000;
+    }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int order_detail=0x7f060002;
-        public static final int order_detail_container=0x7f060000;
-        public static final int order_list=0x7f060001;
+        public static final int authenticator_container=0x7f0a0002;
+        public static final int cancel_btn=0x7f0a0005;
+        public static final int edit_name=0x7f0a000a;
+        public static final int login_box=0x7f0a0006;
+        public static final int login_message=0x7f0a0008;
+        public static final int ok_btn=0x7f0a0004;
+        public static final int order_detail=0x7f0a0009;
+        public static final int order_detail_container=0x7f0a0000;
+        public static final int order_list=0x7f0a0001;
+        public static final int password_box=0x7f0a0007;
+        public static final int select_server=0x7f0a000c;
+        public static final int server_address=0x7f0a000b;
+        public static final int title=0x7f0a0003;
     }
     public static final class layout {
         public static final int activity_order_detail=0x7f030000;
         public static final int activity_order_list=0x7f030001;
         public static final int activity_order_twopane=0x7f030002;
-        public static final int fragment_order_detail=0x7f030003;
+        public static final int authenticator_activity=0x7f030003;
+        public static final int fragment_order_detail=0x7f030004;
+        public static final int select_server_dialog=0x7f030005;
+    }
+    public static final class menu {
+        public static final int login_options_menu=0x7f090000;
     }
     public static final class string {
-        public static final int app_name=0x7f040000;
-        public static final int title_order_detail=0x7f040001;
-        public static final int title_order_list=0x7f040002;
+        public static final int app_name=0x7f070000;
+        public static final int authenticating=0x7f070012;
+        public static final int authenticator_label=0x7f07000a;
+        public static final int cancel_btn=0x7f070009;
+        public static final int connection_error_message=0x7f070013;
+        public static final int incomplete_login_info=0x7f070010;
+        public static final int incorrect_login_info=0x7f070011;
+        public static final int login_hint=0x7f070006;
+        public static final int login_title=0x7f070005;
+        public static final int ok_btn=0x7f070008;
+        public static final int password_hint=0x7f070007;
+        public static final int provider_label=0x7f070001;
+        public static final int select_server_dialog_lbl=0x7f07000d;
+        public static final int select_server_dialog_title=0x7f07000c;
+        public static final int select_server_hint=0x7f07000f;
+        public static final int select_server_menu_title=0x7f07000b;
+        public static final int selected_server_msg=0x7f07000e;
+        public static final int title_authenticator=0x7f070004;
+        public static final int title_order_detail=0x7f070002;
+        public static final int title_order_list=0x7f070003;
     }
     public static final class style {
-        public static final int AppTheme=0x7f050000;
+        public static final int AppTheme=0x7f080000;
+    }
+    public static final class xml {
+        public static final int authenticator=0x7f040000;
+        public static final int syncadapter=0x7f040001;
     }
 }

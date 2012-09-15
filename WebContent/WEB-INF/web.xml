@@ -154,6 +154,17 @@
       <url-pattern>/PaymentReturn</url-pattern>
   </servlet-mapping>
   
+  <!-- Mobile -->
+  
+  <servlet>
+      <servlet-name>MobileLogin</servlet-name>
+      <servlet-class>com.delivery.servlet.mobile.Login</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>MobileLogin</servlet-name>
+      <url-pattern>/mobile/Login</url-pattern>
+  </servlet-mapping>
+  
   <!-- Test -->
   
   <servlet>
