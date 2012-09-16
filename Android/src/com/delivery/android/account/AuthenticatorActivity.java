@@ -5,6 +5,7 @@ import java.io.IOException;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -66,6 +67,11 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
+
+		if (AccountInfo.hasAccount(this)) {
+			showAccountAlreadyAddedAlert();
+		}
+
 		setContentView(R.layout.authenticator_activity);
 		mPrefs = DeliveryPreferences.getInstance(this);
 
@@ -145,7 +151,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     }
 
 	public void handleCancel(View view) {
-
+        setResult(RESULT_CANCELED, null);
+        finish();
 	}
 
 	private void showMessage(int resId) {
@@ -188,6 +195,12 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         FragmentManager fm = getFragmentManager();
         SelectServerDialog editNameDialog = new SelectServerDialog();
         editNameDialog.show(fm, "fragment_select_server");
+	}
+
+	private void showAccountAlreadyAddedAlert() {
+        FragmentManager fm = getFragmentManager();
+        AlertDialogFragment alreadyAddedDialog = new AlertDialogFragment();
+        alreadyAddedDialog.show(fm, "fragment_alert_already_added");
 	}
 
     private void showProgress() {
@@ -325,6 +338,29 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
             if (mAuthTask != null) {
                 mAuthTask.cancel(true);
             }
+		}
+	}
+
+	private class AlertDialogFragment extends DialogFragment {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        final AlertDialog dialog = new AlertDialog.Builder(AuthenticatorActivity.this).create();
+	        dialog.setTitle(R.string.account_already_added_title);
+	        dialog.setMessage(getText(R.string.account_already_added));
+	        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok_btn), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dismiss();
+				}
+			});
+	        dialog.setCancelable(false);
+
+	        return dialog;
+		}
+
+		@Override
+		public void onDismiss(DialogInterface dialog) {
+			finish();
 		}
 	}
 

@@ -8,7 +8,7 @@
     <string name="login_title">Entre com seu código e seua senha para autenticar-se.</string>
     <string name="login_hint">Código de entregador</string>
     <string name="password_hint">Senha de acesso</string>
-    <string name="ok_btn">Ok!</string>
+    <string name="ok_btn">OK</string>
     <string name="cancel_btn">Cancelar</string>
     <string name="authenticator_label">Entregador</string>
     <string name="select_server_menu_title">Selecionar servidor</string>
@@ -20,5 +20,8 @@
     <string name="incorrect_login_info">Login ou senha inválidos</string>
     <string name="authenticating">Aguarde enquanto a tentativa de login é realizada</string>
     <string name="connection_error_message">Não foi possível conectar com o servidor</string>
+    
+    <string name="account_already_added_title">Conta configurada</string>
+    <string name="account_already_added">Você só pode configurar uma conta de entregador!</string>
 
 </resources>

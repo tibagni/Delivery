@@ -46,6 +46,8 @@ public final class R {
         public static final int login_options_menu=0x7f090000;
     }
     public static final class string {
+        public static final int account_already_added=0x7f070015;
+        public static final int account_already_added_title=0x7f070014;
         public static final int app_name=0x7f070000;
         public static final int authenticating=0x7f070012;
         public static final int authenticator_label=0x7f07000a;

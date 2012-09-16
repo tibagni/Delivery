@@ -39,6 +39,10 @@
         <activity
             android:name=".OrderListActivity"
             android:label="@string/title_order_list" >
+        </activity>
+        <activity
+            android:name=".Launcher"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
