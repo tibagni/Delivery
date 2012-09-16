@@ -1,5 +1,6 @@
-package com.delivery.android;
+package com.delivery.android.activity;
 
+import com.delivery.android.R;
 import com.delivery.android.dummy.DummyContent;
 
 import android.os.Bundle;

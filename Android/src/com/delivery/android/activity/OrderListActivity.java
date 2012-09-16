@@ -1,11 +1,13 @@
-package com.delivery.android;
+package com.delivery.android.activity;
+
+import com.delivery.android.R;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 public class OrderListActivity extends FragmentActivity
-        implements OrderListFragment.Callbacks {
+        implements OrderListFragment.Callback {
 
     private boolean mTwoPane;
 

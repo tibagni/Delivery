@@ -7,9 +7,9 @@
     android:layout_marginRight="16dp"
     android:divider="?android:attr/dividerHorizontal"
     android:showDividers="middle"
-    tools:context=".OrderListActivity">
+    tools:context=".activity.OrderListActivity">
 
-    <fragment android:name="com.delivery.android.OrderListFragment"
+    <fragment android:name="com.delivery.android.activity.OrderListFragment"
         android:id="@+id/order_list"
         android:layout_width="0dp"
         android:layout_height="match_parent"

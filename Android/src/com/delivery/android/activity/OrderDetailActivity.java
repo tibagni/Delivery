@@ -1,4 +1,6 @@
-package com.delivery.android;
+package com.delivery.android.activity;
+
+import com.delivery.android.R;
 
 import android.content.Intent;
 import android.os.Bundle;

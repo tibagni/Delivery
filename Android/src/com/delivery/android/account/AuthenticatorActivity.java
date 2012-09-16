@@ -3,18 +3,17 @@ package com.delivery.android.account;
 import java.io.IOException;
 
 import android.accounts.Account;
-import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,10 +30,11 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.delivery.android.R;
+import com.delivery.android.framework.accounts.AccountAuthenticatorFragmentActivity;
 import com.delivery.android.preferences.DeliveryPreferences;
 import com.delivery.android.provider.OrderContentProvider;
 
-public class AuthenticatorActivity extends AccountAuthenticatorActivity {
+public class AuthenticatorActivity extends AccountAuthenticatorFragmentActivity {
 
 	private static final String TAG = "AuthenticatorActivity";
 	/** The Intent flag to confirm credentials. */
@@ -192,13 +192,13 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	}
 
 	private void showSelectServerDialog() {
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         SelectServerDialog editNameDialog = new SelectServerDialog();
         editNameDialog.show(fm, "fragment_select_server");
 	}
 
 	private void showAccountAlreadyAddedAlert() {
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         AlertDialogFragment alreadyAddedDialog = new AlertDialogFragment();
         alreadyAddedDialog.show(fm, "fragment_alert_already_added");
 	}
@@ -207,7 +207,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         // We save off the progress dialog in a field so that we can dismiss
         // it later. We can't just call dismissDialog(0) because the system
         // can lose track of our dialog if there's an orientation change.
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         mProgressDialog = new ProgressDialogFragment();
         mProgressDialog.show(fm, "fragment_progress");
 	}

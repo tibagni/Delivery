@@ -1,4 +1,4 @@
-package com.delivery.android;
+package com.delivery.android.activity;
 
 import com.delivery.android.dummy.DummyContent;
 
@@ -14,15 +14,15 @@ public class OrderListFragment extends ListFragment {
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
-    private Callbacks mCallbacks = sDummyCallbacks;
+    private Callback mCallback = sDummyCallback;
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
-    public interface Callbacks {
+    public interface Callback {
 
         public void onItemSelected(String id);
     }
 
-    private static Callbacks sDummyCallbacks = new Callbacks() {
+    private static Callback sDummyCallback = new Callback() {
         @Override
         public void onItemSelected(String id) {
         }
@@ -52,23 +52,23 @@ public class OrderListFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (!(activity instanceof Callbacks)) {
+        if (!(activity instanceof Callback)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
 
-        mCallbacks = (Callbacks) activity;
+        mCallback = (Callback) activity;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = sDummyCallbacks;
+        mCallback = sDummyCallback;
     }
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallback.onItemSelected(DummyContent.ITEMS.get(position).id);
     }
 
     @Override
