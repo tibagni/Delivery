@@ -173,6 +173,11 @@ public class PaymentDao extends Dao<Payment> {
             if (rs.next()) {
                 val = rs.getInt(1);
             }
+            if (val == 1) {
+            	// Para evitar setarmos um valor invalido de sequencia (0)
+            	// Vamos comecar do 2
+            	val = 2;
+            }
             // Agora vamos voltar a sequencia para o valor original (antes da consulta)
             rs = stm.executeQuery("select setval ('" + PRIMARY_KEY_SEQUENCE + "', " + (val - 1) + ")");
         } catch (SQLException e) {

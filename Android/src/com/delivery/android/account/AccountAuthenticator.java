@@ -23,7 +23,6 @@ import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.delivery.android.client.NetworkUtils;
@@ -80,12 +79,13 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         final String password = am.getPassword(account);
         try {
 	        if (password != null) {
-	            final String authToken = authenticate(mContext, account.name, password);
-	            if (!TextUtils.isEmpty(authToken)) {
+	        	String username = AccountInfo.getUserNameFromAccountManagerName(account.name);
+	        	AuthenticationResult authenticationResult = authenticate(mContext, username, password);
+	            if (authenticationResult != null) {
 	                final Bundle result = new Bundle();
 	                result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
 	                result.putString(AccountManager.KEY_ACCOUNT_TYPE, AccountInfo.ACCOUNT_TYPE);
-	                result.putString(AccountManager.KEY_AUTHTOKEN, authToken);
+	                result.putString(AccountManager.KEY_AUTHTOKEN, authenticationResult.mToken);
 	                return result;
 	            }
 	        }
@@ -126,7 +126,7 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
 		return null;
 	}
 
-	public static String authenticate(Context context, String username, String password) throws IOException {
+	public static AuthenticationResult authenticate(Context context, String username, String password) throws IOException {
 		final String URL = DeliveryPreferences.getInstance(context).getOrderServerAddress() + "/mobile/Login";
 
         final HttpResponse resp;
@@ -146,18 +146,19 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         post.setEntity(entity);
         try {
             resp = NetworkUtils.getHttpClient().execute(post);
-            String authToken = null;
+            AuthenticationResult result = new AuthenticationResult();
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 InputStream istream = (resp.getEntity() != null) ? resp.getEntity().getContent() : null;
                 if (istream != null) {
                     BufferedReader ireader = new BufferedReader(new InputStreamReader(istream));
-                    authToken = ireader.readLine().trim();
+                    result.mToken = ireader.readLine().trim();
+                    result.mAccountName = ireader.readLine().trim();
                     ireader.close();
                 }
             }
-            if ((authToken != null) && (authToken.length() > 0)) {
+            if ((result.mToken != null) && (result.mToken.length() > 0)) {
                 Log.v(TAG, "Successful authentication");
-                return authToken;
+                return result;
             } else {
                 Log.e(TAG, "Error authenticating" + resp.getStatusLine());
                 return null;
@@ -168,5 +169,10 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         } finally {
             Log.v(TAG, "getAuthtoken completing");
         }
+	}
+
+	public static class AuthenticationResult {
+		public String mToken;
+		public String mAccountName;
 	}
 }

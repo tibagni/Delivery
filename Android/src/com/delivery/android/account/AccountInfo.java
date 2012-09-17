@@ -13,4 +13,16 @@ public class AccountInfo {
     	Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
     	return (accounts != null && accounts.length > 0);
 	}
+
+	public static String buildAccountManagerName(String remoteAccountName, String userName) {
+		return String.format("%s@%s", remoteAccountName, userName);
+	}
+
+	public static String getUserNameFromAccountManagerName(String amName) {
+		String[] parts = amName.split("@");
+		if (parts != null) {
+			return parts[parts.length - 1];
+		}
+		return null;
+	}
 }

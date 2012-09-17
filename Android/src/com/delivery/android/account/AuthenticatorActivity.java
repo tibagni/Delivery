@@ -132,9 +132,11 @@ public class AuthenticatorActivity extends AccountAuthenticatorFragmentActivity 
      *
      * @param result the confirmCredentials result.
      */
-    private void finishLogin(String authToken) {
+    private void finishLogin(AccountAuthenticator.AuthenticationResult authenticationResult) {
         Log.i(TAG, "finishLogin()");
-        final Account account = new Account(mUsername, AccountInfo.ACCOUNT_TYPE);
+        //Log.d(TAG, "authenticationResult - " + authenticationResult.mToken + "  " + authenticationResult.mAccountName);
+        final String accountName = AccountInfo.buildAccountManagerName(authenticationResult.mAccountName, mUsername);
+        final Account account = new Account(accountName, AccountInfo.ACCOUNT_TYPE);
         if (mRequestNewAccount) {
             mAccountManager.addAccountExplicitly(account, mPassword, null);
         } else {
@@ -143,7 +145,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorFragmentActivity 
         ContentResolver.setIsSyncable(account, OrderContentProvider.AUTHORITY, 1);
         ContentResolver.setSyncAutomatically(account, OrderContentProvider.AUTHORITY, true);
         final Intent intent = new Intent();
-        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
+        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, accountName);
+        intent.putExtra(AccountManager.KEY_AUTHTOKEN, authenticationResult.mToken);
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, AccountInfo.ACCOUNT_TYPE);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
@@ -231,12 +234,12 @@ public class AuthenticatorActivity extends AccountAuthenticatorFragmentActivity 
     /**
      * Called when the authentication process completes (see attemptLogin()).
      *
-     * @param authToken the authentication token returned by the server, or NULL if
+     * @param authenticationResult the authentication token returned by the server, or NULL if
      *            authentication failed.
      */
-    private void onAuthenticationResult(String authToken) {
+    private void onAuthenticationResult(AccountAuthenticator.AuthenticationResult authenticationResult) {
 
-        boolean success = ((authToken != null) && (authToken.length() > 0));
+        boolean success = (authenticationResult != null);
         Log.i(TAG, "onAuthenticationResult(" + success + ")");
 
         // Our task is complete, so clear it out
@@ -247,7 +250,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorFragmentActivity 
 
         if (success) {
             if (!mConfirmCredentials) {
-                finishLogin(authToken);
+                finishLogin(authenticationResult);
             } else {
                 finishConfirmCredentials(success);
             }
@@ -368,7 +371,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorFragmentActivity 
      * Represents an asynchronous task used to authenticate a user against the
      * SampleSync Service
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, String> {
+    public class UserLoginTask extends AsyncTask<Void, Void, AccountAuthenticator.AuthenticationResult> {
     	private static final int SUCCESS =  0;
     	private static final int IO_ERROR = 1;
 
@@ -384,7 +387,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorFragmentActivity 
     	}
 
 		@Override
-        protected String doInBackground(Void... args) {
+        protected AccountAuthenticator.AuthenticationResult doInBackground(Void... args) {
 			try {
 				return AccountAuthenticator.authenticate(AuthenticatorActivity.this, mUsername, mPassword);
 			} catch (IOException e) {
@@ -394,7 +397,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorFragmentActivity 
         }
 
         @Override
-        protected void onPostExecute(final String authToken) {
+        protected void onPostExecute(final AccountAuthenticator.AuthenticationResult authenticationResult) {
         	switch (mStatus) {
         		case IO_ERROR:
         			onIOError();
@@ -402,7 +405,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorFragmentActivity 
         		default:
                     // On a successful authentication, call back into the Activity to
                     // communicate the authToken (or null for an error).
-                    onAuthenticationResult(authToken);
+                    onAuthenticationResult(authenticationResult);
                     break;
         	}
         }

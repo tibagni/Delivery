@@ -20,6 +20,7 @@ import com.delivery.admin.Admin;
 import com.delivery.persistent.AccountDao;
 import com.delivery.persistent.AdminDao;
 import com.delivery.persistent.DaoManager;
+import com.delivery.util.StringUtils;
 
 public class Login extends HttpServlet {
 
@@ -35,6 +36,8 @@ public class Login extends HttpServlet {
 			String user = req.getParameter("user");
 			String password = req.getParameter("password");
 
+			final boolean invalidCredentials = StringUtils.isEmpty(user) || StringUtils.isEmpty(password);
+
 			final UserAccount uA = new UserAccount();
 			uA.setEmail(user);
 			uA.setPassword(password);
@@ -46,6 +49,8 @@ public class Login extends HttpServlet {
 			DaoManager manager = new DaoManager(dataSource);
 			Object account = manager.execute(new DaoManager.DaoCommand() {
 				@Override public Object execute(DaoManager manager) throws SQLException {
+					if (invalidCredentials) return null;
+
 					AccountDao dao = manager.getAccountDao();
 					List<UserAccount> queryResult = dao.get(uA);
 

@@ -42,6 +42,7 @@
     <url-pattern>/admin/editor/*</url-pattern>
     <url-pattern>/admin/MenuEditor</url-pattern>
     <url-pattern>/admin/PageLoader</url-pattern>
+    <url-pattern>/admin/DeliveryGuyManager</url-pattern>
 </filter-mapping>
 
 <!-- Filters -->
@@ -84,6 +85,15 @@
   <servlet-mapping>
       <servlet-name>LongPollingHandler</servlet-name>
       <url-pattern>/admin/LongPollingHandler</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>DeliveryGuyManager</servlet-name>
+      <servlet-class>com.delivery.servlet.admin.DeliveryGuyManager</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>DeliveryGuyManager</servlet-name>
+      <url-pattern>/admin/DeliveryGuyManager</url-pattern>
   </servlet-mapping>
       
   <!-- Front end -->

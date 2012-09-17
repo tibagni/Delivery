@@ -40,6 +40,7 @@
 				<li><a href="#MenuEditor" class="MenuButton"><span>Editor de cardápio</span></a></li> 
 				<li><a href="#OrderManager" class="MenuButton"><span>Gerenciador de pedidos 
 				    <b id="orderManagerLink" style="color: #FF0000;"></b></span></a></li>
+                <li><a href="#DeliveryGuyList" class="MenuButton"><span>Gerenciador de entregadores</span></a></li> 
 			</ul>
 	    </c:if>
         </div>
@@ -67,7 +68,7 @@
         <div class="Footer">
         <c:if test="${not empty AdminSession }">
            <a href="#Home" class="AjaxLink">Home</a> | <a href="#MenuEditor" class="AjaxLink">Editor de cardápio</a> 
-           | <a href="#OrderManager" class="AjaxLink">Gerenciador de pedidos</a>
+           | <a href="#OrderManager" class="AjaxLink">Gerenciador de pedidos</a> | <a href="#DeliveryGuyList" class="AjaxLink">Gerenciador de entregadores</a>
         </c:if>
         </div>
         <!-- End Rodape -->                

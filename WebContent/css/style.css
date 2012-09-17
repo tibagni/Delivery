@@ -170,6 +170,7 @@ border-radius: 5px; border: solid 1px #404040; font-family: "Trebuchet MS", Aria
 .setaStep{width: 45px; height: 15px; float: left; background: url(../images/arrow.png); margin: 65px 0px 0px 0px;}
 .clear{clear:both;}
 
+.dGuyList li{padding: 5px;background:#F0E6D3;}
 /****************************** Menu (Cardapio) ************************************/
 div.panel,p.flip {margin:0px;padding:5px;}
 p.flip{font-weight: bold; border-bottom:solid 1px #000000; cursor: default;}

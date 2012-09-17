@@ -32,6 +32,7 @@ public class DaoManager {
     private OrderItemFlavourRelDao mOrderItemFlavourRelDao;
 
     private PaymentDao mPaymentDao;
+    private DeliveryGuyDao mDeliveryGuyDao;
 
     private final DataSource mDataSource;
     private Connection mConnection;
@@ -140,6 +141,13 @@ public class DaoManager {
     	return mPaymentDao;
     }
 
+    public DeliveryGuyDao getDeliveryGuyDao() throws SQLException {
+    	if (mDeliveryGuyDao == null) {
+    		mDeliveryGuyDao = new DeliveryGuyDao(getConnection());
+    	}
+    	return mDeliveryGuyDao;
+    }
+
     private Connection getConnection() throws SQLException {
         if (mConnection == null) {
             mConnection = mDataSource.getConnection();
@@ -166,6 +174,7 @@ public class DaoManager {
         mOrderItemFlavourRelDao = null;
         mAdminDao = null;
         mPaymentDao = null;
+        mDeliveryGuyDao = null;
     }
 
     public Object execute(DaoCommand command) {

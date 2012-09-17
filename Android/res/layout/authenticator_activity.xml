@@ -52,7 +52,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:ems="10"
-            android:hint="@string/login_hint" >
+            android:hint="@string/login_hint"
+            android:inputType="number" >
 
             <requestFocus />
         </EditText>
@@ -66,7 +67,7 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="@string/password_hint"
-            android:inputType="numberPassword" />
+            android:inputType="textPassword" />
 
         <TextView
             android:id="@+id/login_message"
