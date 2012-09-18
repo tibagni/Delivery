@@ -52,6 +52,7 @@ import com.delivery.android.client.NetworkUtils;
 import com.delivery.android.database.OrderTable;
 import com.delivery.android.exception.ParseOrderListException;
 import com.delivery.android.preferences.DeliveryPreferences;
+import com.delivery.android.provider.Order;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -124,7 +125,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         // Now we can fetch each order
                         //TODO
                         for (long l : ordersToFetch) {
-                        	RemoteOrder remoteOrder = fetchOrder(l, token);
+                        	Order remoteOrder = fetchOrder(l, token);
                         	Log.d(TAG, remoteOrder.toString());
                         }
 
@@ -193,7 +194,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     	ordersToFetch.removeAll(localOrders);
     }
 
-	private RemoteOrder fetchOrder(long orderId, String token) throws ClientProtocolException, IOException,
+	private Order fetchOrder(long orderId, String token) throws ClientProtocolException, IOException,
 	ParseOrderListException, XmlPullParserException {
         final String getOrderURL = mBaseURL + "/mobile/GetOrder";
         final HttpResponse resp;
@@ -217,20 +218,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             InputStream istream = (resp.getEntity() != null) ? resp.getEntity().getContent() : null;
             if (istream != null) {
             	return OrderParser.parseOrderfromXml(istream);
-
-//                BufferedReader ireader = new BufferedReader(new InputStreamReader(istream));
-//                String line = null;
-//                StringBuilder xmlBuilder = new StringBuilder();
-//            	try {
-//                    while ((line = ireader.readLine()) != null) {
-//                    	xmlBuilder.append(line);
-//                    }
-//            	} catch(NumberFormatException e) {
-//            		throw new ParseOrderListException("Failed to parse order: " + orderId);
-//            	} finally {
-//            		ireader.close();
-//            	}
-//            	return xmlBuilder.toString();
             } else {
         		throw new ParseOrderListException("Failed to parse order: " + orderId);
             }

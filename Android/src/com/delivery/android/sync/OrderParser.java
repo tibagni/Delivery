@@ -9,39 +9,42 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Xml;
 
+import com.delivery.android.provider.Address;
+import com.delivery.android.provider.Order;
+
 public class OrderParser {
 
-	public static RemoteOrder parseOrderfromXml(InputStream is) throws IOException, XmlPullParserException {
+	public static Order parseOrderfromXml(InputStream xmlStream) throws IOException, XmlPullParserException {
 		try {
 			XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-            parser.setInput(is, "ISO-8859-1");
+            parser.setInput(xmlStream, "ISO-8859-1");
             parser.nextTag();
 
             return readOrder(parser);
 		} finally {
-			is.close();
+			xmlStream.close();
 		}
 	}
 
-	private static RemoteOrder readOrder(XmlPullParser parser) throws XmlPullParserException, IOException {
+	private static Order readOrder(XmlPullParser parser) throws XmlPullParserException, IOException {
 	    parser.require(XmlPullParser.START_TAG, null, "order");
-	    RemoteOrder order = new RemoteOrder();
+	    Order order = new Order();
 	    while (parser.next() != XmlPullParser.END_TAG) {
 	        if (parser.getEventType() != XmlPullParser.START_TAG) {
 	            continue;
 	        }
 	        String name = parser.getName();
 	        if (name.equals("id")) {
-	            order.mRemoteId = readLongTag(parser, "id");
+	            order.setRemoteId(readLongTag(parser, "id"));
 	        } else if (name.equals("address")) {
-	            order.mRemoteAddress = readAddress(parser);
+	            order.setRemoteAddress(readAddress(parser));
 	        } else if (name.equals("charge")) {
-	            order.mCharge = readIntTag(parser, "charge") == 1;
+	            order.setCharge(readIntTag(parser, "charge") == 1);
 	        } else if (name.equals("change")) {
-	            order.mChange = readDoubleTag(parser, "change");
+	            order.setChange(readDoubleTag(parser, "change"));
 	        } else if (name.equals("description")) {
-	            order.mDescription = readStringTag(parser, "description");
+	            order.setDescription(readStringTag(parser, "description"));
 	        } else {
 	            skip(parser);
 	        }
@@ -49,28 +52,28 @@ public class OrderParser {
 	    return order;
 	}
 
-	private static RemoteAddress readAddress(XmlPullParser parser) throws XmlPullParserException, IOException {
+	private static Address readAddress(XmlPullParser parser) throws XmlPullParserException, IOException {
 	    parser.require(XmlPullParser.START_TAG, null, "address");
-	    RemoteAddress address = new RemoteAddress();
+	    Address address = new Address();
 	    while (parser.next() != XmlPullParser.END_TAG) {
 	        if (parser.getEventType() != XmlPullParser.START_TAG) {
 	            continue;
 	        }
 	        String name = parser.getName();
 	        if (name.equals("street")) {
-	            address.mStreet = readStringTag(parser, "street");
+	            address.setStreet(readStringTag(parser, "street"));
 	        } else if (name.equals("number")) {
-	            address.mNumber = readIntTag(parser, "number");
+	            address.setNumber(readIntTag(parser, "number"));
 	        } else if (name.equals("complement")) {
-	            address.mComplement = readStringTag(parser, "complement");
+	            address.setComplement(readStringTag(parser, "complement"));
 	        } else if (name.equals("district")) {
-	            address.mDistrict = readStringTag(parser, "district");
+	            address.setDistrict(readStringTag(parser, "district"));
 	        } else if (name.equals("city")) {
-	            address.mCity = readStringTag(parser, "city");
+	            address.setCity(readStringTag(parser, "city"));
 	        } else if (name.equals("uf")) {
-	            address.mUf = readStringTag(parser, "uf");
+	            address.setUf(readStringTag(parser, "uf"));
 	        } else if (name.equals("zip")) {
-	            address.mZip = readStringTag(parser, "zip");
+	            address.setZip(readStringTag(parser, "zip"));
 	        } else {
 	            skip(parser);
 	        }
