@@ -29,10 +29,10 @@ public class AddressTable implements BaseColumns {
 	  // Database creation SQL statement
 	  private static final String DATABASE_CREATE = "create table "
 	      + TABLE_NAME
-	      + "("
-	      + COLUMN_ID + " integer primary key autoincrement, "
-	      + COLUMN_ZIP_CODE + " text not null, "
-	      + COLUMN_STREET + " text not null"
+	      + " ("
+	      + COLUMN_ID + " integer primary key,"
+	      + COLUMN_ZIP_CODE + " text not null,"
+	      + COLUMN_STREET + " text not null,"
 	      + COLUMN_NUMBER + " text not null,"
 	      + COLUMN_COMPLEMENT + " text,"
 	      + COLUMN_DISTRICT + " text not null,"

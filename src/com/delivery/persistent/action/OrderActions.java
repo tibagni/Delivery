@@ -86,6 +86,7 @@ public class OrderActions {
 								addr.getNumber(), addr.getCompl(), addr.getNeighborhood(), addr.getCity(), addr.getUF(), addr.getZipCode());
 					}
 
+					order.setAddress(addr);
 					order.setCachedAddress(cachedAddr);
 					order.setCachedUserName(ua.getName() + " - " + ua.getEmail());
 

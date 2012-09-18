@@ -45,6 +45,18 @@
     <url-pattern>/admin/DeliveryGuyManager</url-pattern>
 </filter-mapping>
 
+
+<filter>
+    <description>Mobile Filter</description>
+    <filter-name>MobileFilter</filter-name>
+    <filter-class>com.delivery.MobileFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>MobileFilter</filter-name>
+    <url-pattern>/mobile/ListOrders</url-pattern>
+    <url-pattern>/mobile/GetOrder</url-pattern>
+</filter-mapping>
+
 <!-- Filters -->
   
   
@@ -173,6 +185,24 @@
   <servlet-mapping>
       <servlet-name>MobileLogin</servlet-name>
       <url-pattern>/mobile/Login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>MobileListOrder</servlet-name>
+      <servlet-class>com.delivery.servlet.mobile.ListOrders</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>MobileListOrder</servlet-name>
+      <url-pattern>/mobile/ListOrders</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>MobileGetOrder</servlet-name>
+      <servlet-class>com.delivery.servlet.mobile.GetOrder</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>MobileGetOrder</servlet-name>
+      <url-pattern>/mobile/GetOrder</url-pattern>
   </servlet-mapping>
   
   <!-- Test -->

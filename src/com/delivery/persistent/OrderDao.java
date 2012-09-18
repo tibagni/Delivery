@@ -150,6 +150,11 @@ public class OrderDao extends Dao<Order> {
                 queryBuilder.append(" " + COLUMN_ID + " = " + param.getId());
                 nextToken = and;
             }
+            if (param.getDeliveryGuyId() != SQLUtils.INVALID_ID) {
+                queryBuilder.append(nextToken);
+                queryBuilder.append(" " + COLUMN_DELIVERY + " = " + param.getDeliveryGuyId());
+                nextToken = and;
+            }
             // Verifica se ha uma lista de status para buscar
             if (param.getQueryStatusSet() != null && param.getQueryStatusSet().size() > 0) {
             	HashSet<Integer> statusSet = param.getQueryStatusSet();

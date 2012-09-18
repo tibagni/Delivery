@@ -12,7 +12,7 @@ public class OrderTable implements BaseColumns {
 	/**
 	 * Database table name
 	 */
-	public static final String TABLE_NAME = "order";
+	public static final String TABLE_NAME = "orders";
 
 	/**
 	 * Local id of order
@@ -58,16 +58,16 @@ public class OrderTable implements BaseColumns {
 	public static final String COLUMN_ADDRESS_KEY = "address_key";
 
 	  // Database creation SQL statement
-	  private static final String DATABASE_CREATE = "create table "
+	  private static final String DATABASE_CREATE = "CREATE TABLE "
 	      + TABLE_NAME
-	      + "("
-	      + COLUMN_ID + " integer primary key autoincrement, "
-	      + COLUMN_REMOTE_ID + " integer not null, "
-	      + COLUMN_RECEIVE_PAYMENT + " integer not null"
-	      + COLUMN_PAYMENT_VALUE + " real,"
-	      + COLUMN_PAYMENT_CHANGE + " real,"
-	      + COLUMN_DESCRIPTION + " text not null,"
-	      + COLUMN_ADDRESS_KEY + " integer not null"
+	      + " ("
+	      + COLUMN_ID + " INTEGER PRIMARY KEY,"
+	      + COLUMN_REMOTE_ID + " INTEGER NOT NULL,"
+	      + COLUMN_RECEIVE_PAYMENT + " INTEGER NOT NULL,"
+	      + COLUMN_PAYMENT_VALUE + " REAL,"
+	      + COLUMN_PAYMENT_CHANGE + " REAL,"
+	      + COLUMN_DESCRIPTION + " TEXT NOT NULL,"
+	      + COLUMN_ADDRESS_KEY + " INTEGER NOT NULL"
 	      + ");";
 
 
@@ -76,6 +76,8 @@ public class OrderTable implements BaseColumns {
 
 	  public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/orders";
 	  public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/order";
+
+	  public static final String[] REMOTE_ID_PROJECTION = new String[] { COLUMN_REMOTE_ID };
 
 	  public static void onCreate(SQLiteDatabase database) {
 	    database.execSQL(DATABASE_CREATE);

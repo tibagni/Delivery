@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
+import com.delivery.account.Address;
+
 public class Order {
 
 	private long mId;
@@ -27,6 +29,8 @@ public class Order {
     // Usado simplesmente para apresentacao de dados
     private String mCachedUserName;
     private String mCachedAddress;
+
+    private Address mAddress;
 
     private Payment mPayment;
 
@@ -263,6 +267,14 @@ public class Order {
 
 	public boolean getWaitingPaymentStatus() {
 		return mStatus == OrderStatus.WAITING_FOR_PAYMENT;
+	}
+
+	public Address getAddress() {
+		return mAddress;
+	}
+
+	public void setAddress(Address mAddress) {
+		this.mAddress = mAddress;
 	}
 
 	public static class OrderStatus {
