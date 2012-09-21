@@ -11,9 +11,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
-import com.delivery.android.database.AddressTable;
 import com.delivery.android.database.DatabaseHelper;
-import com.delivery.android.database.OrderTable;
 
 public class OrderContentProvider extends ContentProvider {
 	private DatabaseHelper mDatabase;
@@ -30,12 +28,12 @@ public class OrderContentProvider extends ContentProvider {
 	  private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 	  static {
 		  //Order table
-		  sURIMatcher.addURI(AUTHORITY, OrderTable.TABLE_NAME, ORDERS);
-		  sURIMatcher.addURI(AUTHORITY, OrderTable.TABLE_NAME + "/#", ORDERS_ID);
+		  sURIMatcher.addURI(AUTHORITY, Order.TABLE_NAME, ORDERS);
+		  sURIMatcher.addURI(AUTHORITY, Order.TABLE_NAME + "/#", ORDERS_ID);
 
 		  //Address table
-		  sURIMatcher.addURI(AUTHORITY, AddressTable.TABLE_NAME, ADDRESSES);
-		  sURIMatcher.addURI(AUTHORITY, AddressTable.TABLE_NAME + "/#", ADDRESSES_ID);
+		  sURIMatcher.addURI(AUTHORITY, Address.TABLE_NAME, ADDRESSES);
+		  sURIMatcher.addURI(AUTHORITY, Address.TABLE_NAME + "/#", ADDRESSES_ID);
 	  }
 
 
@@ -49,10 +47,10 @@ public class OrderContentProvider extends ContentProvider {
 		switch(sURIMatcher.match(uri)) {
 			case ORDERS:
 			case ORDERS_ID:
-				return OrderTable.TABLE_NAME;
+				return Order.TABLE_NAME;
 			case ADDRESSES:
 			case ADDRESSES_ID:
-				return AddressTable.TABLE_NAME;
+				return Address.TABLE_NAME;
 			default:
 			   throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -85,13 +83,13 @@ public class OrderContentProvider extends ContentProvider {
 	public String getType(Uri uri) {
 		switch(sURIMatcher.match(uri)) {
 		case ORDERS:
-			return OrderTable.CONTENT_TYPE;
+			return Order.CONTENT_TYPE;
 		case ORDERS_ID:
-			return OrderTable.CONTENT_ITEM_TYPE;
+			return Order.CONTENT_ITEM_TYPE;
 		case ADDRESSES:
-			return AddressTable.CONTENT_TYPE;
+			return Address.CONTENT_TYPE;
 		case ADDRESSES_ID:
-			return AddressTable.CONTENT_ITEM_TYPE;
+			return Address.CONTENT_ITEM_TYPE;
 		default:
 		   throw new IllegalArgumentException("Unknown URI: " + uri);
 		}

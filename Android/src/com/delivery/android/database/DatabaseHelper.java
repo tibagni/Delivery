@@ -1,5 +1,8 @@
 package com.delivery.android.database;
 
+import com.delivery.android.provider.Address;
+import com.delivery.android.provider.Order;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,8 +18,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	  // Method is called during creation of the database
 	  @Override
 	  public void onCreate(SQLiteDatabase database) {
-		AddressTable.onCreate(database);
-	    OrderTable.onCreate(database);
+		Address.onCreate(database);
+	    Order.onCreate(database);
 	  }
 
 	  // Method is called during an upgrade of the database,

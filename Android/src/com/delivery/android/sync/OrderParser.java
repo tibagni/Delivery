@@ -37,7 +37,11 @@ public class OrderParser {
 	        String name = parser.getName();
 	        if (name.equals("id")) {
 	            order.setRemoteId(readLongTag(parser, "id"));
-	        } else if (name.equals("address")) {
+	        } else if (name.equals("client")) {
+	            order.setClientName(readStringTag(parser, "client"));
+	        } else if (name.equals("datetime")) {
+	            order.setDateTime(readStringTag(parser, "datetime"));
+	        }  else if (name.equals("address")) {
 	            order.setRemoteAddress(readAddress(parser));
 	        } else if (name.equals("charge")) {
 	            order.setCharge(readIntTag(parser, "charge") == 1);

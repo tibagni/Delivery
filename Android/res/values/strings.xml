@@ -23,5 +23,17 @@
     
     <string name="account_already_added_title">Conta configurada</string>
     <string name="account_already_added">Você só pode configurar uma conta de entregador!</string>
+    <string name="order_detail_title">Detalhes do pedido</string>
+    <string name="order_detail_tab">Detalhes do pedido</string>
+    <string name="charge_msg">O pedido deverá ser cobrado no momento da entrega</string>
+    <string name="change_view_string">Valor do troco R$: %1$s</string>
+    <string name="address_view">Rua: %1$s, %2$s %3$s, Bairro: %4$s, Cidade: %5$s-%6$s, CEP: %7$s</string>
+    <string name="date_time_title">"Pedido realizado em "</string>
+    <string name="maps_button">Rota para o endereço</string>
+    
+    <string name="authentication_error_msg">Erro de autenticação</string>
+    <string name="canceled_error_msg">O sync foi cancelado!</string>
+    <string name="io_error_msg">Houve algum problema na comunicação com o servidor</string>
+    <string name="parser_error_msg">Não foi possível ler o conteúdo recebido</string>
 
 </resources>

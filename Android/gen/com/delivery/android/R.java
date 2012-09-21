@@ -18,20 +18,31 @@ public final class R {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
+        public static final int ic_menu_refresh=0x7f020001;
+        public static final int red_button=0x7f020002;
     }
     public static final class id {
+        public static final int address_view=0x7f0a000d;
         public static final int authenticator_container=0x7f0a0002;
         public static final int cancel_btn=0x7f0a0005;
-        public static final int edit_name=0x7f0a000a;
+        public static final int change=0x7f0a000c;
+        public static final int charge_msg=0x7f0a000b;
+        public static final int client_name_view=0x7f0a0011;
+        public static final int date_time_title=0x7f0a000f;
+        public static final int date_time_value=0x7f0a0010;
+        public static final int description=0x7f0a000a;
+        public static final int edit_name=0x7f0a0012;
         public static final int login_box=0x7f0a0006;
         public static final int login_message=0x7f0a0008;
+        public static final int map_button=0x7f0a000e;
         public static final int ok_btn=0x7f0a0004;
-        public static final int order_detail=0x7f0a0009;
         public static final int order_detail_container=0x7f0a0000;
+        public static final int order_id_view=0x7f0a0009;
         public static final int order_list=0x7f0a0001;
         public static final int password_box=0x7f0a0007;
-        public static final int select_server=0x7f0a000c;
-        public static final int server_address=0x7f0a000b;
+        public static final int select_server=0x7f0a0014;
+        public static final int server_address=0x7f0a0013;
+        public static final int sync=0x7f0a0015;
         public static final int title=0x7f0a0003;
     }
     public static final class layout {
@@ -44,20 +55,32 @@ public final class R {
     }
     public static final class menu {
         public static final int login_options_menu=0x7f090000;
+        public static final int order_list_options_menu=0x7f090001;
     }
     public static final class string {
         public static final int account_already_added=0x7f070015;
         public static final int account_already_added_title=0x7f070014;
+        public static final int address_view=0x7f07001a;
         public static final int app_name=0x7f070000;
         public static final int authenticating=0x7f070012;
+        public static final int authentication_error_msg=0x7f07001d;
         public static final int authenticator_label=0x7f07000a;
         public static final int cancel_btn=0x7f070009;
+        public static final int canceled_error_msg=0x7f07001e;
+        public static final int change_view_string=0x7f070019;
+        public static final int charge_msg=0x7f070018;
         public static final int connection_error_message=0x7f070013;
+        public static final int date_time_title=0x7f07001b;
         public static final int incomplete_login_info=0x7f070010;
         public static final int incorrect_login_info=0x7f070011;
+        public static final int io_error_msg=0x7f07001f;
         public static final int login_hint=0x7f070006;
         public static final int login_title=0x7f070005;
+        public static final int maps_button=0x7f07001c;
         public static final int ok_btn=0x7f070008;
+        public static final int order_detail_tab=0x7f070017;
+        public static final int order_detail_title=0x7f070016;
+        public static final int parser_error_msg=0x7f070020;
         public static final int password_hint=0x7f070007;
         public static final int provider_label=0x7f070001;
         public static final int select_server_dialog_lbl=0x7f07000d;
@@ -71,6 +94,7 @@ public final class R {
     }
     public static final class style {
         public static final int AppTheme=0x7f080000;
+        public static final int button_text=0x7f080001;
     }
     public static final class xml {
         public static final int authenticator=0x7f040000;

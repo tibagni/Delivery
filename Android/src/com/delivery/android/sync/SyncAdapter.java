@@ -44,14 +44,15 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.delivery.android.account.AccountInfo;
 import com.delivery.android.client.NetworkUtils;
-import com.delivery.android.database.OrderTable;
 import com.delivery.android.exception.ParseOrderListException;
 import com.delivery.android.preferences.DeliveryPreferences;
+import com.delivery.android.provider.Address;
 import com.delivery.android.provider.Order;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
@@ -62,21 +63,23 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private final AccountManager mAccountManager;
 
     private final Context mContext;
-
-    private final String mBaseURL;
+    DeliveryPreferences mPrefs;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         mContext = context;
         mAccountManager = AccountManager.get(context);
-    	DeliveryPreferences prefs = DeliveryPreferences.getInstance(context);
-    	mBaseURL = prefs.getOrderServerAddress();
+        mPrefs = DeliveryPreferences.getInstance(context);
     }
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
         ContentProviderClient provider, SyncResult syncResult) {
-        final String syncURL = mBaseURL + "/mobile/ListOrders";
+    	int syncStatus = SyncManager.STATUS_SUCCESS;
+    	SyncManager syncManager = SyncManager.getInstance(mContext);
+    	syncManager.notifySyncStarted();
+
+        final String syncURL = mPrefs.getOrderServerAddress() + "/mobile/ListOrders";
         final HttpResponse resp;
     	try {
     		// First we need to get the account token
@@ -122,11 +125,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         // on the local database
                         prepareFetchAndExcludeLists(ordersToFetch, ordersToRemove);
 
-                        // Now we can fetch each order
-                        //TODO
+                        // Now we can fetch each order and insert into the database
+                        ContentResolver resolver = mContext.getContentResolver();
                         for (long l : ordersToFetch) {
                         	Order remoteOrder = fetchOrder(l, token);
-                        	Log.d(TAG, remoteOrder.toString());
+                        	Address remoteAddress = remoteOrder.getRemoteAddress();
+                        	Uri insertedUri = resolver.insert(Address.CONTENT_URI, remoteAddress.toContentValues());
+                        	long addressKey = Long.parseLong(insertedUri.getLastPathSegment());
+                        	remoteOrder.setAddressKey(addressKey);
+                        	resolver.insert(Order.CONTENT_URI, remoteOrder.toContentValues());
                         }
 
                         // Finally, we need to remove the orders that are not still on the server
@@ -146,40 +153,48 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
         } catch (final AuthenticatorException e) {
+        	syncStatus = SyncManager.STATUS_AUTH_ERROR;
             Log.e(TAG, "AuthenticatorException", e);
             syncResult.stats.numParseExceptions++;
         } catch (final OperationCanceledException e) {
+        	syncStatus = SyncManager.STATUS_CANCELED;
             Log.e(TAG, "OperationCanceledExcetpion", e);
         } catch (final IOException e) {
+        	syncStatus = SyncManager.STATUS_IO_ERROR;
             Log.e(TAG, "IOException", e);
             syncResult.stats.numIoExceptions++;
         } catch (final AuthenticationException e) {
+        	syncStatus = SyncManager.STATUS_AUTH_ERROR;
             Log.e(TAG, "AuthenticationException", e);
             syncResult.stats.numAuthExceptions++;
         } catch (final ParseOrderListException e) {
+        	syncStatus = SyncManager.STATUS_PARSER_ERROR;
             Log.e(TAG, "ParseOrderListException", e);
             syncResult.stats.numParseExceptions++;
         } catch (XmlPullParserException e) {
+        	syncStatus = SyncManager.STATUS_PARSER_ERROR;
             Log.e(TAG, "XmlPullParserException", e);
             syncResult.stats.numParseExceptions++;
         }
+
+    	syncManager.notifySyncFinished(syncStatus);
     }
 
     private void removeLocalOrders(ArrayList<Long> ordersToRemove) {
     	// TODO improve remove several rows (batch delete)
 		ContentResolver resolver = mContext.getContentResolver();
 		for (long remoteId : ordersToRemove) {
-			resolver.delete(OrderTable.CONTENT_URI, OrderTable.COLUMN_REMOTE_ID + "=?",
+			resolver.delete(Order.CONTENT_URI, Order.COLUMN_REMOTE_ID + "=?",
 					new String[] {String.valueOf(remoteId)});
 		}
 	}
 
 	private void prepareFetchAndExcludeLists(List<Long> ordersToFetch, List<Long> ordersToRemove) {
 		ContentResolver resolver = mContext.getContentResolver();
-		Cursor cursor = resolver.query(OrderTable.CONTENT_URI, OrderTable.REMOTE_ID_PROJECTION, null, null, null);
+		Cursor cursor = resolver.query(Order.CONTENT_URI, Order.REMOTE_ID_PROJECTION, null, null, null);
 		ArrayList<Long> localOrders = new ArrayList<Long>();
     	while (cursor.moveToNext()) {
-    		long remoteIdLocalDB = cursor.getLong(1);
+    		long remoteIdLocalDB = cursor.getLong(0);
     		if (!ordersToFetch.contains(remoteIdLocalDB)) {
     			// If the order was not listed but we have it on our database
     			// we should delete it.
@@ -196,7 +211,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 	private Order fetchOrder(long orderId, String token) throws ClientProtocolException, IOException,
 	ParseOrderListException, XmlPullParserException {
-        final String getOrderURL = mBaseURL + "/mobile/GetOrder";
+        final String getOrderURL = mPrefs.getOrderServerAddress() + "/mobile/GetOrder";
         final HttpResponse resp;
 		final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("token", token));

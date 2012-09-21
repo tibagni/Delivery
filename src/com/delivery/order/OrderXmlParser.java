@@ -36,6 +36,15 @@ public class OrderXmlParser {
             Element idElement = XmlParserUtils.createElement(doc, "id", String.valueOf(order.getId()));
             orderElement.appendChild(idElement);
 
+            //<client>
+            String name = order.getCachedUserName().split("-")[0];
+            Element clientElement = XmlParserUtils.createElement(doc, "client", name);
+            orderElement.appendChild(clientElement);
+
+            //<datetime>
+            Element datetimeElement = XmlParserUtils.createElement(doc, "datetime", order.getTimestampAsText());
+            orderElement.appendChild(datetimeElement);
+
             // <address>
             if (order.getAddress() != null) {
             	Address addr = order.getAddress();

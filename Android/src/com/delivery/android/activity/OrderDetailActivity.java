@@ -1,12 +1,12 @@
 package com.delivery.android.activity;
 
-import com.delivery.android.R;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+
+import com.delivery.android.R;
 
 public class OrderDetailActivity extends FragmentActivity {
 
@@ -19,8 +19,8 @@ public class OrderDetailActivity extends FragmentActivity {
 
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();
-            arguments.putString(OrderDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(OrderDetailFragment.ARG_ITEM_ID));
+            arguments.putLong(OrderDetailFragment.ARG_ITEM_ID,
+                    getIntent().getLongExtra(OrderDetailFragment.ARG_ITEM_ID, 0));
             OrderDetailFragment fragment = new OrderDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
