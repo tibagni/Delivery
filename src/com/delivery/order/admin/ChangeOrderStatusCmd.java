@@ -27,11 +27,18 @@ public class ChangeOrderStatusCmd extends AdminOrderCommand {
 
 	        String orderIdStr = request.getParameter("orderId");
 	        String newStatusStr = request.getParameter("newStatus");
+	        String deliveryGuyIdStr = request.getParameter("deliveryGuyId");
 	        final long orderId;
 	        final int newStatus;
+	        final int deliveryGuyId;
 	        try {
 	        	orderId = Long.parseLong(orderIdStr);
 	        	newStatus = Integer.parseInt(newStatusStr);
+	        	if (newStatus != Order.OrderStatus.DELIVERING) {
+	        		deliveryGuyId = -1;
+	        	} else {
+	        		deliveryGuyId = Integer.parseInt(deliveryGuyIdStr);
+	        	}
 	        } catch (Exception e) {
 	        	Logger.error("OrderDetailLoader", e);
 	        	return;
@@ -52,7 +59,7 @@ public class ChangeOrderStatusCmd extends AdminOrderCommand {
 					Order order = result.get(0);
 
 					try {
-						dao.changeOrderStatus(order.getStatus(), newStatus, order.getId());
+						dao.changeOrderStatus(order.getStatus(), newStatus, order.getId(), deliveryGuyId);
 					} catch(IllegalStateException e) {
 						Logger.error("Nao foi possivel alterar status do pedido. Estados inconsistentes");
 						return false;

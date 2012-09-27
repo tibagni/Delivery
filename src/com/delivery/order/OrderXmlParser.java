@@ -87,6 +87,9 @@ public class OrderXmlParser {
             		double change = payment.getManualPaymentValue() - order.getPrice();
             		Element changeElement = XmlParserUtils.createElement(doc, "change", String.valueOf(change));
             		orderElement.appendChild(changeElement);
+            		//<paymentVal> - O valor que dever‡ ser recebido pelo entregador
+            		Element paymentElement = XmlParserUtils.createElement(doc, "paymentVal", String.valueOf(payment.getManualPaymentValue()));
+            		orderElement.appendChild(paymentElement);
             	}
             }
 

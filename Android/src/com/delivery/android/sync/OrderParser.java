@@ -47,6 +47,8 @@ public class OrderParser {
 	            order.setCharge(readIntTag(parser, "charge") == 1);
 	        } else if (name.equals("change")) {
 	            order.setChange(readDoubleTag(parser, "change"));
+	        } else if (name.equals("paymentVal")) {
+	            order.setPaymentValue(readDoubleTag(parser, "paymentVal"));
 	        } else if (name.equals("description")) {
 	            order.setDescription(readStringTag(parser, "description"));
 	        } else {

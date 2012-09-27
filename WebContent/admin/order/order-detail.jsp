@@ -9,11 +9,27 @@ $(document).ready(function() {
 		var orderParts = $(this).attr("href").split("-");
 		var orderId = orderParts[1];
 		var newStatus = orderParts[3];
+		
+		if (newStatus == 5) {
+			$("#deliveryGuyListElement").show();
+			$("#moveOrderElement").hide();
+			return;
+		}
 
 		$.post( "Order", { cmd : 'ChangeOrderStatus', orderId: orderId, newStatus: newStatus }, function() {
 			$.modal.close();
 		});
 	});
+	   $(".setDeliveryGuy").click(function() {
+	        var deliveryGuyParts = $(this).attr("href").split("-");
+	        var orderId = ${order.id};
+	        var newStatus = ${order.nextAllowedStatus};
+	        var deliveryId = deliveryGuyParts[1];
+	        
+	        $.post( "Order", { cmd : 'ChangeOrderStatus', orderId: orderId, newStatus: newStatus, deliveryGuyId: deliveryId }, function() {
+	            $.modal.close();
+	        });
+	    });
 });
 //-->
 </script>
@@ -56,5 +72,15 @@ $(document).ready(function() {
 <p>Status atual:<b> ${order.statusText }</b></p>
 <c:if test="${order.canChangeStatusManually }">
 <p id="moveOrderElement"><a href="#-${order.id }-newStatus-${order.nextAllowedStatus }" class="changeStatus">Mover para: <b>${order.nextStatusText }</b></a></p>
+	<div id="deliveryGuyListElement" style="display: none;">
+	<p>Quem deverá realizar esta entrega?</p>
+	<p><c:if test="${not empty deliveryGuyList }">
+	    <ul>
+	    <c:forEach var="deliveryGuy" items="${deliveryGuyList }">
+	        <li><a href="#-${deliveryGuy.code }" class="setDeliveryGuy">${deliveryGuy.name }</a></li>
+	    </c:forEach>
+	    </ul>
+	</c:if> </p>
+	</div>
 </c:if>
 </div>

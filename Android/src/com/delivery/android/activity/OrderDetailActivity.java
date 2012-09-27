@@ -29,13 +29,20 @@ public class OrderDetailActivity extends FragmentActivity {
         }
     }
 
+    public void navigateUp() {
+        NavUtils.navigateUpTo(this, new Intent(this, OrderListActivity.class));
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            NavUtils.navigateUpTo(this, new Intent(this, OrderListActivity.class));
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case android.R.id.home:
+	        	navigateUp();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
     }
 }

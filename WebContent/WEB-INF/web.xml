@@ -55,6 +55,7 @@
     <filter-name>MobileFilter</filter-name>
     <url-pattern>/mobile/ListOrders</url-pattern>
     <url-pattern>/mobile/GetOrder</url-pattern>
+    <url-pattern>/mobile/CloseOrder</url-pattern>
 </filter-mapping>
 
 <!-- Filters -->
@@ -203,6 +204,15 @@
   <servlet-mapping>
       <servlet-name>MobileGetOrder</servlet-name>
       <url-pattern>/mobile/GetOrder</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>MobileCloseOrder</servlet-name>
+      <servlet-class>com.delivery.servlet.mobile.CloseOrder</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>MobileCloseOrder</servlet-name>
+      <url-pattern>/mobile/CloseOrder</url-pattern>
   </servlet-mapping>
   
   <!-- Test -->

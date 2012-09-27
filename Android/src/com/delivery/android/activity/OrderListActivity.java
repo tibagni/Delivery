@@ -3,6 +3,7 @@ package com.delivery.android.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -56,12 +57,21 @@ public class OrderListActivity extends FragmentActivity
         return true;
     }
 
+	private void showSelectServerDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        SelectServerDialog editNameDialog = new SelectServerDialog();
+        editNameDialog.show(fm, "fragment_select_server");
+	}
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	// Handle item selection
 	    switch (item.getItemId()) {
+	        case R.id.select_server:
+	        	showSelectServerDialog();
+	            return true;
 	        case R.id.sync:
-	        	SyncManager.getInstance(this).requestManualSync();
+	        	SyncManager.getInstance(this).requestSync(true);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

@@ -207,15 +207,23 @@ public class OrderDao extends Dao<Order> {
         return queryBuilder.toString();
     }
 
-    public void changeOrderStatus(int oldStatus, int newStatus, long orderId) throws SQLException {
+    public void changeOrderStatus(int oldStatus, int newStatus, long orderId, int deliveryGuyId) throws SQLException {
     	checkOrderStatusTransition(oldStatus, newStatus);
     	Statement stm = null;
         try {
             stm = mConnection.createStatement();
-            stm.executeUpdate("UPDATE " + TABLE_NAME + " SET " + COLUMN_STATUS + "=" + newStatus +
-            		" WHERE " + COLUMN_ID + "=" + orderId);
+            StringBuilder builder = new StringBuilder();
+            builder.append("UPDATE " + TABLE_NAME + " SET " + COLUMN_STATUS + "=" + newStatus);
+            if (deliveryGuyId > 0) {
+            	builder.append(", " + COLUMN_DELIVERY + "=" + deliveryGuyId);
+            }
+            builder.append(" WHERE " + COLUMN_ID + "=" + orderId);
+            stm.executeUpdate(builder.toString());
 
             LongPollingUtils.notifyOrderChange();
+            if (newStatus == Order.OrderStatus.FINISHED) {
+            	// TODO trigger email para clientes (sistema de recomendacao)
+            }
         } catch (SQLException e) {
             Logger.error("Erro ao atualizar status de pedido", e);
             throw e;

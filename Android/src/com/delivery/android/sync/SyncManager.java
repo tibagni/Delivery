@@ -56,9 +56,11 @@ public class SyncManager {
 		mSyncing = false;
 	}
 
-	public void requestManualSync() {
+	public void requestSync(boolean manual) {
     	Account account = AccountInfo.getConfiguredAccount(mContext);
-    	ContentResolver.requestSync(account, OrderContentProvider.AUTHORITY, new Bundle());
+    	Bundle extras = new Bundle();
+    	extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, manual);
+    	ContentResolver.requestSync(account, OrderContentProvider.AUTHORITY, extras);
 	}
 
 	public static interface SyncListener {

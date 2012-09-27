@@ -15,6 +15,7 @@ import com.delivery.menu.Flavour;
 import com.delivery.menu.Optional;
 import com.delivery.menu.Product;
 import com.delivery.menu.ProductSize;
+import com.delivery.order.DeliveryGuy;
 import com.delivery.order.Order;
 import com.delivery.order.OrderItem;
 import com.delivery.order.OrderItemRelFlavour;
@@ -23,6 +24,7 @@ import com.delivery.order.Payment;
 import com.delivery.persistent.AccountDao;
 import com.delivery.persistent.AddressDao;
 import com.delivery.persistent.DaoManager;
+import com.delivery.persistent.DeliveryGuyDao;
 import com.delivery.persistent.FlavourDao;
 import com.delivery.persistent.OptionalDao;
 import com.delivery.persistent.OrderDao;
@@ -197,7 +199,7 @@ public class OrderActions {
 				// devemos mudar o status do pedido para "na fila para preparo"
 				OrderDao oDao = manager.getOrderDao();
 				oDao.changeOrderStatus(Order.OrderStatus.WAITING_FOR_PAYMENT,
-						Order.OrderStatus.READY_TO_PREPARE, orderId);
+						Order.OrderStatus.READY_TO_PREPARE, orderId, -1);
 				return null;
 			}
 		});
@@ -227,10 +229,32 @@ public class OrderActions {
 				// Atualiza o status do pedido j‡ que o pagamento foi validado!
 				OrderDao oDao = manager.getOrderDao();
 				oDao.changeOrderStatus(Order.OrderStatus.WAITING_FOR_PAYMENT,
-						Order.OrderStatus.READY_TO_PREPARE, payment.getOrderId());
+						Order.OrderStatus.READY_TO_PREPARE, payment.getOrderId(), 1);
 
 				return null;
 			}
 		});
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<DeliveryGuy> getDeliveryGuyList() {
+		try {
+		// Get DataSource
+		Context initContext = new InitialContext();
+		Context envContext = (Context) initContext.lookup("java:/comp/env");
+		DataSource dataSource = (DataSource) envContext.lookup("jdbc/deliveryDB");
+
+
+		DaoManager daoManager = new DaoManager(dataSource);
+		return (List<DeliveryGuy>) daoManager.execute(new DaoManager.DaoCommand() {
+			@Override
+			public Object execute(DaoManager manager) throws SQLException {
+				DeliveryGuyDao dao = manager.getDeliveryGuyDao();
+				return dao.get(null);
+			}
+		});
+		} catch (NamingException e) {
+			return null;
+		}
 	}
 }

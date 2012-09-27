@@ -1,10 +1,13 @@
 package com.delivery.pageloader.admin;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.delivery.Logger;
 import com.delivery.engine.command.AdminPageLoaderCommand;
+import com.delivery.order.DeliveryGuy;
 import com.delivery.order.Order;
 import com.delivery.persistent.action.OrderActions;
 
@@ -31,6 +34,10 @@ public class OrderDetailLoader extends AdminPageLoaderCommand {
         } else {
         	Logger.debug("Pedido encontrado e informacoes buscadas com sucesso");
         	Logger.debug("Redirecionando para: " + mRedirect);
+            if (order.getNextAllowedStatus() == Order.OrderStatus.DELIVERING) {
+            	List<DeliveryGuy> deliveryGuyList = OrderActions.getDeliveryGuyList();
+            	req.setAttribute("deliveryGuyList", deliveryGuyList);
+            }
         	req.setAttribute("order", order);
         }
 	}

@@ -17,9 +17,10 @@ public final class R {
         public static final int top_margin_activity=0x7f060000;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int ic_menu_refresh=0x7f020001;
-        public static final int red_button=0x7f020002;
+        public static final int btn_check_buttonless_on=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int ic_menu_refresh=0x7f020002;
+        public static final int red_button=0x7f020003;
     }
     public static final class id {
         public static final int address_view=0x7f0a000d;
@@ -32,6 +33,7 @@ public final class R {
         public static final int date_time_value=0x7f0a0010;
         public static final int description=0x7f0a000a;
         public static final int edit_name=0x7f0a0012;
+        public static final int finalize_order=0x7f0a0015;
         public static final int login_box=0x7f0a0006;
         public static final int login_message=0x7f0a0008;
         public static final int map_button=0x7f0a000e;
@@ -42,7 +44,7 @@ public final class R {
         public static final int password_box=0x7f0a0007;
         public static final int select_server=0x7f0a0014;
         public static final int server_address=0x7f0a0013;
-        public static final int sync=0x7f0a0015;
+        public static final int sync=0x7f0a0016;
         public static final int title=0x7f0a0003;
     }
     public static final class layout {
@@ -55,7 +57,8 @@ public final class R {
     }
     public static final class menu {
         public static final int login_options_menu=0x7f090000;
-        public static final int order_list_options_menu=0x7f090001;
+        public static final int order_detail_options_menu=0x7f090001;
+        public static final int order_list_options_menu=0x7f090002;
     }
     public static final class string {
         public static final int account_already_added=0x7f070015;
@@ -71,9 +74,17 @@ public final class R {
         public static final int charge_msg=0x7f070018;
         public static final int connection_error_message=0x7f070013;
         public static final int date_time_title=0x7f07001b;
+        public static final int error_finishing_order=0x7f070028;
+        public static final int finalize_order_confimation_message=0x7f070022;
+        public static final int finalize_order_confirmation_cancel=0x7f070024;
+        public static final int finalize_order_confirmation_ok=0x7f070023;
+        public static final int finalize_order_confirmation_title=0x7f070021;
+        public static final int finishing_order=0x7f070027;
         public static final int incomplete_login_info=0x7f070010;
         public static final int incorrect_login_info=0x7f070011;
         public static final int io_error_msg=0x7f07001f;
+        public static final int loading=0x7f070025;
+        public static final int loading_order=0x7f070026;
         public static final int login_hint=0x7f070006;
         public static final int login_title=0x7f070005;
         public static final int maps_button=0x7f07001c;

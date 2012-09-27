@@ -109,6 +109,7 @@ public class Order implements BaseColumns {
 	  private Address mRemoteAddress;
 	  private boolean mCharge;
 	  private double mChange;
+	  private double mPaymentValue;
 	  private String mDescription;
 	  private long mAddressKey;
 	  private String mClientName;
@@ -144,6 +145,14 @@ public class Order implements BaseColumns {
 
 		public void setChange(double change) {
 			this.mChange = change;
+		}
+
+		public double getPaymentValue() {
+			return mPaymentValue;
+		}
+
+		public void setPaymentValue(double mPaymentValue) {
+			this.mPaymentValue = mPaymentValue;
 		}
 
 		public String getDescription() {
@@ -193,6 +202,7 @@ public class Order implements BaseColumns {
 			values.put(COLUMN_RECEIVE_PAYMENT, (mCharge ? 1 : 0));
 			if (mCharge) {
 				values.put(COLUMN_PAYMENT_CHANGE, mChange);
+				values.put(COLUMN_PAYMENT_VALUE, mPaymentValue);
 			}
 			values.put(COLUMN_DESCRIPTION, mDescription);
 			values.put(COLUMN_CLIENT_NAME, mClientName);
@@ -208,6 +218,7 @@ public class Order implements BaseColumns {
 			o.mCharge = c.getLong(c.getColumnIndex(COLUMN_RECEIVE_PAYMENT)) == 1;
 			if (o.mCharge) {
 				o.mChange = c.getDouble(c.getColumnIndex(COLUMN_PAYMENT_CHANGE));
+				o.mPaymentValue = c.getDouble(c.getColumnIndex(COLUMN_PAYMENT_VALUE));
 			}
 			o.mDescription = c.getString(c.getColumnIndex(COLUMN_DESCRIPTION));
 			o.mAddressKey = c.getLong(c.getColumnIndex(COLUMN_ADDRESS_KEY));
@@ -220,9 +231,10 @@ public class Order implements BaseColumns {
 		public String toString() {
 			return "Order [mId=" + mId + ", mRemoteId=" + mRemoteId
 					+ ", mRemoteAddress=" + mRemoteAddress + ", mCharge="
-					+ mCharge + ", mChange=" + mChange + ", mDescription="
-					+ mDescription + ", mAddressKey=" + mAddressKey
-					+ ", mClientName=" + mClientName + "]";
+					+ mCharge + ", mChange=" + mChange + ", mPaymentValue="
+					+ mPaymentValue + ", mDescription=" + mDescription
+					+ ", mAddressKey=" + mAddressKey + ", mClientName="
+					+ mClientName + ", mDateTime=" + mDateTime + "]";
 		}
 
 }
