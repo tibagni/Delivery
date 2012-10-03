@@ -1,0 +1,17 @@
+----- 2012-10-02 14:41:50: Job 'Backup source-TCC': ANALYSIS started by User on computer 'MacBook Pro de Tiago' (GoodSync 3.4.0.0 x86_64 on MacOS Version 10.7.5 (Build 11G56)) -----
+Backup source-TCC: /Users/tiagobagni/workspace/Delivery <-> /Users/tiagobagni/Google Drive/TCC/Backup - Fonte, SavePrevVers, CleanupPrevVers=30d, CleanupOldGens=24m, TmpDest, EstReq, CopyLocked, DetectMovesAndRenames, DetectFolderMoves, FolderLinksCopy, FileLinksCopy, Reconnect=3, ResolveConflicts=NewerFileWins, ChangeLimit=10
+Exclude Hidden, Exclude System, Exclude licens*.rfo|cache.rfo|mru.rfo|mpp*.rfo|RoboForm Online Account.rfp|name *._gstmp|/System Volume Information|Thumbs.db|.DS_Store 
+Esquerda: Ler Ficheiro de Estado /Users/tiagobagni/workspace/Delivery/_gsdata_/_file_state_v4._gs
+Esquerda: Files: 604 (excluded 17). Folders: 149 (excluded 5). /dev/disk0s2 HFS, Livre: 460155M, Total: 499248M
+Direita: Ler Ficheiro de Estado /Users/tiagobagni/Google Drive/TCC/Backup - Fonte/_gsdata_/_file_state_v4._gs
+Direita: Files: 604 (excluded 1). Folders: 149 (excluded 1). /dev/disk0s2 HFS, Livre: 460155M, Total: 499248M
+On disk file:// space required for sync is 0, you have 460155M
+On disk file:// space required for sync is 0, you have 460155M
+Changes: 0, Conflicts: 0, CopyTime: 0, CopyState: 0/0, Errors: 0
+----- 2012-10-02 14:41:50: Analysis Completed. Time 00:00:00, Speed: Many files/s -----
+
+===== 2012-10-02 14:41:50: Job 'Backup source-TCC': SYNC started by User on computer 'MacBook Pro de Tiago' =====
+Backup source-TCC: /Users/tiagobagni/workspace/Delivery <-> /Users/tiagobagni/Google Drive/TCC/Backup - Fonte, SavePrevVers, CleanupPrevVers=30d, CleanupOldGens=24m, TmpDest, EstReq, CopyLocked, DetectMovesAndRenames, DetectFolderMoves, FolderLinksCopy, FileLinksCopy, Reconnect=3, ResolveConflicts=NewerFileWins, ChangeLimit=10
+Items Synced OK: 0, Errors: 0
+===== 2012-10-02 14:41:50: Sync Completed. Time: 00:00:00, Speed:  =====
+
